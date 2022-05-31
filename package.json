@@ -1,0 +1,35 @@
+{
+	"name": "node",
+	"version": "1.0.0",
+	"description": "Node backend",
+	"main": "dist/index.js",
+	"repository": "https://github.com/EgeOnder/kafeasist-node",
+	"author": "Ege Önder <40398628+EgeOnder@users.noreply.github.com>",
+	"license": "MIT",
+	"scripts": {
+		"lint": "eslint --fix",
+		"lint:init": "eslint --init",
+		"watch": "tsc -w",
+		"build": "tsc -b",
+		"dev": "nodemon dist/index.js"
+	},
+	"devDependencies": {
+		"@types/cors": "^2.8.12",
+		"@types/express": "^4.17.13",
+		"@types/jsonwebtoken": "^8.5.8",
+		"@types/node": "^17.0.35",
+		"@typescript-eslint/eslint-plugin": "^5.26.0",
+		"@typescript-eslint/parser": "^5.26.0",
+		"dotenv": "^16.0.1",
+		"eslint": "^8.16.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"nodemon": "^2.0.16",
+		"prettier": "^2.6.2",
+		"typescript": "^4.7.2"
+	},
+	"dependencies": {
+		"cors": "^2.8.5",
+		"express": "^4.18.1",
+		"jsonwebtoken": "^8.5.1"
+	}
+}
