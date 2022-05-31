@@ -10,3 +10,6 @@ export const __jwt_secret__ = process.env.JWT_SECRET as Secret;
 export const __jwt_options__ = {
 	algorithms: ['HS256'],
 } as any;
+export const __auth_user__ = process.env.AUTHORIZED_USER;
+
+export const __mongo_conn__: string = process.env.MONGO_CONNECTION_STRING || '';

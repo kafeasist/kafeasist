@@ -1,12 +1,18 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { __port__, __prod__ } from './config/constants';
+import { __port__, __prod__, __mongo_conn__ } from './config/constants';
 import { corsOptions } from './config/cors.config';
 import apiRoutes from './routes/api';
-import v1Routes from './routes/api/v1';
+import v1Routes from './routes/v1/v1';
 import { isAuth } from './middlewares/isAuth';
+import { connectMongo } from './utils/connectMongo';
+import { isProtected } from './middlewares/isProtected';
 
-const app = express().use(cors(corsOptions)).use(express.json()).use(isAuth);
+connectMongo(__mongo_conn__);
+
+const app = express().use(cors(corsOptions)).use(express.json());
+
+app.use(isAuth).use(isProtected);
 
 // router
 app.use('/api/v1', v1Routes);
