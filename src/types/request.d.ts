@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongoose';
 import { JwtExtendedPayload } from './jwt';
 
 export {};
@@ -8,5 +9,11 @@ declare global {
 			token: string;
 			issuer: JwtExtendedPayload;
 		}
+	}
+}
+
+declare module 'express-session' {
+	interface SessionData {
+		userId: string;
 	}
 }

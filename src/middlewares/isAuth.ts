@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { __jwt_secret__, __jwt_options__ } from '../config/constants';
+import { __jwt_secret__ } from '../config/constants';
 import jwt from 'jsonwebtoken';
 import { createError } from '../utils/createError';
 
@@ -11,23 +11,29 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
 		const token = bearer[1];
 
 		if (bearer[0] === 'Bearer')
-			jwt.verify(token, __jwt_secret__, __jwt_options__, (err) => {
+			jwt.verify(token, __jwt_secret__, (err) => {
 				if (!err) {
 					req.token = token;
 					next();
-				} else
-					res.json(
+				} else {
+					res.status(400);
+					return res.json(
 						createError(
 							new Error('Token you provided is not valid'),
 						),
 					);
+				}
+				return;
 			});
-	} else
-		res.json(
+	} else {
+		res.status(400);
+		return res.json(
 			createError(
 				new Error(
 					'Please provide a valid token while accesing the API',
 				),
 			),
 		);
+	}
+	return;
 };

@@ -8,10 +8,11 @@ router.get('/v:id', (req: Request, res: Response) => {
 	const { id } = req.params;
 
 	if (!apiVersions.includes(id)) {
+		res.status(404);
 		const err = new Error(
 			'Version you provided cannot be found on the server',
 		);
-		return res.sendStatus(404).json(createError(err));
+		return res.json(createError(err));
 	}
 
 	return null;
@@ -19,7 +20,8 @@ router.get('/v:id', (req: Request, res: Response) => {
 
 router.use((_: Request, res: Response) => {
 	const err = new Error('Please provide a valid version for the API');
-	return res.sendStatus(404).json(createError(err));
+	res.status(400);
+	return res.json(createError(err));
 });
 
 export default router;
