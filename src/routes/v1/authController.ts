@@ -101,6 +101,7 @@ router.post('/register', async (req: Request, res: Response) => {
 		.catch((err) => {
 			if (err.message.includes('duplicate key error')) {
 				const field = Object.keys(err.keyValue);
+
 				return res.json({
 					...response,
 					errors: createError(
