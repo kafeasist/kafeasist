@@ -11,7 +11,8 @@
 		"lint:init": "eslint --init",
 		"watch": "tsc -w",
 		"build": "tsc -b",
-		"dev": "nodemon dist/index.js"
+		"dev": "nodemon dist/index.js",
+		"start": "node dist/index.js"
 	},
 	"devDependencies": {
 		"@types/argon2": "^0.15.0",

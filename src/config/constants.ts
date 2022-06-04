@@ -13,3 +13,8 @@ export const __cookie_name__ = process.env.COOKIE_NAME;
 export const __session_secret__: string = process.env.COOKIE_SECRET || '';
 
 export const __mongo_conn__: string = process.env.MONGO_CONNECTION_STRING || '';
+
+export const __redis_host__: string = process.env.REDIS_HOST || '';
+export const __redis_port__ = 18817;
+export const __redis_username__: string = process.env.REDIS_USERNAME || '';
+export const __redis_password__: string = process.env.REDIS_PASSWORD || '';
