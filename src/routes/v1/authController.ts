@@ -1,117 +1,59 @@
 import { Request, Response, Router } from 'express';
-import { ProtectedReturn } from '../../types/ProtectedReturn';
-import {
-	emailValidation,
-	nameValidation,
-	passwordValidation,
-	phoneValidation,
-} from '../../utils/validation';
-import User, { UserInterface } from '../../models/User';
 import { createError } from '../../utils/createError';
-import jwt from 'jsonwebtoken';
 import { __jwt_secret__, __prod__ } from '../../config/constants';
 import * as argon2 from 'argon2';
 import { logIn } from '../../utils/logIn';
-import { MailTypes } from '../../types/MailTypes';
-import { sendMail } from '../../utils/sendMail';
+import { v4 as uuidv4 } from 'uuid';
+import { setKey, getKey, removeKey } from '../../utils/connectRedis';
+import { prisma } from '../../index';
+import { validateInputs } from '../../middlewares/validateInputs';
 
 const router = Router();
 
+const PASSWORD_RESET_PREFIX = 'pass_reset_';
+
 router.post('/register', async (req: Request, res: Response) => {
-	const inputFields: UserInterface = req.body;
-	const { name, last_name, phone, email, address, password } = inputFields;
-	const { passwordAgain } = req.body;
+	const { first_name, last_name, phone, email, password, passwordAgain } =
+		req.body;
 
-	const issuer = req.issuer;
+	const err = validateInputs({
+		name: first_name,
+		last_name,
+		phone,
+		email,
+		password,
+		confirmPassword: passwordAgain,
+	});
 
-	let response: ProtectedReturn = {
-		issue_date: new Date(),
-		issuer,
-	};
-
-	if (!nameValidation(name) || !nameValidation(last_name))
-		return res.json({
-			...response,
-			errors: createError(
-				new Error('İsim veya soy isim belirtilen kritelere uymuyor'),
-				['name', 'last_name'],
-			),
-		});
-
-	if (!phoneValidation(phone))
-		return res.json({
-			...response,
-			errors: createError(
-				new Error('Lütfen geçerli bir telefon numarası giriniz'),
-				'phone',
-			),
-		});
-
-	if (!emailValidation(email))
-		return res.json({
-			...response,
-			errors: createError(
-				new Error('Lütfen geçerli bir e-posta adresi giriniz'),
-				'email',
-			),
-		});
-
-	if (address.length <= 0)
-		return res.json({
-			...response,
-			errors: createError(
-				new Error('Adres kısmı boş bırakılamaz'),
-				'address',
-			),
-		});
-
-	if (!passwordValidation(password))
-		return res.json({
-			...response,
-			errors: createError(
-				new Error(
-					'Şifre 8-24 karakter arasında en az 1 büyük en az 1 küçük harf ve sayı içermelidir',
-				),
-				['password', 'passwordAgain'],
-			),
-		});
-
-	if (password !== passwordAgain)
-		return res.json({
-			...response,
-			errors: createError(new Error('Şifreler birbiriyle uyuşmuyor'), [
-				'password',
-				'passwordAgain',
-			]),
-		});
+	if (err) return res.json(err);
 
 	const hashedPassword = await argon2.hash(password);
 
-	return await User.create({ ...inputFields, password: hashedPassword })
+	return await prisma.user
+		.create({
+			data: {
+				first_name,
+				last_name,
+				phone,
+				email,
+				password: hashedPassword,
+			},
+		})
 		.then((newUser) => {
-			const token = jwt.sign({ id: newUser._id }, __jwt_secret__);
-
-			logIn(req, newUser._id.toString());
+			logIn(req, newUser.id);
 
 			return res.json({
-				...response,
-				data: { message: 'Hesabınız oluşturuldu', newUser, token },
+				message: 'Hesabınız oluşturuldu',
 			});
 		})
 		.catch((err) => {
-			if (err.message.includes('duplicate key error')) {
-				const field = Object.keys(err.keyValue);
-
-				return res.json({
-					...response,
-					errors: createError(
-						new Error(
-							'Bu alandaki değerler ile daha önce bir hesap oluşturulmuş',
-						),
-						field,
+			if (err.code === 'P2002')
+				res.json(
+					createError(
+						'Bu alanlardaki değerler ile bir hesap oluşturulmuş',
+						err.meta.target,
 					),
-				});
-			}
+				);
 			return;
 		});
 });
@@ -119,65 +61,91 @@ router.post('/register', async (req: Request, res: Response) => {
 router.post('/login', async (req, res) => {
 	const { emailOrPhone, password } = req.body;
 
-	const issuer = req.issuer;
+	const error = createError('Kullanıcı adı veya şifre bulunamadı', [
+		'emailOrPhone',
+		'password',
+	]);
 
-	let response: ProtectedReturn = {
-		issue_date: new Date(),
-		issuer,
-	};
-
-	const error = createError(
-		new Error('Kullanıcı adı veya şifre bulunamadı'),
-		['emailOrPhone', 'password'],
-	);
-
-	let user = await User.findOne({ email: emailOrPhone });
-	if (!user) user = await User.findOne({ phone: emailOrPhone });
+	let user = await prisma.user.findUnique({ where: { email: emailOrPhone } });
 	if (!user)
-		return res.json({
-			...response,
-			errors: error,
-		});
+		user = await prisma.user.findUnique({ where: { phone: emailOrPhone } });
+	if (!user) return res.json(error);
 
-	if (!(await argon2.verify(user.password, password)))
-		return res.json({
-			...response,
-			errors: error,
-		});
+	if (!(await argon2.verify(user.password, password))) return res.json(error);
 
-	const token = jwt.sign({ id: user._id }, __jwt_secret__);
-
-	logIn(req, user._id.toString());
+	logIn(req, user.id);
 
 	return res.json({
-		...response,
-		data: { message: 'Giriş başarıyla yapıldı', token },
+		message: 'Giriş başarıyla yapıldı',
 	});
 });
 
 router.post('/forgot-password', async (req: Request, res: Response) => {
 	const { emailOrPhone } = req.body;
 
-	const issuer = req.issuer;
-
-	let response: ProtectedReturn = {
-		issue_date: new Date(),
-		issuer,
-	};
-
-	let user = await User.findOne({ email: emailOrPhone });
-	if (!user) user = await User.findOne({ phone: emailOrPhone });
+	let user = await prisma.user.findUnique({ where: { email: emailOrPhone } });
+	if (!user)
+		user = await prisma.user.findUnique({ where: { phone: emailOrPhone } });
 	if (user) {
-		const userEmail = user.email;
-		sendMail(userEmail, MailTypes.FORGOT_PASSWORD);
+		const token = uuidv4();
+		setKey(PASSWORD_RESET_PREFIX + token, String(user.id));
+		// sendMail(userEmail, MailTypes.FORGOT_PASSWORD, { token });
 	}
 
 	return res.json({
-		...response,
-		data: {
-			message:
-				'Böyle bir kullanıcı varsa e-posta adresine sıfırlama bağlantısı gönderildi',
-		},
+		message:
+			'Böyle bir kullanıcı varsa e-posta adresine sıfırlama bağlantısı gönderildi',
+	});
+});
+
+router.post('/reset-password', async (req: Request, res: Response) => {
+	const { newPassword, confirmNewPassword } = req.body;
+	const { token } = req.query;
+
+	const key = PASSWORD_RESET_PREFIX + token;
+	const userId = await getKey(key);
+
+	if (!userId)
+		return res.json(
+			createError('Kullandığınız bağlantının süresi geçmiş olabilir'),
+		);
+
+	const user = await prisma.user.findUnique({
+		where: { id: parseInt(userId) },
+	});
+
+	if (!user)
+		return res.json(
+			createError(
+				'Şifresini değiştirmek istediğiniz kullanıcı bulunamadı',
+			),
+		);
+
+	const err = validateInputs({
+		password: newPassword,
+		confirmPassword: confirmNewPassword,
+	});
+
+	if (err) res.json(err);
+
+	if (await argon2.verify(user.password, newPassword))
+		return res.json(
+			createError('Oluşturacağınız şifre öncekiyle aynı olamaz', [
+				'newPassword',
+				'confirmNewPassword',
+			]),
+		);
+
+	removeKey(key);
+	const hashedPassword = await argon2.hash(newPassword);
+
+	await prisma.user.update({
+		where: { id: user.id },
+		data: { password: hashedPassword },
+	});
+
+	return res.json({
+		message: 'Şifreniz başarıyla değiştirildi',
 	});
 });
 

@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  first_name  String
+  last_name  String
+  phone      String    @unique
+  email      String    @unique
+  password   String
+  verified    Boolean   @default(false)
+  subs_type  Int       @default(0)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+
+  // Companies
+  companies  Company[]
+}
+
+model Company {
+  id          Int      @id @default(autoincrement())
+  name        String
+  address     String
+  phone       String   @unique
+  image_url   String?
+  description String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  
+  // Owner
+  owner       User      @relation(fields: [owner_id], references: [id])
+  owner_id    Int
+  
+  // Foods
+  foods       Food[]
+  
+  // Tables
+  tables      Table[]
+}
+
+model Table {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  total       Float?   @default(0)
+  description String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  
+  // Company
+  company     Company  @relation(fields: [company_id], references: [id])
+  company_id  Int
+}
+
+model Food {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    Int
+  price       Float
+  daily       Boolean  @default(false)
+  description String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+
+  // Company
+  company     Company      @relation(fields: [company_id], references: [id])
+  company_id  Int
+}

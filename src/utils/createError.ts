@@ -2,14 +2,16 @@ import { CustomError } from '../types/errorStack';
 import { __prod__ } from '../config/constants';
 
 export const createError = (
-	{ message, stack }: Error,
+	error: string,
 	fields?: string[] | string,
 ): CustomError => {
+	const err = new Error(error);
+
 	return {
-		error: message,
+		error: err.message,
 		fields,
 		stack: __prod__
 			? 'Stack not reachable due to production reasons.'
-			: stack,
+			: err.stack,
 	};
 };

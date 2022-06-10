@@ -1,108 +1,103 @@
 import { Request, Response, Router } from 'express';
-import { ProtectedReturn } from '../../types/ProtectedReturn';
-import User from '../../models/User';
+import { isAuth } from '../../middlewares/isAuth';
+import { prisma } from '../../index';
 import { createError } from '../../utils/createError';
 import { logger } from '../../utils/logger';
 
 const router = Router();
 
-// get user with user_id
-router.get('/get', async (req: Request, res: Response) => {
-	const issuer = req.issuer;
-	const { id } = req.body;
+router.get('/me', isAuth, async (req: Request, res: Response) => {
+	const id = req.session.userId;
 
-	let response: ProtectedReturn = {
-		issue_date: new Date(),
-		issuer,
+	const user = await prisma.user.findUnique({ where: { id } });
+
+	if (!user) return res.json(createError('Kullanıcı bulunamadı!'));
+
+	const returnedFields = {
+		id: user.id,
+		firstName: user.first_name,
+		lastName: user.last_name,
+		email: user.email,
+		phone: user.phone,
 	};
 
-	if (!id)
-		return res.json({
-			...response,
-			errors: createError(
-				new Error('ID kısmı boş bırakılmamalıdır'),
-				'id',
-			),
-		});
-
-	await User.findOne({ user_id: id })
-		.then((data) => {
-			if (!data)
-				response = {
-					...response,
-					error: createError(
-						new Error('Belirtilen kullanıcı bulunamadı'),
-						'id',
-					),
-				};
-			else
-				response = {
-					...response,
-					data,
-				};
-		})
-		.catch((err) => {
-			response = {
-				...response,
-				error: createError(new Error(err.message)),
-			};
-		});
-
-	return res.json(response);
+	return returnedFields;
 });
 
-// remove user
+router.get(
+	'/checkauth',
+	isAuth,
+	(_: Request, res: Response): Response<boolean, Record<string, boolean>> => {
+		return res.send(true);
+	},
+);
+
+router.get('/get', async (req: Request, res: Response) => {
+	const { id }: any = req.query;
+
+	if (!id)
+		return res.json(createError('ID kısmı boş bırakılmamalıdır', 'id'));
+
+	if (isNaN(parseInt(id)))
+		return res.json(createError('ID sadece sayı olabilir', 'id'));
+
+	const numberId = parseInt(id);
+
+	const user = await prisma.user.findUnique({ where: { id: numberId } });
+
+	if (!user)
+		return res.json(createError('Belirtilen kullanıcı bulunamadı', 'id'));
+
+	return res.json(user);
+});
+
+router.get('/companies', async (req: Request, res: Response) => {
+	const { id }: any = req.query;
+
+	if (!id)
+		return res.json(createError('ID kısmı boş bırakılmamalıdır', 'id'));
+
+	const companies = await prisma.user
+		.findUnique({ where: { id: parseInt(id) } })
+		.companies();
+
+	if (!companies)
+		return res.json(
+			createError('Belirtilen kullanıcının şirketi bulunamadı', 'id'),
+		);
+
+	return res.json(companies);
+});
+
 router.delete('/remove', async (req: Request, res: Response) => {
 	const { id } = req.body;
 
-	const issuer = req.issuer;
-
-	let response: ProtectedReturn = {
-		issue_date: new Date(),
-		issuer,
-	};
-
 	if (!id)
-		return res.json({
-			...response,
-			errors: createError(
-				new Error('ID kısmı boş bırakılmamalıdır'),
-				'id',
-			),
-		});
+		return res.json(createError('ID kısmı boş bırakılmamalıdır', 'id'));
 
-	return await User.findById(id).then((user) => {
-		if (!user)
+	if (isNaN(parseInt(id)))
+		return res.json(createError('ID sadece sayı olabilir', 'id'));
+
+	const numberId = parseInt(id);
+
+	const user = await prisma.user.findUnique({ where: { id: numberId } });
+
+	if (!user)
+		return res.json(createError('Belirtilen kullanıcı bulunamadı', 'id'));
+
+	return prisma.user
+		.delete({ where: { id: numberId } })
+		.then(() => {
 			return res.json({
-				...response,
-				errors: createError(
-					new Error('Belirtilen kullanıcı bulunamadı'),
-					'id',
-				),
+				message: 'Kullanıcı başarıyla silindi!',
 			});
-
-		return User.deleteOne({ _id: id })
-			.then(() => {
-				return res.json({
-					...response,
-					data: {
-						message: 'Successfully removed user from database',
-						user,
-					},
-				});
-			})
-			.catch((err) => {
-				logger(err.message);
-				return res.json({
-					...response,
-					errors: createError(
-						new Error(
-							'Kullanıcı silinirken bir hata ile karşılaşıldı',
-						),
-					),
-				});
-			});
-	});
+		})
+		.catch((err) => {
+			logger(err.message);
+			return res.json(
+				createError('Kullanıcı silinirken bir hata ile karşılaşıldı'),
+			);
+		});
 });
 
 export default router;
