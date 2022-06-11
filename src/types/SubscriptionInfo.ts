@@ -37,6 +37,15 @@ export class SubscriptionLimits {
 		LARGE: Amount.INF,
 	};
 
+	private CATEGORY = 12;
+
+	private category: Limits = {
+		FREE: this.CATEGORY,
+		SMALL: this.CATEGORY * this.company.SMALL,
+		MEDIUM: this.CATEGORY * this.company.MEDIUM,
+		LARGE: Amount.INF,
+	};
+
 	public getCompany = (type: SubscriptionTypes): number => {
 		switch (type) {
 			case SubscriptionTypes.FREE:
@@ -60,6 +69,19 @@ export class SubscriptionLimits {
 				return this.table.MEDIUM;
 			default:
 				return this.table.LARGE;
+		}
+	};
+
+	public getCategory = (type: SubscriptionTypes): number => {
+		switch (type) {
+			case SubscriptionTypes.FREE:
+				return this.category.FREE;
+			case SubscriptionTypes.SMALL:
+				return this.category.SMALL;
+			case SubscriptionTypes.MEDIUM:
+				return this.category.MEDIUM;
+			default:
+				return this.category.LARGE;
 		}
 	};
 }

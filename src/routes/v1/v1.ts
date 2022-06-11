@@ -1,12 +1,15 @@
 import { Request, Response, Router } from 'express';
 import { apiConfig } from '../../config/api.config';
+import { createError } from '../../utils/createError';
+import { isNotAuth } from '../../middlewares/isNotAuth';
+import { isAuth } from '../../middlewares/isAuth';
+
 import userController from './userController';
 import authController from './authController';
 import companyController from './companyController';
 import tableController from './tableController';
-import { createError } from '../../utils/createError';
-import { isNotAuth } from '../../middlewares/isNotAuth';
-import { isAuth } from '../../middlewares/isAuth';
+import foodController from './foodController';
+import categoryController from './categoryController';
 
 const router = Router();
 
@@ -19,6 +22,8 @@ router.use('/user', userController);
 router.use('/auth', isNotAuth, authController);
 router.use('/company', companyController);
 router.use('/table', isAuth, tableController);
+router.use('/food', isAuth, foodController);
+router.use('/category', isAuth, categoryController);
 
 router.use((_: Request, res: Response) => {
 	res.status(404);

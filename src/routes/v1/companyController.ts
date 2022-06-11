@@ -55,6 +55,34 @@ router.get('/tables', async (req: Request, res: Response) => {
 	return res.json(tables);
 });
 
+router.get('/categories', async (req: Request, res: Response) => {
+	const { id }: any = req.query;
+
+	if (!id)
+		return res.json(createError('ID kısmı boş bırakılmamalıdır', 'id'));
+
+	if (isNaN(parseInt(id)))
+		return res.json(createError('ID sadece sayı olabilir', 'id'));
+
+	const numberId = parseInt(id);
+
+	const categories = await prisma.company
+		.findUnique({
+			where: { id: numberId },
+		})
+		.categories();
+
+	if (!categories)
+		return res.json(
+			createError(
+				'Belirtilen şirketin hiçbir kategorisi bulunamadı!',
+				'id',
+			),
+		);
+
+	return res.json(categories);
+});
+
 router.post('/create', isAuth, async (req: Request, res: Response) => {
 	const { name, address, phone, image_url, description } = req.body;
 

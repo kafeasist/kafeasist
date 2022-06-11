@@ -39,6 +39,9 @@ model Company {
   
   // Foods
   foods       Food[]
+
+  // Categories
+  categories Category[]
   
   // Tables
   tables      Table[]
@@ -52,6 +55,9 @@ model Table {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
   
+  // Foods
+  foods       Food[]
+
   // Company
   company     Company  @relation(fields: [company_id], references: [id])
   company_id  Int
@@ -59,8 +65,7 @@ model Table {
 
 model Food {
   id          Int      @id @default(autoincrement())
-  name        String
-  category    Int
+  name        String   @unique
   price       Float
   daily       Boolean  @default(false)
   description String?
@@ -68,6 +73,28 @@ model Food {
   updated_at  DateTime @default(now())
 
   // Company
-  company     Company      @relation(fields: [company_id], references: [id])
+  company     Company  @relation(fields: [company_id], references: [id])
+  company_id  Int
+
+  // Category
+  category    Category @relation(fields: [category_id], references: [id])
+  category_id Int
+
+  // Table
+  tables      Table[]
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+
+  // Food
+  foods       Food[]
+
+  // User
+  company     Company     @relation(fields: [company_id], references: [id])
   company_id  Int
 }

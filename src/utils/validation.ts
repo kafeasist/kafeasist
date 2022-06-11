@@ -1,8 +1,10 @@
 export const nameValidation = (name: string | undefined) => {
 	if (!name) return false;
 
+	if (name.length < 2 || name.length > 24) return false;
+
 	const regex =
-		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
+		/^[a-zA-ZàáâäãåąčćęèéêëėıįìíîïłńòóôöõøùúûüųūÿýżźñçčşšžğÀÁÂÄÃÅĄĆÇČĖĘÈÉÊËÌİÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŞŽĞ∂ð ,.'-]+$/u;
 
 	return regex.test(name);
 };

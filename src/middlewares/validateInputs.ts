@@ -14,7 +14,7 @@ interface InputOptions {
 	required?: boolean;
 }
 
-interface InputsInterface {
+export interface InputsInterface {
 	name?: string | InputOptions;
 	last_name?: string | InputOptions;
 	phone?: string | InputOptions;
