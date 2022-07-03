@@ -24,28 +24,32 @@ router.get('/get', async (req: Request, res: Response) => {
 });
 
 router.post('/addFood', async (req: Request, res: Response) => {
-	const { foodId, tableId } = req.body;
+	const { foodId, tableId, amount } = req.body;
+
+	const err = isInt([foodId, tableId, amount]);
+	if (err) return res.json(err);
 
 	const userId = req.session.userId;
 	if (!userId) return res.json(createError('Kullanıcı bulunamadı'));
 
-	const err = isInt([foodId, tableId]);
-	if (err) return res.json(err);
-
 	const food = await prisma.food.findUnique({
 		where: { id: parseInt(foodId) },
 	});
-	if (!food) return res.json(createError('Yiyecek bulunamadı'));
+
+	if (!food) return res.json(createError('Yemek bulunamadı'));
 
 	const table = await prisma.table.findUnique({
 		where: { id: parseInt(tableId) },
 	});
+
 	if (!table) return res.json(createError('Masa bulunamadı'));
 
 	if (food.company_id !== table.company_id)
-		return res.json(createError('Yiyecek ve masa aynı şirkete ait değil.'));
+		return res.json(
+			createError('Bu yiyecek bu şirket üzerine kayıtlı değil!'),
+		);
 
-	if (!isOwner(userId, food.company_id))
+	if (!isOwner(userId, table.company_id))
 		return res.json(
 			createError(
 				'Sahibi olmadığınız bir şirket üzerinde işlem yapamazsınız!',
@@ -57,72 +61,18 @@ router.post('/addFood', async (req: Request, res: Response) => {
 			where: { id: parseInt(tableId) },
 			data: {
 				foods: { connect: { id: parseInt(foodId) } },
+				total: table.total + food.price * parseInt(amount),
 			},
 		})
 		.then(() => {
-			return res.json({ message: 'Yiyecek masaya eklendi!' });
+			return res.json({
+				message: 'Masaya başarıyla ' + food.name + ' eklendi!',
+			});
 		})
 		.catch(() => {
 			return res.json(
 				createError(
-					'Masaya yiyecek eklenirken bir hata ile karşılaşıldı!',
-				),
-			);
-		});
-});
-
-router.delete('/removeFood', async (req: Request, res: Response) => {
-	const { foodId, tableId } = req.body;
-
-	const userId = req.session.userId;
-	if (!userId) return res.json(createError('Kullanıcı bulunamadı'));
-
-	const err = isInt([foodId, tableId]);
-	if (err) return res.json(err);
-
-	const food = await prisma.food.findUnique({
-		where: { id: parseInt(foodId) },
-	});
-	if (!food) return res.json(createError('Yiyecek bulunamadı'));
-
-	const table = await prisma.table.findUnique({
-		where: { id: parseInt(tableId) },
-	});
-	if (!table) return res.json(createError('Masa bulunamadı'));
-
-	if (food.company_id !== table.company_id)
-		return res.json(createError('Yiyecek ve masa aynı şirkete ait değil.'));
-
-	if (!isOwner(userId, food.company_id))
-		return res.json(
-			createError(
-				'Sahibi olmadığınız bir şirket üzerinde işlem yapamazsınız!',
-			),
-		);
-
-	const foods = await prisma.table
-		.findUnique({
-			where: { id: parseInt(tableId) },
-		})
-		.foods();
-
-	if (!foods.includes(food))
-		return res.json(createError('Bu yiyecek zaten bu masada değil!'));
-
-	return await prisma.table
-		.update({
-			where: { id: parseInt(tableId) },
-			data: {
-				foods: { disconnect: { id: parseInt(foodId) } },
-			},
-		})
-		.then(() => {
-			return res.json({ message: 'Yiyecek masadan çıkarıldı!' });
-		})
-		.catch(() => {
-			return res.json(
-				createError(
-					'Masadan yiyecek çıkarılırken bir hata ile karşılaşıldı!',
+					'Masaya yiyecek eklenirken bir hatayla karşılaşıldı!',
 				),
 			);
 		});

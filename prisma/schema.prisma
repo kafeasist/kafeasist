@@ -50,7 +50,7 @@ model Company {
 model Table {
   id          Int      @id @default(autoincrement())
   name        String   @unique
-  total       Float?   @default(0)
+  total       Float    @default(0)
   description String?
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
@@ -65,12 +65,15 @@ model Table {
 
 model Food {
   id          Int      @id @default(autoincrement())
-  name        String   @unique
+  name        String
   price       Float
   daily       Boolean  @default(false)
   description String?
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
+
+  // Table
+  tables      Table[]
 
   // Company
   company     Company  @relation(fields: [company_id], references: [id])
@@ -79,9 +82,6 @@ model Food {
   // Category
   category    Category @relation(fields: [category_id], references: [id])
   category_id Int
-
-  // Table
-  tables      Table[]
 }
 
 model Category {
