@@ -1,15 +1,18 @@
 import { Request, Response, Router } from 'express';
-import { isAuth } from '../../middlewares/isAuth';
-import { prisma } from '../../index';
-import { createError } from '../../utils/createError';
-import { logger } from '../../utils/logger';
+import { orm } from '../config/typeorm.config';
+import { User } from '../entities/User';
+import { isAuth } from '../middlewares/isAuth';
+import { createError } from '../utils/createError';
+import { logger } from '../utils/logger';
 
 const router = Router();
+
+const userRepository = orm.getRepository(User);
 
 router.get('/me', isAuth, async (req: Request, res: Response) => {
 	const id = req.session.userId;
 
-	const user = await prisma.user.findUnique({ where: { id } });
+	const user = await userRepository.findOne({ where: { id } });
 
 	if (!user) return res.json(createError('Kullanıcı bulunamadı!'));
 
@@ -43,7 +46,7 @@ router.get('/get', async (req: Request, res: Response) => {
 
 	const numberId = parseInt(id);
 
-	const user = await prisma.user.findUnique({ where: { id: numberId } });
+	const user = await userRepository.findOne({ where: { id: numberId } });
 
 	if (!user)
 		return res.json(createError('Belirtilen kullanıcı bulunamadı', 'id'));
@@ -57,16 +60,15 @@ router.get('/companies', async (req: Request, res: Response) => {
 	if (!id)
 		return res.json(createError('ID kısmı boş bırakılmamalıdır', 'id'));
 
-	const companies = await prisma.user
-		.findUnique({ where: { id: parseInt(id) } })
-		.companies();
+	const user = await userRepository.findOne({
+		where: { id: parseInt(id) },
+		relations: ['companies'],
+	});
 
-	if (!companies)
-		return res.json(
-			createError('Belirtilen kullanıcının şirketi bulunamadı', 'id'),
-		);
+	if (!user)
+		return res.json(createError('Belirtilen kullanıcı bulunamadı!', 'id'));
 
-	return res.json(companies);
+	return res.json(user.companies);
 });
 
 router.delete('/remove', async (req: Request, res: Response) => {
@@ -80,13 +82,13 @@ router.delete('/remove', async (req: Request, res: Response) => {
 
 	const numberId = parseInt(id);
 
-	const user = await prisma.user.findUnique({ where: { id: numberId } });
+	const user = await userRepository.findOne({ where: { id: numberId } });
 
 	if (!user)
 		return res.json(createError('Belirtilen kullanıcı bulunamadı', 'id'));
 
-	return prisma.user
-		.delete({ where: { id: numberId } })
+	return userRepository
+		.remove(user)
 		.then(() => {
 			return res.json({
 				message: 'Kullanıcı başarıyla silindi!',
@@ -94,6 +96,12 @@ router.delete('/remove', async (req: Request, res: Response) => {
 		})
 		.catch((err) => {
 			logger(err.message);
+			if (err.code === 'EREQUEST')
+				return res.json(
+					createError(
+						'Öncelikle kullanıcının şirketlerini silmelisiniz.',
+					),
+				);
 			return res.json(
 				createError('Kullanıcı silinirken bir hata ile karşılaşıldı'),
 			);

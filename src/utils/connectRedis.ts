@@ -7,7 +7,6 @@ import {
 	__redis_host__,
 	__redis_password__,
 	__redis_port__,
-	__redis_username__,
 	__session_secret__,
 } from '../config/constants';
 
@@ -15,8 +14,7 @@ export const RedisStore = connectRedis(session);
 export const redis = new Redis({
 	host: __redis_host__,
 	port: __redis_port__,
-	username: __redis_username__,
-	password: __redis_password__,
+	// password: __redis_password__,
 	enableReadyCheck: false,
 });
 

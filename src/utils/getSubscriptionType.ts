@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { User } from '../entities/User';
 import { SubscriptionTypes } from '../types/SubscriptionInfo';
 
 export const getSubscriptionType = (user: User): SubscriptionTypes => {

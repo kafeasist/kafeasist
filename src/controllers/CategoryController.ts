@@ -1,15 +1,19 @@
 import { Router, Request, Response } from 'express';
-import {
-	validateInputs,
-	InputsInterface,
-} from '../../middlewares/validateInputs';
-import { SubscriptionLimits } from '../../types/SubscriptionInfo';
-import { getSubscriptionType } from '../../utils/getSubscriptionType';
-import { prisma } from '../../index';
-import { createError } from '../../utils/createError';
-import { isOwner } from '../../middlewares/isOwner';
+import { validateInputs, InputsInterface } from '../middlewares/validateInputs';
+import { SubscriptionLimits } from '../types/SubscriptionInfo';
+import { getSubscriptionType } from '../utils/getSubscriptionType';
+import { createError } from '../utils/createError';
+import { isOwner } from '../middlewares/isOwner';
+import { orm } from '../config/typeorm.config';
+import { Category } from '../entities/Category';
+import { Company } from '../entities/Company';
+import { User } from '../entities/User';
 
 const router = Router();
+
+const categoryRepository = orm.getRepository(Category);
+const companyRepository = orm.getRepository(Company);
+const userRepository = orm.getRepository(User);
 
 router.get('/get', async (req: Request, res: Response) => {
 	const { id }: any = req.query;
@@ -21,7 +25,7 @@ router.get('/get', async (req: Request, res: Response) => {
 	if (isNaN(numberId))
 		return res.json(createError('Id sadece sayı olabilir'));
 
-	const category = await prisma.category.findUnique({
+	const category = await categoryRepository.findOne({
 		where: { id: numberId },
 	});
 
@@ -41,7 +45,7 @@ router.post('/create', async (req: Request, res: Response) => {
 	if (isNaN(numberId))
 		return res.json(createError('Şirket ID kısmı sadece sayı olabilir'));
 
-	const company = await prisma.company.findUnique({
+	const company = await companyRepository.findOne({
 		where: { id: numberId },
 	});
 
@@ -60,33 +64,27 @@ router.post('/create', async (req: Request, res: Response) => {
 			),
 		);
 
-	const user = await prisma.user.findUnique({ where: { id: userId } });
+	const user = await userRepository.findOne({ where: { id: userId } });
 	if (!user) return res.json(createError('Kullanıcı bulunamadı'));
 	const subscription = getSubscriptionType(user);
 	const limit = new SubscriptionLimits().getCategory(subscription);
 
-	const categories = await prisma.company
-		.findUnique({ where: { id: numberId } })
-		.categories();
+	const categories = company.categories;
 
-	if (!categories)
-		return res.json(createError('Şirkette kategori bulunamadı'));
-
-	if (categories.length >= limit)
+	if (categories && categories.length >= limit)
 		return res.json(
 			createError(
 				'Daha fazla kategori oluşturamazsınız. Oluşturmak için hesabınızı yükseltin.',
 			),
 		);
 
-	return await prisma.category
-		.create({
-			data: {
-				name,
-				description,
-				company: { connect: { id: numberId } },
-			},
-		})
+	const newCategory = new Category();
+	newCategory.name = name;
+	newCategory.description = description;
+	newCategory.company = company;
+
+	return await categoryRepository
+		.save(newCategory)
 		.then((newCategory) => {
 			return res.json({
 				message: 'Kategori başarıyla oluşturuldu!',
@@ -115,7 +113,7 @@ router.delete('/remove', async (req: Request, res: Response) => {
 	if (isNaN(numberId))
 		return res.json(createError('Id sadece sayı olabilir'));
 
-	const category = await prisma.category.findUnique({
+	const category = await categoryRepository.findOne({
 		where: { id: numberId },
 	});
 
@@ -132,8 +130,8 @@ router.delete('/remove', async (req: Request, res: Response) => {
 			),
 		);
 
-	return await prisma.category
-		.delete({ where: { id: category.id } })
+	return await categoryRepository
+		.remove(category)
 		.then(() => {
 			return res.json({ message: 'Kategori başarıyla silindi!' });
 		})

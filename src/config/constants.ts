@@ -12,6 +12,12 @@ export const __cookie_name__ = process.env.COOKIE_NAME;
 export const __session_secret__: string = process.env.COOKIE_SECRET || '';
 
 export const __redis_host__: string = process.env.REDIS_HOST || '';
-export const __redis_port__ = 18817;
-export const __redis_username__: string = process.env.REDIS_USERNAME || '';
+export const __redis_port__: number =
+	parseInt(process.env.REDIS_PORT as string) || 6379;
 export const __redis_password__: string = process.env.REDIS_PASSWORD || '';
+
+export const __db_name__ = 'kafeasist';
+export const __db_user__: string = process.env.DB_USER || '';
+export const __db_pass__: string = process.env.DB_PASS || '';
+
+export const ABSTRACT_API_KEY = process.env.ABSTRACT_API_KEY;

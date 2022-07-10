@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+    db:
+        image: 'mcr.microsoft.com/azure-sql-edge'
+        volumes:
+            - ./db:/var/opt/mssql/data
+        ports:
+            - 1433:1433
+        environment:
+            SA_PASSWORD: 'addb87533e958f47462f84eb423190888d4d95fa810ef0ba5b39804e57e968fe'
+            ACCEPT_EULA: 'Y'
+    cache:
+        image: 'redis:7.0.2-alpine'
+        volumes:
+            - './cache:/var/opt/redis/data'
+        ports:
+            - '6379:6379'
+        command: redis-server --save 20 1 --loglevel warning --requirepass cbba20d07af40dfb4e65a79b682c6c9109cf0bb5f54aa664bd3a3972403410ef

@@ -1,12 +1,22 @@
 import { Request, Response, Router } from 'express';
-import { createError } from '../../utils/createError';
-import { prisma } from '../../index';
-import { isOwner } from '../../middlewares/isOwner';
-import { getSubscriptionType } from '../../utils/getSubscriptionType';
-import { SubscriptionLimits } from '../../types/SubscriptionInfo';
-import { isInt } from '../../middlewares/isInt';
+import { createError } from '../utils/createError';
+import { isOwner } from '../middlewares/isOwner';
+import { getSubscriptionType } from '../utils/getSubscriptionType';
+import { SubscriptionLimits } from '../types/SubscriptionInfo';
+import { isInt } from '../middlewares/isInt';
+import { orm } from '../config/typeorm.config';
+import { Table } from '../entities/Table';
+import { Food } from '../entities/Food';
+import { User } from '../entities/User';
+import { Company } from '../entities/Company';
+import { OrderItem } from '../entities/OrderItem';
 
 const router = Router();
+
+const tableRepository = orm.getRepository(Table);
+const foodRepository = orm.getRepository(Food);
+const userRepository = orm.getRepository(User);
+const companyRepository = orm.getRepository(Company);
 
 router.get('/get', async (req: Request, res: Response) => {
 	const { id }: any = req.query;
@@ -14,7 +24,7 @@ router.get('/get', async (req: Request, res: Response) => {
 	const err = isInt([id]);
 	if (err) return res.json(err);
 
-	const table = await prisma.table.findUnique({
+	const table = await tableRepository.findOne({
 		where: { id: parseInt(id) },
 	});
 
@@ -32,38 +42,42 @@ router.post('/addFood', async (req: Request, res: Response) => {
 	const userId = req.session.userId;
 	if (!userId) return res.json(createError('Kullanıcı bulunamadı'));
 
-	const food = await prisma.food.findUnique({
+	const food = await foodRepository.findOne({
 		where: { id: parseInt(foodId) },
+		relations: ['company'],
 	});
 
 	if (!food) return res.json(createError('Yemek bulunamadı'));
 
-	const table = await prisma.table.findUnique({
+	const table = await tableRepository.findOne({
 		where: { id: parseInt(tableId) },
+		relations: ['company', 'items'],
 	});
 
 	if (!table) return res.json(createError('Masa bulunamadı'));
 
-	if (food.company_id !== table.company_id)
+	if (food.company.id !== table.company.id)
 		return res.json(
 			createError('Bu yiyecek bu şirket üzerine kayıtlı değil!'),
 		);
 
-	if (!isOwner(userId, table.company_id))
+	if (!isOwner(userId, table.company.id))
 		return res.json(
 			createError(
 				'Sahibi olmadığınız bir şirket üzerinde işlem yapamazsınız!',
 			),
 		);
 
-	return await prisma.table
-		.update({
-			where: { id: parseInt(tableId) },
-			data: {
-				foods: { connect: { id: parseInt(foodId) } },
-				total: table.total + food.price * parseInt(amount),
-			},
-		})
+	const orderItem = new OrderItem();
+	orderItem.amount = parseFloat(amount);
+	orderItem.food = food;
+	orderItem.table = table;
+
+	table.total = table.total + food.price * parseFloat(amount);
+	table.items.push(orderItem);
+
+	return await tableRepository
+		.save(table)
 		.then(() => {
 			return res.json({
 				message: 'Masaya başarıyla ' + food.name + ' eklendi!',
@@ -84,15 +98,14 @@ router.get('/foods', async (req: Request, res: Response) => {
 	const err = isInt([id]);
 	if (err) return res.json(err);
 
-	const foods = await prisma.table
-		.findUnique({
-			where: { id: parseInt(id) },
-		})
-		.foods();
+	const table = await tableRepository.findOne({
+		relations: ['items'],
+		where: { id: parseInt(id) },
+	});
 
-	if (!foods) return res.json(createError('Masa bulunamadı'));
+	if (!table) return res.json(createError('Masa bulunamadı!'));
 
-	return res.json(foods);
+	return res.json(table.items);
 });
 
 router.post('/create', async (req: Request, res: Response) => {
@@ -111,29 +124,29 @@ router.post('/create', async (req: Request, res: Response) => {
 
 	if (err) return res.json(err);
 
-	const user = await prisma.user.findUnique({ where: { id: userId } });
+	const user = await userRepository.findOne({ where: { id: userId } });
 	if (!user) return res.json(createError('Kullanıcı bulunamadı!'));
 	const subscription = getSubscriptionType(user);
 	const limit = new SubscriptionLimits().getTable(subscription);
-	const tables = await prisma.company
-		.findUnique({ where: { id: numberId } })
-		.tables();
-	if (!tables) return res.json(createError('Belirtilen şirket bulunamadı!'));
-	if (tables.length >= limit)
+	const company = await companyRepository.findOne({
+		where: { id: numberId },
+	});
+	if (!company) return res.json(createError('Şirket bulunamadı!'));
+	const tables = company.tables;
+	if (tables && tables.length >= limit)
 		return res.json(
 			createError(
 				'Bu işletme için daha fazla masa oluşturamazsınız. Daha fazla oluşturmak için hesabınızı yükseltin.',
 			),
 		);
 
-	return await prisma.table
-		.create({
-			data: {
-				name,
-				description,
-				company: { connect: { id: numberId } },
-			},
-		})
+	const newTable = new Table();
+	newTable.name = name;
+	newTable.description = description;
+	newTable.company = company;
+
+	return await tableRepository
+		.save(newTable)
 		.then((table) => {
 			return res.json({
 				message: 'Başarıyla masa oluşturuldu!',
@@ -161,21 +174,22 @@ router.delete('/remove', async (req: Request, res: Response) => {
 	const err = isInt([id]);
 	if (err) return res.json(err);
 
-	const table = await prisma.table.findUnique({
+	const table = await tableRepository.findOne({
 		where: { id: parseInt(id) },
+		relations: ['company'],
 	});
 
 	if (!table) return res.json(createError('Masa bulunamadı'));
 
-	if (!isOwner(userId, table.company_id))
+	if (!isOwner(userId, table.company.id))
 		return res.json(
 			createError(
 				'Sahibi olmadığınız bir şirket üzerinde işlem yapamazsınız!',
 			),
 		);
 
-	return await prisma.table
-		.delete({ where: { id: parseInt(id) } })
+	return await tableRepository
+		.remove(table)
 		.then((newTable) => {
 			return res.json({
 				message: 'Masa başarıyla silindi!',

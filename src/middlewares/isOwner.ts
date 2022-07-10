@@ -1,6 +1,9 @@
+import { orm } from '../config/typeorm.config';
+import { Company } from '../entities/Company';
 import { CustomError } from '../types/errorStack';
 import { createError } from '../utils/createError';
-import { prisma } from '../index';
+
+const companyRepository = orm.getRepository(Company);
 
 export const isOwner = async (
 	userId: number | undefined,
@@ -8,13 +11,15 @@ export const isOwner = async (
 ): Promise<CustomError | null> => {
 	if (!userId) return createError('Kullanıcı bulunamadı!');
 
-	const company = await prisma.company.findUnique({
+	const company = await companyRepository.findOne({
 		where: { id: companyId },
+		relations: ['owner'],
 	});
 
 	if (!company) return createError('Şirket bulunamadı!');
+	if (!company.owner) return createError('Şirketin yöneticisi bulunamadı!');
 
-	if (company.owner_id !== userId)
+	if (company.owner.id !== userId)
 		return createError(
 			'Bu işletmede değişiklik yapabilmek için sahibi olmalısınız!',
 		);

@@ -1,11 +1,18 @@
 import { Request, Response, Router } from 'express';
-import { isInt } from '../../middlewares/isInt';
-import { prisma } from '../../index';
-import { createError } from '../../utils/createError';
-import { validateInputs } from '../../middlewares/validateInputs';
-import { isOwner } from '../../middlewares/isOwner';
+import { isInt } from '../middlewares/isInt';
+import { createError } from '../utils/createError';
+import { validateInputs } from '../middlewares/validateInputs';
+import { isOwner } from '../middlewares/isOwner';
+import { orm } from '../config/typeorm.config';
+import { Food } from '../entities/Food';
+import { Category } from '../entities/Category';
+import { Company } from '../entities/Company';
 
 const router = Router();
+
+const foodRepository = orm.getRepository(Food);
+const categoryRepository = orm.getRepository(Category);
+const companyRepository = orm.getRepository(Company);
 
 router.get('/get', async (req: Request, res: Response) => {
 	const { id }: any = req.query;
@@ -13,7 +20,7 @@ router.get('/get', async (req: Request, res: Response) => {
 	const err = isInt([id]);
 	if (err) return res.json(err);
 
-	const food = await prisma.food.findUnique({ where: { id: parseInt(id) } });
+	const food = await foodRepository.findOne({ where: { id: parseInt(id) } });
 
 	if (!food) return res.json(createError('Yiyecek bulunamadı!'));
 
@@ -40,15 +47,16 @@ router.post('/create', async (req: Request, res: Response) => {
 	const errors = validateInputs({ name });
 	if (errors) return res.json(errors);
 
-	const category = await prisma.category.findUnique({
+	const category = await categoryRepository.findOne({
 		where: { id: parseInt(categoryId) },
 	});
 
 	if (!category)
 		return res.json(createError('Kategori bulunamadı', 'categoryId'));
 
-	const company = await prisma.company.findUnique({
+	const company = await companyRepository.findOne({
 		where: { id: parseInt(companyId) },
+		relations: ['owner'],
 	});
 
 	if (!company)
@@ -58,24 +66,23 @@ router.post('/create', async (req: Request, res: Response) => {
 	const price =
 		parseInt(priceFirst) + parseInt(priceLast[0] + priceLast[1]) / 100;
 
-	if (company.owner_id !== userId)
+	if (company.owner.id !== userId)
 		return res.json(
 			createError(
 				'Sahibi olmadığınız bir şirket üzerinde işlem yapamazsınız!',
 			),
 		);
 
-	return await prisma.food
-		.create({
-			data: {
-				name,
-				price,
-				category: { connect: { id: parseInt(categoryId) } },
-				company: { connect: { id: parseInt(companyId) } },
-				daily: daily ? daily : false,
-				description,
-			},
-		})
+	const newFood = new Food();
+	newFood.name = name;
+	newFood.price = price;
+	newFood.category = category;
+	newFood.company = company;
+	newFood.daily = daily ? daily : false;
+	newFood.description = description;
+
+	return await foodRepository
+		.save(newFood)
 		.then((newFood) => {
 			return res.json({
 				message: 'Yeni yiyecek başarıyla oluşturuldu.',
@@ -103,18 +110,18 @@ router.delete('/remove', async (req: Request, res: Response) => {
 	const err = isInt([id]);
 	if (err) return res.json(err);
 
-	const food = await prisma.food.findUnique({ where: { id: parseInt(id) } });
+	const food = await foodRepository.findOne({ where: { id: parseInt(id) } });
 	if (!food) return res.json(createError('Yiyecek bulunamadı!'));
 
-	if (!isOwner(userId, food.company_id))
+	if (!isOwner(userId, food.company.id))
 		return res.json(
 			createError(
 				'Sahibi olmadığınız bir şirket üzerinde işlem yapamazsınız!',
 			),
 		);
 
-	return await prisma.food
-		.delete({ where: { id: parseInt(id) } })
+	return await foodRepository
+		.remove(food)
 		.then(() => {
 			return res.json({ message: 'Yiyecek başarıyla silindi!' });
 		})
