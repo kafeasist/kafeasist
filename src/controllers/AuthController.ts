@@ -9,7 +9,6 @@ import * as argon2 from 'argon2';
 import { logIn } from '../utils/logIn';
 import { v4 as uuidv4 } from 'uuid';
 import { setKey, getKey, removeKey } from '../utils/connectRedis';
-import { socket } from '../index';
 import { validateInputs } from '../middlewares/validateInputs';
 import axios from 'axios';
 import { orm } from '../config/typeorm.config';
@@ -79,11 +78,11 @@ router.post('/login', async (req, res) => {
 	if (!user) return res.json(error);
 
 	if (!(await argon2.verify(user.password, password))) {
-		const { data } = await axios.get(
+		await axios.get(
 			'https://ipgeolocation.abstractapi.com/v1/?api_key=' +
 				ABSTRACT_API_KEY,
 		);
-		socket.emit('failed-login', { id: user.id, ip_data: data });
+
 		return res.json(error);
 	}
 

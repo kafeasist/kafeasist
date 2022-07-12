@@ -22,6 +22,9 @@ export class User extends DefaultEntity {
 	@Column({ default: false })
 	verified: boolean;
 
+	@Column({ default: false })
+	mfa: boolean;
+
 	@Column({ default: 0 })
 	subs_type: number;
 

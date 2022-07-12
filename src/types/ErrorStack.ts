@@ -7,3 +7,9 @@ export interface CustomError {
 	fields?: string[] | string;
 	stack: string | undefined;
 }
+
+export interface CustomResponse {
+	code: number;
+	message: string;
+	fields?: string[] | string;
+}

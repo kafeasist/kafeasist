@@ -1,11 +1,6 @@
 import { DataSource } from 'typeorm';
-import { __db_user__, __db_pass__, __db_name__ } from './constants';
-import { Category } from '../entities/Category';
-import { Company } from '../entities/Company';
-import { Food } from '../entities/Food';
-import { Table } from '../entities/Table';
-import { User } from '../entities/User';
-import { OrderItem } from '../entities/OrderItem';
+import { __db_user__, __db_pass__, __db_name__, __prod__ } from './constants';
+import { join } from 'path';
 
 export const orm = new DataSource({
 	type: 'mssql',
@@ -15,7 +10,7 @@ export const orm = new DataSource({
 	password: __db_pass__,
 	database: __db_name__,
 	synchronize: true,
-	logging: true,
-	entities: [Category, Company, Food, OrderItem, Table, User],
+	logging: false,
+	entities: [join(__dirname, '/../entities/**/*{.ts,.js}')],
 	options: { encrypt: false },
 });

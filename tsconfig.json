@@ -1,6 +1,12 @@
 {
+	"ts-node": {
+		"compilerOptions": {
+			"target": "ES2022",
+			"module": "commonjs"
+		}
+	},
 	"compilerOptions": {
-		"target": "es2017",
+		"target": "ES2022",
 		"module": "commonjs",
 		"lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
 		"skipLibCheck": true,

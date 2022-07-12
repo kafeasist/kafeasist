@@ -108,5 +108,9 @@ build
 .tern-port
 
 # Servers
+mock_db/
 db/
 cache/
+
+# Docker Compose
+docker-compose.yml

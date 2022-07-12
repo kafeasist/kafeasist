@@ -2,12 +2,14 @@ import { SessionOptions } from 'express-session';
 import { __cookie_name__, __prod__, __session_secret__ } from './constants';
 import { RedisStore, redis } from '../utils/connectRedis';
 
+export const sessionStore = new RedisStore({
+	client: redis,
+	disableTouch: true,
+});
+
 export const sessionOptions: SessionOptions = {
 	name: __cookie_name__,
-	store: new RedisStore({
-		client: redis,
-		disableTouch: true,
-	}),
+	store: sessionStore,
 	cookie: {
 		maxAge: 1000 * 60 * 60 * 24 * 365 * 2, // 2 years
 		httpOnly: true,

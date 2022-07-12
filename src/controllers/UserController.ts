@@ -4,8 +4,13 @@ import { User } from '../entities/User';
 import { isAuth } from '../middlewares/isAuth';
 import { createError } from '../utils/createError';
 import { logger } from '../utils/logger';
+import speakeasy, { GeneratedSecretWithOtpAuthUrl, totp } from 'speakeasy';
+import qrcode from 'qrcode';
+import { getKey, removeKey, setKey } from '../utils/connectRedis';
 
 const router = Router();
+
+const MFA_PREFIX: string = '2fa_secret_';
 
 const userRepository = orm.getRepository(User);
 
@@ -106,6 +111,83 @@ router.delete('/remove', async (req: Request, res: Response) => {
 				createError('Kullanıcı silinirken bir hata ile karşılaşıldı'),
 			);
 		});
+});
+
+router.get('/generate2fa', isAuth, async (req, res) => {
+	const userId: number | undefined = req.session.userId;
+
+	if (!userId) return res.json(createError('Kullanıcı bulunamadı!'));
+
+	const user: User | null = await userRepository.findOne({
+		where: { id: userId },
+	});
+	if (!user) return res.json(createError('Kullanıcı bulunamadı!'));
+
+	if (user.mfa)
+		return res.json(createError('Zaten çift faktörlü doğrulamanız etkin!'));
+
+	const secret: GeneratedSecretWithOtpAuthUrl = speakeasy.generateSecret({
+		issuer: 'kafeasist',
+		name: `kafeasist (${user.email})`,
+		otpauth_url: true,
+	});
+
+	await setKey(MFA_PREFIX + userId, secret.ascii);
+
+	return qrcode.toDataURL(secret.otpauth_url as string, (err, data) => {
+		if (err)
+			return res.json(
+				createError(
+					'Çift faktörlü doğrulama etkinleştirilirken bir hatayla karşılaşıldı!',
+				),
+			);
+
+		return res.json({ data });
+	});
+});
+
+router.post('/activate2fa', isAuth, async (req: Request, res: Response) => {
+	const { code } = req.body;
+
+	const userId = req.session.userId;
+	if (!userId) return res.json(createError('Kullanıcı bulunamadı!'));
+
+	const user = await userRepository.findOne({ where: { id: userId } });
+	if (!user) return res.json(createError('Kullanıcı bulunamadı!'));
+
+	if (user.mfa)
+		return res.json(createError('Zaten çift faktörlü doğrulamanız etkin!'));
+
+	const secret = await getKey(MFA_PREFIX + userId);
+	if (!secret)
+		return res.json(
+			createError(
+				'Sunucularda bir hata oluştu, lütfen işlemi yeniden başlatınız.',
+			),
+		);
+
+	if (!code || (code as string).length !== 6 || !/^\d+$/.test(code))
+		return res.json(
+			createError('Lütfen uygulamadaki 6 haneli kodu girin.', 'code'),
+		);
+
+	const result = totp.verify({
+		secret,
+		encoding: 'ascii',
+		token: code,
+	});
+
+	if (!result)
+		return res.json(createError('6 haneli kodunuz doğru değil!', 'code'));
+
+	user.mfa = true;
+	await User.save(user);
+	await removeKey(MFA_PREFIX + userId);
+
+	return res.json({
+		message: 'Çift faktörlü doğrulamanız etkinleştirildi.',
+		success: result,
+	});
 });
 
 export default router;
