@@ -5,7 +5,7 @@ import { DefaultEntity } from './_DefaultEntity';
 
 @Entity()
 export class Category extends DefaultEntity {
-	@Column({ unique: true })
+	@Column()
 	name: string;
 
 	@Column({ nullable: true })

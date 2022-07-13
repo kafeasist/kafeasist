@@ -6,7 +6,7 @@ import { DefaultEntity } from './_DefaultEntity';
 
 @Entity()
 export class Food extends DefaultEntity {
-	@Column({ unique: true })
+	@Column()
 	name: string;
 
 	@Column({ type: 'float', default: 0.0 })

@@ -1,8 +1,6 @@
 import { ObjectId } from 'mongoose';
 import { JwtExtendedPayload } from './jwt';
 
-export {};
-
 declare global {
 	namespace Express {
 		interface Request {

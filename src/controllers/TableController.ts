@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { createError } from '../utils/createError';
+import { CreateResponse } from '../utils/CreateResponse';
 import { isOwner } from '../middlewares/isOwner';
 import { getSubscriptionType } from '../utils/getSubscriptionType';
 import { SubscriptionLimits } from '../types/SubscriptionInfo';
@@ -10,6 +10,20 @@ import { Food } from '../entities/Food';
 import { User } from '../entities/User';
 import { Company } from '../entities/Company';
 import { OrderItem } from '../entities/OrderItem';
+import {
+	COMPANY_CANNOT_BE_FOUND,
+	EMPTY_ID,
+	FOOD_ADDED_ON_TABLE,
+	FOOD_CANNOT_BE_FOUND,
+	FOOD_FAILED_ON_TABLE,
+	FOOD_NOT_OWNED,
+	LIMIT_REACHED,
+	OWNER_ERROR,
+	TABLE_CANNOT_BE_FOUND,
+	TABLE_CREATED,
+	TABLE_REMOVE_FAILED,
+	USER_CANNOT_BE_FOUND,
+} from '../config/Responses';
 
 const router = Router();
 
@@ -28,7 +42,7 @@ router.get('/get', async (req: Request, res: Response) => {
 		where: { id: parseInt(id) },
 	});
 
-	if (!table) return res.json(createError('Masa bulunamadı'));
+	if (!table) return res.json(CreateResponse(TABLE_CANNOT_BE_FOUND));
 
 	return res.json(table);
 });
@@ -40,33 +54,27 @@ router.post('/addFood', async (req: Request, res: Response) => {
 	if (err) return res.json(err);
 
 	const userId = req.session.userId;
-	if (!userId) return res.json(createError('Kullanıcı bulunamadı'));
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const food = await foodRepository.findOne({
 		where: { id: parseInt(foodId) },
 		relations: ['company'],
 	});
 
-	if (!food) return res.json(createError('Yemek bulunamadı'));
+	if (!food) return res.json(CreateResponse(FOOD_CANNOT_BE_FOUND));
 
 	const table = await tableRepository.findOne({
 		where: { id: parseInt(tableId) },
 		relations: ['company', 'items'],
 	});
 
-	if (!table) return res.json(createError('Masa bulunamadı'));
+	if (!table) return res.json(CreateResponse(TABLE_CANNOT_BE_FOUND));
 
 	if (food.company.id !== table.company.id)
-		return res.json(
-			createError('Bu yiyecek bu şirket üzerine kayıtlı değil!'),
-		);
+		return res.json(CreateResponse(FOOD_NOT_OWNED));
 
 	if (!isOwner(userId, table.company.id))
-		return res.json(
-			createError(
-				'Sahibi olmadığınız bir şirket üzerinde işlem yapamazsınız!',
-			),
-		);
+		return res.json(CreateResponse(OWNER_ERROR));
 
 	const orderItem = new OrderItem();
 	orderItem.amount = parseFloat(amount);
@@ -78,18 +86,8 @@ router.post('/addFood', async (req: Request, res: Response) => {
 
 	return await tableRepository
 		.save(table)
-		.then(() => {
-			return res.json({
-				message: 'Masaya başarıyla ' + food.name + ' eklendi!',
-			});
-		})
-		.catch(() => {
-			return res.json(
-				createError(
-					'Masaya yiyecek eklenirken bir hatayla karşılaşıldı!',
-				),
-			);
-		});
+		.then(() => res.json(FOOD_ADDED_ON_TABLE))
+		.catch(() => res.json(CreateResponse(FOOD_FAILED_ON_TABLE)));
 });
 
 router.get('/foods', async (req: Request, res: Response) => {
@@ -103,7 +101,7 @@ router.get('/foods', async (req: Request, res: Response) => {
 		where: { id: parseInt(id) },
 	});
 
-	if (!table) return res.json(createError('Masa bulunamadı!'));
+	if (!table) return res.json(CreateResponse(TABLE_CANNOT_BE_FOUND));
 
 	return res.json(table.items);
 });
@@ -112,11 +110,10 @@ router.post('/create', async (req: Request, res: Response) => {
 	const { companyId, name, description } = req.body;
 	const userId = req.session.userId;
 
-	if (!companyId)
-		return res.json(createError('ID kısmı boş bırakılamaz', 'id'));
+	if (!companyId) return res.json(CreateResponse(EMPTY_ID));
 
-	if (isNaN(parseInt(companyId)))
-		return res.json(createError('ID sadece sayı olabilir', 'id'));
+	const error = isInt([companyId]);
+	if (error) return res.json(error);
 
 	const numberId = parseInt(companyId);
 
@@ -125,20 +122,16 @@ router.post('/create', async (req: Request, res: Response) => {
 	if (err) return res.json(err);
 
 	const user = await userRepository.findOne({ where: { id: userId } });
-	if (!user) return res.json(createError('Kullanıcı bulunamadı!'));
+	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 	const subscription = getSubscriptionType(user);
 	const limit = new SubscriptionLimits().getTable(subscription);
 	const company = await companyRepository.findOne({
 		where: { id: numberId },
 	});
-	if (!company) return res.json(createError('Şirket bulunamadı!'));
+	if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
 	const tables = company.tables;
 	if (tables && tables.length >= limit)
-		return res.json(
-			createError(
-				'Bu işletme için daha fazla masa oluşturamazsınız. Daha fazla oluşturmak için hesabınızı yükseltin.',
-			),
-		);
+		return res.json(CreateResponse(LIMIT_REACHED));
 
 	const newTable = new Table();
 	newTable.name = name;
@@ -147,29 +140,15 @@ router.post('/create', async (req: Request, res: Response) => {
 
 	return await tableRepository
 		.save(newTable)
-		.then((table) => {
-			return res.json({
-				message: 'Başarıyla masa oluşturuldu!',
-				table,
-			});
-		})
-		.catch((e) => {
-			if (e.code === 'P2002')
-				return res.json(
-					createError(
-						'Bu alanlardaki değerler ile bir hesap oluşturulmuş',
-						e.meta.target,
-					),
-				);
-			return;
-		});
+		.then(() => res.json(TABLE_CREATED))
+		.catch((e) => console.log(e));
 });
 
 router.delete('/remove', async (req: Request, res: Response) => {
 	const { id } = req.body;
 
 	const userId = req.session.userId;
-	if (!userId) return res.json(createError('Kullanıcı bulunamadı'));
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const err = isInt([id]);
 	if (err) return res.json(err);
@@ -179,27 +158,16 @@ router.delete('/remove', async (req: Request, res: Response) => {
 		relations: ['company'],
 	});
 
-	if (!table) return res.json(createError('Masa bulunamadı'));
+	if (!table) return res.json(CreateResponse(TABLE_CANNOT_BE_FOUND));
 
 	if (!isOwner(userId, table.company.id))
-		return res.json(
-			createError(
-				'Sahibi olmadığınız bir şirket üzerinde işlem yapamazsınız!',
-			),
-		);
+		return res.json(CreateResponse(OWNER_ERROR));
 
 	return await tableRepository
 		.remove(table)
-		.then((newTable) => {
-			return res.json({
-				message: 'Masa başarıyla silindi!',
-				table: newTable,
-			});
-		})
+		.then(() => res.json(TABLE_CREATED))
 		.catch(() => {
-			return res.json(
-				createError('Masa silinirken bir hata ile karşılaşıldı!'),
-			);
+			return res.json(CreateResponse(TABLE_REMOVE_FAILED));
 		});
 });
 

@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Category } from './Category';
+import { Employee } from './Employee';
 import { Food } from './Food';
 import { Table } from './Table';
 import { User } from './User';
@@ -33,4 +34,7 @@ export class Company extends DefaultEntity {
 
 	@OneToMany(() => Category, (category) => category.company)
 	categories: Category[];
+
+	@OneToMany(() => Employee, (employee) => employee.company)
+	employees: Employee[];
 }

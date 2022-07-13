@@ -1,16 +1,16 @@
-import { CustomError } from '../types/errorStack';
-import { createError } from '../utils/createError';
+import { EMPTY_ID, MUST_BE_INT } from '../config/Responses';
+import { KafeasistResponse } from '../types/ErrorStack';
+import { CreateResponse } from '../utils/CreateResponse';
 
-export const isInt = (integers: string[] | null): CustomError | null => {
-	if (!integers) return createError('Bu alanı boş bırakamazsınız');
+export const isInt = (integers: string[] | null): KafeasistResponse | null => {
+	if (!integers) return CreateResponse(EMPTY_ID);
 
 	const errors: string[] = [];
 	integers.forEach((integer) => {
 		if (isNaN(parseInt(integer))) errors.push(integer);
 	});
 
-	if (errors.length > 0)
-		return createError('Bu alanlardaki veriler tam sayı olmalı', errors);
+	if (errors.length > 0) return CreateResponse(MUST_BE_INT);
 
 	return null;
 };

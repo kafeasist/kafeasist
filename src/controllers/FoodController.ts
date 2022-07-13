@@ -1,12 +1,22 @@
 import { Request, Response, Router } from 'express';
 import { isInt } from '../middlewares/isInt';
-import { createError } from '../utils/createError';
+import { CreateResponse } from '../utils/CreateResponse';
 import { validateInputs } from '../middlewares/validateInputs';
 import { isOwner } from '../middlewares/isOwner';
 import { orm } from '../config/typeorm.config';
 import { Food } from '../entities/Food';
 import { Category } from '../entities/Category';
 import { Company } from '../entities/Company';
+import {
+	CATEGORY_CANNOT_BE_FOUND,
+	COMPANY_CANNOT_BE_FOUND,
+	FOOD_CANNOT_BE_FOUND,
+	FOOD_CREATED,
+	FOOD_REMOVED,
+	FOOD_REMOVE_ERROR,
+	OWNER_ERROR,
+	USER_CANNOT_BE_FOUND,
+} from '../config/Responses';
 
 const router = Router();
 
@@ -22,7 +32,7 @@ router.get('/get', async (req: Request, res: Response) => {
 
 	const food = await foodRepository.findOne({ where: { id: parseInt(id) } });
 
-	if (!food) return res.json(createError('Yiyecek bulunamadı!'));
+	if (!food) return res.json(CreateResponse(FOOD_CANNOT_BE_FOUND));
 
 	return res.json(food);
 });
@@ -39,7 +49,7 @@ router.post('/create', async (req: Request, res: Response) => {
 	} = req.body;
 
 	const userId = req.session.userId;
-	if (!userId) return res.json(createError('Kullanıcı bulunamadı'));
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const err = isInt([priceFirst, priceLast, categoryId, companyId]);
 	if (err) return res.json(err);
@@ -51,27 +61,21 @@ router.post('/create', async (req: Request, res: Response) => {
 		where: { id: parseInt(categoryId) },
 	});
 
-	if (!category)
-		return res.json(createError('Kategori bulunamadı', 'categoryId'));
+	if (!category) return res.json(CreateResponse(CATEGORY_CANNOT_BE_FOUND));
 
 	const company = await companyRepository.findOne({
 		where: { id: parseInt(companyId) },
 		relations: ['owner'],
 	});
 
-	if (!company)
-		return res.json(createError('Şirket bulunamadı', 'companyId'));
+	if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
 
 	if (priceLast.length < 2) priceLast = '0' + priceLast;
 	const price =
 		parseInt(priceFirst) + parseInt(priceLast[0] + priceLast[1]) / 100;
 
 	if (company.owner.id !== userId)
-		return res.json(
-			createError(
-				'Sahibi olmadığınız bir şirket üzerinde işlem yapamazsınız!',
-			),
-		);
+		return res.json(CreateResponse(OWNER_ERROR));
 
 	const newFood = new Food();
 	newFood.name = name;
@@ -83,52 +87,30 @@ router.post('/create', async (req: Request, res: Response) => {
 
 	return await foodRepository
 		.save(newFood)
-		.then((newFood) => {
-			return res.json({
-				message: 'Yeni yiyecek başarıyla oluşturuldu.',
-				food: newFood,
-			});
-		})
-		.catch((e) => {
-			if (e.code === 'P2002')
-				res.json(
-					createError(
-						'Bu alanlardaki değerler ile bir şirket oluşturulmuş',
-						e.meta.target,
-					),
-				);
-			return;
-		});
+		.then(() => res.json(FOOD_CREATED))
+		.catch((e) => console.log(e));
 });
 
 router.delete('/remove', async (req: Request, res: Response) => {
 	const { id } = req.body;
 
 	const userId = req.session.userId;
-	if (!userId) return res.json(createError('Kullanıcı bulunamadı'));
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const err = isInt([id]);
 	if (err) return res.json(err);
 
 	const food = await foodRepository.findOne({ where: { id: parseInt(id) } });
-	if (!food) return res.json(createError('Yiyecek bulunamadı!'));
+	if (!food) return res.json(CreateResponse(FOOD_CANNOT_BE_FOUND));
 
 	if (!isOwner(userId, food.company.id))
-		return res.json(
-			createError(
-				'Sahibi olmadığınız bir şirket üzerinde işlem yapamazsınız!',
-			),
-		);
+		return res.json(CreateResponse(OWNER_ERROR));
 
 	return await foodRepository
 		.remove(food)
-		.then(() => {
-			return res.json({ message: 'Yiyecek başarıyla silindi!' });
-		})
+		.then(() => res.json(FOOD_REMOVED))
 		.catch(() => {
-			return res.json(
-				createError('Yiyecek silinirken bir hata ile karşılaşıldı!'),
-			);
+			return res.json(CreateResponse(FOOD_REMOVE_ERROR));
 		});
 });
 

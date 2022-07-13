@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { createError } from '../utils/createError';
+import { CreateResponse } from '../utils/CreateResponse';
 import {
 	ABSTRACT_API_KEY,
 	__jwt_secret__,
@@ -13,6 +13,16 @@ import { validateInputs } from '../middlewares/validateInputs';
 import axios from 'axios';
 import { orm } from '../config/typeorm.config';
 import { User } from '../entities/User';
+import {
+	ACCOUNT_CREATED,
+	FAILED_FORGOT_PASSWORD,
+	PASSWORD_CHANGED,
+	SAME_PASSWORD,
+	SUCCESSFUL_FORGOT_PASSWORD,
+	SUCCESSFUL_LOGIN,
+	USERNAME_OR_PASSWORD_NOT_FOUND,
+	USER_CANNOT_BE_FOUND,
+} from '../config/Responses';
 
 const router = Router();
 
@@ -48,29 +58,17 @@ router.post('/register', async (req: Request, res: Response) => {
 		.then((newUser) => {
 			logIn(req, newUser.id);
 
-			return res.json({
-				message: 'Hesabınız oluşturuldu',
-			});
+			return res.json(ACCOUNT_CREATED);
 		})
 		.catch((err) => {
-			if (err.code === 'P2002')
-				res.json(
-					createError(
-						'Bu alanlardaki değerler ile bir hesap oluşturulmuş',
-						err.meta.target,
-					),
-				);
-			return;
+			console.log(err);
 		});
 });
 
 router.post('/login', async (req, res) => {
 	const { emailOrPhone, password } = req.body;
 
-	const error = createError('Kullanıcı adı veya şifre bulunamadı', [
-		'emailOrPhone',
-		'password',
-	]);
+	const error = CreateResponse(USERNAME_OR_PASSWORD_NOT_FOUND);
 
 	let user = await userRepository.findOne({ where: { email: emailOrPhone } });
 	if (!user)
@@ -88,9 +86,7 @@ router.post('/login', async (req, res) => {
 
 	logIn(req, user.id);
 
-	return res.json({
-		message: 'Giriş başarıyla yapıldı',
-	});
+	return res.json(SUCCESSFUL_LOGIN);
 });
 
 router.post('/forgot-password', async (req: Request, res: Response) => {
@@ -105,59 +101,41 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
 		// sendMail(userEmail, MailTypes.FORGOT_PASSWORD, { token });
 	}
 
-	return res.json({
-		message:
-			'Böyle bir kullanıcı varsa e-posta adresine sıfırlama bağlantısı gönderildi',
-	});
+	return res.json(SUCCESSFUL_FORGOT_PASSWORD);
 });
 
 router.post('/reset-password', async (req: Request, res: Response) => {
-	const { newPassword, confirmNewPassword } = req.body;
+	const { password, confirmPassword } = req.body;
 	const { token } = req.query;
 
 	const key = PASSWORD_RESET_PREFIX + token;
 	const userId = await getKey(key);
 
-	if (!userId)
-		return res.json(
-			createError('Kullandığınız bağlantının süresi geçmiş olabilir'),
-		);
+	if (!userId) return res.json(CreateResponse(FAILED_FORGOT_PASSWORD));
 
 	const user = await userRepository.findOne({
 		where: { id: parseInt(userId) },
 	});
 
-	if (!user)
-		return res.json(
-			createError(
-				'Şifresini değiştirmek istediğiniz kullanıcı bulunamadı',
-			),
-		);
+	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const err = validateInputs({
-		password: newPassword,
-		confirmPassword: confirmNewPassword,
+		password,
+		confirmPassword,
 	});
 
 	if (err) res.json(err);
 
-	if (await argon2.verify(user.password, newPassword))
-		return res.json(
-			createError('Oluşturacağınız şifre öncekiyle aynı olamaz', [
-				'newPassword',
-				'confirmNewPassword',
-			]),
-		);
+	if (await argon2.verify(user.password, password))
+		return res.json(CreateResponse(SAME_PASSWORD));
 
 	removeKey(key);
-	const hashedPassword = await argon2.hash(newPassword);
+	const hashedPassword = await argon2.hash(password);
 
 	user.password = hashedPassword;
 	await userRepository.save(user);
 
-	return res.json({
-		message: 'Şifreniz başarıyla değiştirildi',
-	});
+	return res.json(PASSWORD_CHANGED);
 });
 
 export default router;

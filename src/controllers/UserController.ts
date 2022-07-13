@@ -2,11 +2,24 @@ import { Request, Response, Router } from 'express';
 import { orm } from '../config/typeorm.config';
 import { User } from '../entities/User';
 import { isAuth } from '../middlewares/isAuth';
-import { createError } from '../utils/createError';
+import { CreateResponse } from '../utils/CreateResponse';
 import { logger } from '../utils/logger';
 import speakeasy, { GeneratedSecretWithOtpAuthUrl, totp } from 'speakeasy';
 import qrcode from 'qrcode';
 import { getKey, removeKey, setKey } from '../utils/connectRedis';
+import {
+	EMPTY_ID,
+	MFA_ACTIVATION_FAILED,
+	MFA_ALREADY_ACTIVE,
+	MFA_INCORRECT,
+	MFA_SUCCEEDED,
+	TRY_AGAIN_SERVER,
+	USER_CANNOT_BE_FOUND,
+	USER_REMOVED,
+	USER_REMOVE_FAILED,
+} from '../config/Responses';
+import { isInt } from '../middlewares/isInt';
+import { validateInputs } from '../middlewares/validateInputs';
 
 const router = Router();
 
@@ -19,7 +32,7 @@ router.get('/me', isAuth, async (req: Request, res: Response) => {
 
 	const user = await userRepository.findOne({ where: { id } });
 
-	if (!user) return res.json(createError('Kullanıcı bulunamadı!'));
+	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const returnedFields = {
 		id: user.id,
@@ -43,18 +56,16 @@ router.get(
 router.get('/get', async (req: Request, res: Response) => {
 	const { id }: any = req.query;
 
-	if (!id)
-		return res.json(createError('ID kısmı boş bırakılmamalıdır', 'id'));
+	if (!id) return res.json(CreateResponse(EMPTY_ID));
 
-	if (isNaN(parseInt(id)))
-		return res.json(createError('ID sadece sayı olabilir', 'id'));
+	const err = isInt([id]);
+	if (err) return res.json(err);
 
 	const numberId = parseInt(id);
 
 	const user = await userRepository.findOne({ where: { id: numberId } });
 
-	if (!user)
-		return res.json(createError('Belirtilen kullanıcı bulunamadı', 'id'));
+	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	return res.json(user);
 });
@@ -62,16 +73,17 @@ router.get('/get', async (req: Request, res: Response) => {
 router.get('/companies', async (req: Request, res: Response) => {
 	const { id }: any = req.query;
 
-	if (!id)
-		return res.json(createError('ID kısmı boş bırakılmamalıdır', 'id'));
+	if (!id) return res.json(CreateResponse(EMPTY_ID));
+
+	const err = isInt([id]);
+	if (err) return res.json(err);
 
 	const user = await userRepository.findOne({
 		where: { id: parseInt(id) },
 		relations: ['companies'],
 	});
 
-	if (!user)
-		return res.json(createError('Belirtilen kullanıcı bulunamadı!', 'id'));
+	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	return res.json(user.companies);
 });
@@ -79,52 +91,39 @@ router.get('/companies', async (req: Request, res: Response) => {
 router.delete('/remove', async (req: Request, res: Response) => {
 	const { id } = req.body;
 
-	if (!id)
-		return res.json(createError('ID kısmı boş bırakılmamalıdır', 'id'));
+	if (!id) return res.json(CreateResponse(EMPTY_ID));
 
-	if (isNaN(parseInt(id)))
-		return res.json(createError('ID sadece sayı olabilir', 'id'));
+	const err = isInt([id]);
+	if (err) return res.json(err);
 
 	const numberId = parseInt(id);
 
 	const user = await userRepository.findOne({ where: { id: numberId } });
 
-	if (!user)
-		return res.json(createError('Belirtilen kullanıcı bulunamadı', 'id'));
+	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	return userRepository
 		.remove(user)
 		.then(() => {
-			return res.json({
-				message: 'Kullanıcı başarıyla silindi!',
-			});
+			return res.json(USER_REMOVED);
 		})
 		.catch((err) => {
 			logger(err.message);
-			if (err.code === 'EREQUEST')
-				return res.json(
-					createError(
-						'Öncelikle kullanıcının şirketlerini silmelisiniz.',
-					),
-				);
-			return res.json(
-				createError('Kullanıcı silinirken bir hata ile karşılaşıldı'),
-			);
+			return res.json(CreateResponse(USER_REMOVE_FAILED));
 		});
 });
 
 router.get('/generate2fa', isAuth, async (req, res) => {
 	const userId: number | undefined = req.session.userId;
 
-	if (!userId) return res.json(createError('Kullanıcı bulunamadı!'));
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const user: User | null = await userRepository.findOne({
 		where: { id: userId },
 	});
-	if (!user) return res.json(createError('Kullanıcı bulunamadı!'));
+	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
-	if (user.mfa)
-		return res.json(createError('Zaten çift faktörlü doğrulamanız etkin!'));
+	if (user.mfa) return res.json(CreateResponse(MFA_ALREADY_ACTIVE));
 
 	const secret: GeneratedSecretWithOtpAuthUrl = speakeasy.generateSecret({
 		issuer: 'kafeasist',
@@ -135,12 +134,7 @@ router.get('/generate2fa', isAuth, async (req, res) => {
 	await setKey(MFA_PREFIX + userId, secret.ascii);
 
 	return qrcode.toDataURL(secret.otpauth_url as string, (err, data) => {
-		if (err)
-			return res.json(
-				createError(
-					'Çift faktörlü doğrulama etkinleştirilirken bir hatayla karşılaşıldı!',
-				),
-			);
+		if (err) return res.json(CreateResponse(MFA_ACTIVATION_FAILED));
 
 		return res.json({ data });
 	});
@@ -150,26 +144,18 @@ router.post('/activate2fa', isAuth, async (req: Request, res: Response) => {
 	const { code } = req.body;
 
 	const userId = req.session.userId;
-	if (!userId) return res.json(createError('Kullanıcı bulunamadı!'));
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const user = await userRepository.findOne({ where: { id: userId } });
-	if (!user) return res.json(createError('Kullanıcı bulunamadı!'));
+	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
-	if (user.mfa)
-		return res.json(createError('Zaten çift faktörlü doğrulamanız etkin!'));
+	if (user.mfa) return res.json(CreateResponse(MFA_ALREADY_ACTIVE));
 
 	const secret = await getKey(MFA_PREFIX + userId);
-	if (!secret)
-		return res.json(
-			createError(
-				'Sunucularda bir hata oluştu, lütfen işlemi yeniden başlatınız.',
-			),
-		);
+	if (!secret) return res.json(CreateResponse(TRY_AGAIN_SERVER));
 
-	if (!code || (code as string).length !== 6 || !/^\d+$/.test(code))
-		return res.json(
-			createError('Lütfen uygulamadaki 6 haneli kodu girin.', 'code'),
-		);
+	const err = validateInputs({ mfa: code });
+	if (err) return res.json(err);
 
 	const result = totp.verify({
 		secret,
@@ -177,17 +163,13 @@ router.post('/activate2fa', isAuth, async (req: Request, res: Response) => {
 		token: code,
 	});
 
-	if (!result)
-		return res.json(createError('6 haneli kodunuz doğru değil!', 'code'));
+	if (!result) return res.json(CreateResponse(MFA_INCORRECT));
 
 	user.mfa = true;
 	await User.save(user);
 	await removeKey(MFA_PREFIX + userId);
 
-	return res.json({
-		message: 'Çift faktörlü doğrulamanız etkinleştirildi.',
-		success: result,
-	});
+	return res.json(MFA_SUCCEEDED);
 });
 
 export default router;

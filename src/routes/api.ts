@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { createError } from '../utils/createError';
+import { CreateResponse } from '../utils/CreateResponse';
 import { isNotAuth } from '../middlewares/isNotAuth';
 import { isAuth } from '../middlewares/isAuth';
 
@@ -9,6 +9,7 @@ import CompanyController from '../controllers/CompanyController';
 import TableController from '../controllers/TableController';
 import FoodController from '../controllers/FoodController';
 import CategoryController from '../controllers/CategoryController';
+import { API_NOT_FOUND } from '../config/Responses';
 
 const router = Router();
 
@@ -24,7 +25,7 @@ router.use('/category', isAuth, CategoryController);
 
 router.use((_: Request, res: Response) => {
 	res.status(404);
-	return res.json(createError('Cannot find any actions to perform'));
+	return res.json(CreateResponse(API_NOT_FOUND));
 });
 
 export default router;

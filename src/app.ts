@@ -2,9 +2,10 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import session from 'express-session';
 import { corsOptions } from './config/cors.config';
+import { API_404 } from './config/Responses';
 import { sessionOptions } from './config/session.config';
 import apiRoutes from './routes/api';
-import { createError } from './utils/createError';
+import { CreateResponse } from './utils/CreateResponse';
 
 const app = express()
 	.use(cors(corsOptions))
@@ -16,7 +17,7 @@ app.use('/api', apiRoutes);
 
 app.use((_: Request, res: Response) => {
 	res.status(404);
-	return res.json(createError('Specified path not found on the server'));
+	return res.json(CreateResponse(API_404));
 });
 
 export default app;

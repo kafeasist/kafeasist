@@ -54,7 +54,7 @@
 		"ioredis": "^5.0.6",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.3.5",
-		"mssql": "^8.1.2",
+		"pg": "^8.7.3",
 		"qrcode": "^1.5.0",
 		"reflect-metadata": "^0.1.13",
 		"socket.io-client": "^4.5.1",
