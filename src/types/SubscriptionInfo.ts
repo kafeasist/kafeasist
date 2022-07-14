@@ -1,6 +1,5 @@
 export enum SubscriptionTypes {
 	FREE,
-	SMALL,
 	MEDIUM,
 	LARGE,
 }
@@ -17,7 +16,6 @@ export enum Amount {
 
 interface Limits {
 	FREE: number | Amount;
-	SMALL: number | Amount;
 	MEDIUM: number | Amount;
 	LARGE: number | Amount;
 }
@@ -25,14 +23,12 @@ interface Limits {
 export class SubscriptionLimits {
 	private company: Limits = {
 		FREE: 1,
-		SMALL: 3,
-		MEDIUM: 7,
+		MEDIUM: 3,
 		LARGE: Amount.INF,
 	};
 
 	private table: Limits = {
 		FREE: 12,
-		SMALL: Amount.INF,
 		MEDIUM: Amount.INF,
 		LARGE: Amount.INF,
 	};
@@ -41,7 +37,6 @@ export class SubscriptionLimits {
 
 	private category: Limits = {
 		FREE: this.CATEGORY,
-		SMALL: this.CATEGORY * this.company.SMALL,
 		MEDIUM: this.CATEGORY * this.company.MEDIUM,
 		LARGE: Amount.INF,
 	};
@@ -50,8 +45,6 @@ export class SubscriptionLimits {
 		switch (type) {
 			case SubscriptionTypes.FREE:
 				return this.company.FREE;
-			case SubscriptionTypes.SMALL:
-				return this.company.SMALL;
 			case SubscriptionTypes.MEDIUM:
 				return this.company.MEDIUM;
 			default:
@@ -63,8 +56,6 @@ export class SubscriptionLimits {
 		switch (type) {
 			case SubscriptionTypes.FREE:
 				return this.table.FREE;
-			case SubscriptionTypes.SMALL:
-				return this.table.SMALL;
 			case SubscriptionTypes.MEDIUM:
 				return this.table.MEDIUM;
 			default:
@@ -76,8 +67,6 @@ export class SubscriptionLimits {
 		switch (type) {
 			case SubscriptionTypes.FREE:
 				return this.category.FREE;
-			case SubscriptionTypes.SMALL:
-				return this.category.SMALL;
 			case SubscriptionTypes.MEDIUM:
 				return this.category.MEDIUM;
 			default:

@@ -294,3 +294,36 @@ export const API_404: CustomResponse = {
 	code: 52,
 	message: 'Specified path not found on the server',
 };
+
+export const SUCCESSFUL_LOGOUT: CustomResponse = {
+	code: 53,
+	message: 'Başarıyla çıkış yapıldı!',
+	error: false,
+};
+
+export const ADMIN_ERROR: CustomResponse = {
+	code: 54,
+	message:
+		'Bu işlemi gerçekleştirebilmek için yetkili olmanız gerekmektedir.',
+};
+
+export const ALREADY_SUBSCRIBED: CustomResponse = {
+	code: 55,
+	message: 'Bu abonelik türüne zaten sahipsiniz!',
+};
+
+export const SUBSCRIPTION_CHANGED: CustomResponse = {
+	code: 56,
+	message: 'Abonelik türünüz başarıyla değiştirildi!',
+	error: false,
+};
+
+export const SUBSCRIPTION_NOT_FOUND: CustomResponse = {
+	code: 57,
+	message: 'Geçerli bir üyelik bulunamadı. Lütfen destekle iletişime geçin!',
+};
+
+export const SLOW_DOWN: CustomResponse = {
+	code: 58,
+	message: 'Lütfen sunuculara istek gönderirken yavaşlayın!',
+};

@@ -5,6 +5,7 @@ export interface KafeasistResponse {
 	help: string;
 	fields?: string[] | string;
 	stack?: string | undefined;
+	issuer?: string | undefined;
 }
 
 export interface CustomResponse {

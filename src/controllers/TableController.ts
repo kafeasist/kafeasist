@@ -19,6 +19,7 @@ import {
 	FOOD_NOT_OWNED,
 	LIMIT_REACHED,
 	OWNER_ERROR,
+	SUBSCRIPTION_NOT_FOUND,
 	TABLE_CANNOT_BE_FOUND,
 	TABLE_CREATED,
 	TABLE_REMOVE_FAILED,
@@ -86,7 +87,7 @@ router.post('/addFood', async (req: Request, res: Response) => {
 
 	return await tableRepository
 		.save(table)
-		.then(() => res.json(FOOD_ADDED_ON_TABLE))
+		.then(() => res.json(CreateResponse(FOOD_ADDED_ON_TABLE)))
 		.catch(() => res.json(CreateResponse(FOOD_FAILED_ON_TABLE)));
 });
 
@@ -123,7 +124,8 @@ router.post('/create', async (req: Request, res: Response) => {
 
 	const user = await userRepository.findOne({ where: { id: userId } });
 	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
-	const subscription = getSubscriptionType(user);
+	const subscription = getSubscriptionType(user.subs_type);
+	if (!subscription) return res.json(SUBSCRIPTION_NOT_FOUND);
 	const limit = new SubscriptionLimits().getTable(subscription);
 	const company = await companyRepository.findOne({
 		where: { id: numberId },
@@ -140,7 +142,7 @@ router.post('/create', async (req: Request, res: Response) => {
 
 	return await tableRepository
 		.save(newTable)
-		.then(() => res.json(TABLE_CREATED))
+		.then(() => res.json(CreateResponse(TABLE_CREATED)))
 		.catch((e) => console.log(e));
 });
 

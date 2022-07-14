@@ -14,6 +14,8 @@ export class Category extends DefaultEntity {
 	@OneToMany(() => Food, (food) => food.category)
 	foods: Food[];
 
-	@ManyToOne(() => Company, (company) => company.categories)
+	@ManyToOne(() => Company, (company) => company.categories, {
+		onDelete: 'CASCADE',
+	})
 	company: Company;
 }

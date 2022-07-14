@@ -9,6 +9,7 @@ import { Category } from '../entities/Category';
 import { Company } from '../entities/Company';
 import { User } from '../entities/User';
 import {
+	ALREADY_IN_USE,
 	CATEGORY_CANNOT_BE_FOUND,
 	CATEGORY_CREATED,
 	CATEGORY_REMOVED,
@@ -17,6 +18,7 @@ import {
 	EMPTY_ID,
 	LIMIT_REACHED,
 	OWNER_ERROR,
+	SUBSCRIPTION_NOT_FOUND,
 	USER_CANNOT_BE_FOUND,
 } from '../config/Responses';
 import { isInt } from '../middlewares/isInt';
@@ -56,6 +58,7 @@ router.post('/create', async (req: Request, res: Response) => {
 
 	const company = await companyRepository.findOne({
 		where: { id: numberId },
+		relations: ['categories'],
 	});
 
 	if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
@@ -71,13 +74,22 @@ router.post('/create', async (req: Request, res: Response) => {
 
 	const user = await userRepository.findOne({ where: { id: userId } });
 	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
-	const subscription = getSubscriptionType(user);
+	const subscription = getSubscriptionType(user.subs_type);
+	if (!subscription) return res.json(SUBSCRIPTION_NOT_FOUND);
 	const limit = new SubscriptionLimits().getCategory(subscription);
 
 	const categories = company.categories;
 
 	if (categories && categories.length >= limit)
 		return res.json(CreateResponse(LIMIT_REACHED));
+
+	let exists = false;
+	categories.forEach((category) => {
+		if (category.name === name) exists = true;
+	});
+
+	if (exists)
+		return res.json(CreateResponse({ ...ALREADY_IN_USE, fields: 'name' }));
 
 	const newCategory = new Category();
 	newCategory.name = name;
@@ -87,7 +99,7 @@ router.post('/create', async (req: Request, res: Response) => {
 	return await categoryRepository
 		.save(newCategory)
 		.then(() => {
-			return res.json(CATEGORY_CREATED);
+			return res.json(CreateResponse(CATEGORY_CREATED));
 		})
 		.catch((error) => {
 			console.log(error);
@@ -118,7 +130,7 @@ router.delete('/remove', async (req: Request, res: Response) => {
 	return await categoryRepository
 		.remove(category)
 		.then(() => {
-			return res.json(CATEGORY_REMOVED);
+			return res.json(CreateResponse(CATEGORY_REMOVED));
 		})
 		.catch(() => {
 			return res.json(CreateResponse(CATEGORY_REMOVE_ERROR));

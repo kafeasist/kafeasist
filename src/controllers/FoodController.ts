@@ -87,7 +87,7 @@ router.post('/create', async (req: Request, res: Response) => {
 
 	return await foodRepository
 		.save(newFood)
-		.then(() => res.json(FOOD_CREATED))
+		.then(() => res.json(CreateResponse(FOOD_CREATED)))
 		.catch((e) => console.log(e));
 });
 

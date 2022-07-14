@@ -6,7 +6,7 @@ import {
 	__prod__,
 } from '../config/constants';
 import * as argon2 from 'argon2';
-import { logIn } from '../utils/logIn';
+import { logIn, logOut } from '../utils/logUser';
 import { v4 as uuidv4 } from 'uuid';
 import { setKey, getKey, removeKey } from '../utils/connectRedis';
 import { validateInputs } from '../middlewares/validateInputs';
@@ -20,9 +20,12 @@ import {
 	SAME_PASSWORD,
 	SUCCESSFUL_FORGOT_PASSWORD,
 	SUCCESSFUL_LOGIN,
+	SUCCESSFUL_LOGOUT,
 	USERNAME_OR_PASSWORD_NOT_FOUND,
 	USER_CANNOT_BE_FOUND,
 } from '../config/Responses';
+import { isAuth } from '../middlewares/isAuth';
+import { isNotAuth } from '../middlewares/isNotAuth';
 
 const router = Router();
 
@@ -30,7 +33,7 @@ const PASSWORD_RESET_PREFIX = 'pass_reset_';
 
 const userRepository = orm.getRepository(User);
 
-router.post('/register', async (req: Request, res: Response) => {
+router.post('/register', isNotAuth, async (req: Request, res: Response) => {
 	const { first_name, last_name, phone, email, password, passwordAgain } =
 		req.body;
 
@@ -58,14 +61,14 @@ router.post('/register', async (req: Request, res: Response) => {
 		.then((newUser) => {
 			logIn(req, newUser.id);
 
-			return res.json(ACCOUNT_CREATED);
+			return res.json(CreateResponse(ACCOUNT_CREATED));
 		})
 		.catch((err) => {
 			console.log(err);
 		});
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', isNotAuth, async (req, res) => {
 	const { emailOrPhone, password } = req.body;
 
 	const error = CreateResponse(USERNAME_OR_PASSWORD_NOT_FOUND);
@@ -86,56 +89,74 @@ router.post('/login', async (req, res) => {
 
 	logIn(req, user.id);
 
-	return res.json(SUCCESSFUL_LOGIN);
+	return res.json(CreateResponse(SUCCESSFUL_LOGIN));
 });
 
-router.post('/forgot-password', async (req: Request, res: Response) => {
-	const { emailOrPhone } = req.body;
+router.post('/logout', isAuth, async (req: Request, res: Response) => {
+	logOut(req, res);
 
-	let user = await userRepository.findOne({ where: { email: emailOrPhone } });
-	if (!user)
-		user = await userRepository.findOne({ where: { phone: emailOrPhone } });
-	if (user) {
-		const token = uuidv4();
-		setKey(PASSWORD_RESET_PREFIX + token, String(user.id));
-		// sendMail(userEmail, MailTypes.FORGOT_PASSWORD, { token });
-	}
-
-	return res.json(SUCCESSFUL_FORGOT_PASSWORD);
+	return res.json(CreateResponse(SUCCESSFUL_LOGOUT));
 });
 
-router.post('/reset-password', async (req: Request, res: Response) => {
-	const { password, confirmPassword } = req.body;
-	const { token } = req.query;
+router.post(
+	'/forgot-password',
+	isNotAuth,
+	async (req: Request, res: Response) => {
+		const { emailOrPhone } = req.body;
 
-	const key = PASSWORD_RESET_PREFIX + token;
-	const userId = await getKey(key);
+		let user = await userRepository.findOne({
+			where: { email: emailOrPhone },
+		});
+		if (!user)
+			user = await userRepository.findOne({
+				where: { phone: emailOrPhone },
+			});
+		if (user) {
+			const token = uuidv4();
+			setKey(PASSWORD_RESET_PREFIX + token, String(user.id));
+			// sendMail(userEmail, MailTypes.FORGOT_PASSWORD, { token });
+		}
 
-	if (!userId) return res.json(CreateResponse(FAILED_FORGOT_PASSWORD));
+		return res.json(CreateResponse(SUCCESSFUL_FORGOT_PASSWORD));
+	},
+);
 
-	const user = await userRepository.findOne({
-		where: { id: parseInt(userId) },
-	});
+router.post(
+	'/reset-password',
+	isNotAuth,
+	async (req: Request, res: Response) => {
+		const { password, confirmPassword } = req.body;
+		const { token } = req.query;
 
-	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+		const key = PASSWORD_RESET_PREFIX + token;
+		const userId = await getKey(key);
 
-	const err = validateInputs({
-		password,
-		confirmPassword,
-	});
+		if (!userId) return res.json(CreateResponse(FAILED_FORGOT_PASSWORD));
 
-	if (err) res.json(err);
+		const user = await userRepository.findOne({
+			where: { id: parseInt(userId) },
+		});
 
-	if (await argon2.verify(user.password, password))
-		return res.json(CreateResponse(SAME_PASSWORD));
+		if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
-	removeKey(key);
-	const hashedPassword = await argon2.hash(password);
+		const err = validateInputs({
+			password,
+			confirmPassword,
+		});
 
-	user.password = hashedPassword;
-	await userRepository.save(user);
+		if (err) res.json(err);
 
-	return res.json(PASSWORD_CHANGED);
-});
+		if (await argon2.verify(user.password, password))
+			return res.json(CreateResponse(SAME_PASSWORD));
+
+		removeKey(key);
+		const hashedPassword = await argon2.hash(password);
+
+		user.password = hashedPassword;
+		await userRepository.save(user);
+
+		return res.json(CreateResponse(PASSWORD_CHANGED));
+	},
+);
 
 export default router;

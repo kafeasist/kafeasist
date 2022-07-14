@@ -18,7 +18,9 @@ export class Food extends DefaultEntity {
 	@Column({ nullable: true })
 	description?: string;
 
-	@ManyToOne(() => Company, (company) => company.foods)
+	@ManyToOne(() => Company, (company) => company.foods, {
+		onDelete: 'CASCADE',
+	})
 	company: Company;
 
 	@OneToMany(() => OrderItem, (order) => order.food, { cascade: true })

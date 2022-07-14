@@ -28,6 +28,8 @@ export class User extends DefaultEntity {
 	@Column({ default: 0 })
 	subs_type: number;
 
-	@OneToMany(() => Company, (company) => company.owner)
+	@OneToMany(() => Company, (company) => company.owner, {
+		onDelete: 'CASCADE',
+	})
 	companies: Company[];
 }

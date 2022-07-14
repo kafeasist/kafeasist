@@ -8,13 +8,13 @@ import { DefaultEntity } from './_DefaultEntity';
 
 @Entity()
 export class Company extends DefaultEntity {
-	@Column({ unique: true })
+	@Column()
 	name: string;
 
 	@Column()
 	address: string;
 
-	@Column({ unique: true })
+	@Column()
 	phone: string;
 
 	@Column({ nullable: true })
@@ -23,18 +23,22 @@ export class Company extends DefaultEntity {
 	@Column({ nullable: true })
 	description?: boolean;
 
-	@ManyToOne(() => User, (user) => user.companies)
+	@ManyToOne(() => User, (user) => user.companies, { onDelete: 'CASCADE' })
 	owner: User;
 
-	@OneToMany(() => Table, (table) => table.company)
+	@OneToMany(() => Table, (table) => table.company, { onDelete: 'CASCADE' })
 	tables: Table[];
 
-	@OneToMany(() => Food, (food) => food.company)
+	@OneToMany(() => Food, (food) => food.company, { onDelete: 'CASCADE' })
 	foods: Food[];
 
-	@OneToMany(() => Category, (category) => category.company)
+	@OneToMany(() => Category, (category) => category.company, {
+		onDelete: 'CASCADE',
+	})
 	categories: Category[];
 
-	@OneToMany(() => Employee, (employee) => employee.company)
+	@OneToMany(() => Employee, (employee) => employee.company, {
+		onDelete: 'CASCADE',
+	})
 	employees: Employee[];
 }

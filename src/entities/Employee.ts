@@ -21,6 +21,8 @@ export class Employee extends DefaultEntity {
 	@Column()
 	password: string;
 
-	@ManyToOne(() => Company, (company) => company.employees)
+	@ManyToOne(() => Company, (company) => company.employees, {
+		onDelete: 'CASCADE',
+	})
 	company: Company;
 }

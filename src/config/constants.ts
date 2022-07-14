@@ -8,7 +8,7 @@ export const __cors_origin__ = 'http://localhost:3000';
 
 export const __jwt_secret__ = process.env.JWT_SECRET as Secret;
 
-export const __cookie_name__ = process.env.COOKIE_NAME;
+export const __cookie_name__: string = process.env.COOKIE_NAME || 'qid';
 export const __session_secret__: string = process.env.COOKIE_SECRET || '';
 
 export const __redis_host__: string = process.env.REDIS_HOST || '';

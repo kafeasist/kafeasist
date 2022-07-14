@@ -8,11 +8,14 @@ import speakeasy, { GeneratedSecretWithOtpAuthUrl, totp } from 'speakeasy';
 import qrcode from 'qrcode';
 import { getKey, removeKey, setKey } from '../utils/connectRedis';
 import {
+	ALREADY_SUBSCRIBED,
 	EMPTY_ID,
 	MFA_ACTIVATION_FAILED,
 	MFA_ALREADY_ACTIVE,
 	MFA_INCORRECT,
 	MFA_SUCCEEDED,
+	SUBSCRIPTION_CHANGED,
+	SUBSCRIPTION_NOT_FOUND,
 	TRY_AGAIN_SERVER,
 	USER_CANNOT_BE_FOUND,
 	USER_REMOVED,
@@ -20,6 +23,8 @@ import {
 } from '../config/Responses';
 import { isInt } from '../middlewares/isInt';
 import { validateInputs } from '../middlewares/validateInputs';
+import { isAdmin } from '../middlewares/isAdmin';
+import { getSubscriptionType } from '../utils/getSubscriptionType';
 
 const router = Router();
 
@@ -53,10 +58,10 @@ router.get(
 	},
 );
 
-router.get('/get', async (req: Request, res: Response) => {
+router.get('/get', isAdmin, async (req: Request, res: Response) => {
 	const { id }: any = req.query;
 
-	if (!id) return res.json(CreateResponse(EMPTY_ID));
+	if (!id) return res.json(CreateResponse(EMPTY_ID, req.issuer));
 
 	const err = isInt([id]);
 	if (err) return res.json(err);
@@ -65,7 +70,8 @@ router.get('/get', async (req: Request, res: Response) => {
 
 	const user = await userRepository.findOne({ where: { id: numberId } });
 
-	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+	if (!user)
+		return res.json(CreateResponse(USER_CANNOT_BE_FOUND, req.issuer));
 
 	return res.json(user);
 });
@@ -88,10 +94,10 @@ router.get('/companies', async (req: Request, res: Response) => {
 	return res.json(user.companies);
 });
 
-router.delete('/remove', async (req: Request, res: Response) => {
-	const { id } = req.body;
+router.delete('/remove', isAdmin, async (req: Request, res: Response) => {
+	const { id }: any = req.query;
 
-	if (!id) return res.json(CreateResponse(EMPTY_ID));
+	if (!id) return res.json(CreateResponse(EMPTY_ID, req.issuer));
 
 	const err = isInt([id]);
 	if (err) return res.json(err);
@@ -100,16 +106,15 @@ router.delete('/remove', async (req: Request, res: Response) => {
 
 	const user = await userRepository.findOne({ where: { id: numberId } });
 
-	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+	if (!user)
+		return res.json(CreateResponse(USER_CANNOT_BE_FOUND, req.issuer));
 
 	return userRepository
 		.remove(user)
-		.then(() => {
-			return res.json(USER_REMOVED);
-		})
+		.then(() => res.json(CreateResponse(USER_REMOVED, req.issuer)))
 		.catch((err) => {
 			logger(err.message);
-			return res.json(CreateResponse(USER_REMOVE_FAILED));
+			return res.json(CreateResponse(USER_REMOVE_FAILED, req.issuer));
 		});
 });
 
@@ -169,7 +174,30 @@ router.post('/activate2fa', isAuth, async (req: Request, res: Response) => {
 	await User.save(user);
 	await removeKey(MFA_PREFIX + userId);
 
-	return res.json(MFA_SUCCEEDED);
+	return res.json(CreateResponse(MFA_SUCCEEDED));
+});
+
+router.post('/updateSubType', isAdmin, async (req: Request, res: Response) => {
+	const { id, subs_type } = req.body;
+
+	if (!id || !subs_type) return res.json(EMPTY_ID);
+
+	const err = isInt([id, subs_type]);
+	if (err) return res.json(err);
+
+	const user = await userRepository.findOne({ where: { id: parseInt(id) } });
+	if (!user) return res.json(USER_CANNOT_BE_FOUND);
+
+	if (user.subs_type === parseInt(subs_type))
+		return res.json(ALREADY_SUBSCRIBED);
+
+	if (getSubscriptionType(parseInt(subs_type)) === null)
+		return res.json(SUBSCRIPTION_NOT_FOUND);
+
+	user.subs_type = parseInt(subs_type);
+	await userRepository.save(user);
+
+	return res.json(SUBSCRIPTION_CHANGED);
 });
 
 export default router;
