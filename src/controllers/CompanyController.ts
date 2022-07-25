@@ -11,6 +11,8 @@ import { User } from '../entities/User';
 import {
 	ALREADY_IN_USE,
 	COMPANY_CANNOT_BE_FOUND,
+	COMPANY_EDIT_FAILED,
+	COMPANY_EDIT_SUCCEEDED,
 	COMPANY_REMOVED,
 	COMPANY_REMOVE_ERROR,
 	EMPTY_ID,
@@ -18,10 +20,12 @@ import {
 	NO_CATEGORY_FOUND,
 	NO_EMPLOYEE_FOUND,
 	NO_TABLE_FOUND,
+	OWNER_ERROR,
 	SUBSCRIPTION_NOT_FOUND,
 	USER_CANNOT_BE_FOUND,
 } from '../config/Responses';
 import { isInt } from '../middlewares/isInt';
+import { isOwner } from '../middlewares/isOwner';
 
 const router = Router();
 
@@ -130,7 +134,7 @@ router.post('/create', isAuth, async (req: Request, res: Response) => {
 	const userCompanies = user?.companies;
 
 	const subscription = getSubscriptionType(user.subs_type);
-	if (!subscription) return res.json(SUBSCRIPTION_NOT_FOUND);
+	if (subscription === null) return res.json(SUBSCRIPTION_NOT_FOUND);
 	const companyLimit = new SubscriptionLimits().getCompany;
 
 	if (userCompanies && userCompanies?.length >= companyLimit(subscription))
@@ -155,6 +159,44 @@ router.post('/create', isAuth, async (req: Request, res: Response) => {
 	await companyRepository.save(newCompany).catch((error) => logger(error));
 
 	return res.json(newCompany);
+});
+
+router.put('/edit', async (req: Request, res: Response) => {
+	const { companyId, name, address, phone, image_url, description } =
+		req.body;
+
+	const userId = req.session.userId;
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+
+	const err = isInt([companyId]);
+	if (err) return res.json(err);
+
+	const company = await companyRepository.findOne({
+		where: { id: parseInt(companyId) },
+	});
+	if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
+
+	if (!isOwner(userId, company.id))
+		return res.json(CreateResponse(OWNER_ERROR));
+
+	const errors = validateInputs({
+		name: name ? name : company.name,
+		address: address ? address : company.address,
+		phone: phone ? phone : company.phone,
+	});
+	if (errors) return res.json(errors);
+
+	company.name = name ? name : company.name;
+	company.address = address ? address : company.address;
+	company.phone = phone ? phone : company.phone;
+	company.image_url = image_url ? image_url : company.image_url;
+	company.description = description ? description : company.description;
+	await companyRepository.save(company).catch((e) => {
+		logger(e);
+		return res.json(CreateResponse(COMPANY_EDIT_FAILED));
+	});
+
+	return res.json(CreateResponse(COMPANY_EDIT_SUCCEEDED));
 });
 
 router.delete('/remove', async (req: Request, res: Response) => {

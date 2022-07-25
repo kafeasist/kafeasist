@@ -12,6 +12,8 @@ import {
 	ALREADY_IN_USE,
 	CATEGORY_CANNOT_BE_FOUND,
 	CATEGORY_CREATED,
+	CATEGORY_EDIT_FAILED,
+	CATEGORY_EDIT_SUCCEEDED,
 	CATEGORY_REMOVED,
 	CATEGORY_REMOVE_ERROR,
 	COMPANY_CANNOT_BE_FOUND,
@@ -22,6 +24,7 @@ import {
 	USER_CANNOT_BE_FOUND,
 } from '../config/Responses';
 import { isInt } from '../middlewares/isInt';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -75,7 +78,7 @@ router.post('/create', async (req: Request, res: Response) => {
 	const user = await userRepository.findOne({ where: { id: userId } });
 	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 	const subscription = getSubscriptionType(user.subs_type);
-	if (!subscription) return res.json(SUBSCRIPTION_NOT_FOUND);
+	if (subscription === null) return res.json(SUBSCRIPTION_NOT_FOUND);
 	const limit = new SubscriptionLimits().getCategory(subscription);
 
 	const categories = company.categories;
@@ -104,6 +107,36 @@ router.post('/create', async (req: Request, res: Response) => {
 		.catch((error) => {
 			console.log(error);
 		});
+});
+
+router.put('/edit', async (req: Request, res: Response) => {
+	const { categoryId, name, description } = req.body;
+
+	const userId = req.session.userId;
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+
+	const err = isInt([categoryId]);
+	if (err) return res.json(err);
+
+	if (name) {
+		const error = validateInputs({ name });
+		if (error) return res.json(error);
+	}
+
+	const category = await categoryRepository.findOne({
+		where: { id: parseInt(categoryId) },
+		relations: ['company'],
+	});
+	if (!category) return res.json(CreateResponse(CATEGORY_CANNOT_BE_FOUND));
+
+	category.name = name ? name : category.name;
+	category.description = description ? description : category.description;
+	await categoryRepository.save(category).catch((e) => {
+		logger(e);
+		return res.json(CreateResponse(CATEGORY_EDIT_FAILED));
+	});
+
+	return res.json(CreateResponse(CATEGORY_EDIT_SUCCEEDED));
 });
 
 router.delete('/remove', async (req: Request, res: Response) => {

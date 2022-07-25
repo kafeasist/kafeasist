@@ -381,3 +381,47 @@ export const INPUT_USERNAME: CustomResponse = {
 	message:
 		'Kullanıcı adı 8-20 karakter arası sadece İngilizce küçük harflerle yazılmalıdır.',
 };
+
+export const TABLE_EDIT_FAILED: CustomResponse = {
+	code: 69,
+	message: 'Masa düzenlenirken bir hatayla karşılaşıldı!',
+};
+
+export const TABLE_EDIT_SUCCEEDED: CustomResponse = {
+	code: 70,
+	message: 'Masa başarıyla düzenlendi!',
+	error: false,
+};
+
+export const FOOD_EDIT_FAILED: CustomResponse = {
+	code: 71,
+	message: 'Yiyecek düzenlenirken bir hatayla karşılaşıldı!',
+};
+
+export const FOOD_EDIT_SUCCEEDED: CustomResponse = {
+	code: 72,
+	message: 'Yiyecek başarıyla düzenlendi!',
+	error: false,
+};
+
+export const COMPANY_EDIT_FAILED: CustomResponse = {
+	code: 73,
+	message: 'Şirket düzenlenirken bir hatayla karşılaşıldı!',
+};
+
+export const COMPANY_EDIT_SUCCEEDED: CustomResponse = {
+	code: 74,
+	message: 'Şirket başarıyla düzenlendi!',
+	error: false,
+};
+
+export const CATEGORY_EDIT_FAILED: CustomResponse = {
+	code: 75,
+	message: 'Kategori düzenlenirken bir hatayla karşılaşıldı!',
+};
+
+export const CATEGORY_EDIT_SUCCEEDED: CustomResponse = {
+	code: 76,
+	message: 'Kategori başarıyla düzenlendi!',
+	error: false,
+};

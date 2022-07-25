@@ -12,11 +12,14 @@ import {
 	COMPANY_CANNOT_BE_FOUND,
 	FOOD_CANNOT_BE_FOUND,
 	FOOD_CREATED,
+	FOOD_EDIT_FAILED,
+	FOOD_EDIT_SUCCEEDED,
 	FOOD_REMOVED,
 	FOOD_REMOVE_ERROR,
 	OWNER_ERROR,
 	USER_CANNOT_BE_FOUND,
 } from '../config/Responses';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -38,15 +41,8 @@ router.get('/get', async (req: Request, res: Response) => {
 });
 
 router.post('/create', async (req: Request, res: Response) => {
-	let {
-		name,
-		priceFirst,
-		priceLast,
-		daily,
-		description,
-		categoryId,
-		companyId,
-	} = req.body;
+	let { name, priceFirst, priceLast, description, categoryId, companyId } =
+		req.body;
 
 	const userId = req.session.userId;
 	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
@@ -82,13 +78,68 @@ router.post('/create', async (req: Request, res: Response) => {
 	newFood.price = price;
 	newFood.category = category;
 	newFood.company = company;
-	newFood.daily = daily ? daily : false;
 	newFood.description = description;
 
 	return await foodRepository
 		.save(newFood)
 		.then(() => res.json(CreateResponse(FOOD_CREATED)))
 		.catch((e) => console.log(e));
+});
+
+router.put('/edit', async (req: Request, res: Response) => {
+	let { foodId, name, priceFirst, priceLast, description, categoryId } =
+		req.body;
+
+	const userId = req.session.userId;
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+
+	const err = isInt([
+		foodId,
+		priceFirst ? priceFirst : 0,
+		priceLast ? priceLast : 0,
+		categoryId ? categoryId : 0,
+	]);
+	if (err) return res.json(err);
+
+	const error = validateInputs({ name });
+	if (error) return res.json(error);
+
+	const food = await foodRepository.findOne({
+		where: { id: parseInt(foodId) },
+		relations: ['company'],
+	});
+	if (!food) return res.json(CreateResponse(FOOD_CANNOT_BE_FOUND));
+
+	if (!isOwner(userId, food.company.id))
+		return res.json(CreateResponse(OWNER_ERROR));
+
+	let category: Category | null = null;
+	if (categoryId) {
+		category = await categoryRepository.findOne({
+			where: { id: parseInt(categoryId) },
+		});
+		if (!category)
+			return res.json(CreateResponse(CATEGORY_CANNOT_BE_FOUND));
+	}
+
+	let price: number | null = null;
+	if (priceFirst && priceLast) {
+		if (priceLast.length < 2) priceLast = '0' + priceLast;
+		price =
+			parseInt(priceFirst) + parseInt(priceLast[0] + priceLast[1]) / 100;
+	}
+
+	food.name = name ? name : food.name;
+	food.price = price ? price : food.price;
+	food.description = description ? description : food.description;
+	food.category = category ? category : food.category;
+
+	foodRepository.save(food).catch((e) => {
+		logger(e);
+		return res.json(CreateResponse(FOOD_EDIT_FAILED));
+	});
+
+	return res.json(CreateResponse(FOOD_EDIT_SUCCEEDED));
 });
 
 router.delete('/remove', async (req: Request, res: Response) => {

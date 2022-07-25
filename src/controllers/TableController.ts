@@ -22,9 +22,13 @@ import {
 	SUBSCRIPTION_NOT_FOUND,
 	TABLE_CANNOT_BE_FOUND,
 	TABLE_CREATED,
+	TABLE_EDIT_FAILED,
+	TABLE_EDIT_SUCCEEDED,
 	TABLE_REMOVE_FAILED,
 	USER_CANNOT_BE_FOUND,
 } from '../config/Responses';
+import { logger } from '../utils/logger';
+import { isEmployee } from '../middlewares/isEmployee';
 
 const router = Router();
 
@@ -74,7 +78,10 @@ router.post('/addFood', async (req: Request, res: Response) => {
 	if (food.company.id !== table.company.id)
 		return res.json(CreateResponse(FOOD_NOT_OWNED));
 
-	if (!isOwner(userId, table.company.id))
+	if (
+		!isOwner(userId, table.company.id) ||
+		!isEmployee(userId, table.company.id)
+	)
 		return res.json(CreateResponse(OWNER_ERROR));
 
 	const orderItem = new OrderItem();
@@ -125,7 +132,7 @@ router.post('/create', async (req: Request, res: Response) => {
 	const user = await userRepository.findOne({ where: { id: userId } });
 	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 	const subscription = getSubscriptionType(user.subs_type);
-	if (!subscription) return res.json(SUBSCRIPTION_NOT_FOUND);
+	if (subscription === null) return res.json(SUBSCRIPTION_NOT_FOUND);
 	const limit = new SubscriptionLimits().getTable(subscription);
 	const company = await companyRepository.findOne({
 		where: { id: numberId },
@@ -144,6 +151,31 @@ router.post('/create', async (req: Request, res: Response) => {
 		.save(newTable)
 		.then(() => res.json(CreateResponse(TABLE_CREATED)))
 		.catch((e) => console.log(e));
+});
+
+router.put('/edit', async (req: Request, res: Response) => {
+	const { tableId, name, description } = req.body;
+
+	const err = isInt([tableId]);
+	if (err) return res.json(err);
+
+	const table = await tableRepository.findOne({
+		where: { id: parseInt(tableId) },
+		relations: ['company'],
+	});
+	if (!table) return res.json(CreateResponse(TABLE_CANNOT_BE_FOUND));
+
+	if (!isOwner(req.session.userId, table.company.id))
+		return res.json(CreateResponse(OWNER_ERROR));
+
+	table.name = name ? name : table.name;
+	table.description = description ? description : table.description;
+	await tableRepository.save(table).catch((error) => {
+		logger(error);
+		return res.json(CreateResponse(TABLE_EDIT_FAILED));
+	});
+
+	return res.json(CreateResponse(TABLE_EDIT_SUCCEEDED));
 });
 
 router.delete('/remove', async (req: Request, res: Response) => {
