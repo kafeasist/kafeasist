@@ -2,5 +2,4 @@
 
 # TODOs and Bugs
 
--   [ ] Add 2FA to login endpoint
 -   [ ] Add endpoint tests to controllers

@@ -16,6 +16,8 @@ import { User } from '../entities/User';
 import {
 	ACCOUNT_CREATED,
 	FAILED_FORGOT_PASSWORD,
+	MFA_FAILED,
+	MFA_INCORRECT,
 	PASSWORD_CHANGED,
 	SAME_PASSWORD,
 	SUCCESSFUL_FORGOT_PASSWORD,
@@ -26,6 +28,7 @@ import {
 } from '../config/Responses';
 import { isAuth } from '../middlewares/isAuth';
 import { isNotAuth } from '../middlewares/isNotAuth';
+import { totp } from 'speakeasy';
 
 const router = Router();
 
@@ -69,7 +72,7 @@ router.post('/register', isNotAuth, async (req: Request, res: Response) => {
 });
 
 router.post('/login', isNotAuth, async (req, res) => {
-	const { emailOrPhone, password } = req.body;
+	const { emailOrPhone, password, mfa } = req.body;
 
 	const error = CreateResponse(USERNAME_OR_PASSWORD_NOT_FOUND);
 
@@ -85,6 +88,21 @@ router.post('/login', isNotAuth, async (req, res) => {
 		);
 
 		return res.json(error);
+	}
+
+	if (user.mfa) {
+		if (!mfa) return res.json(CreateResponse(MFA_FAILED));
+
+		const err = validateInputs({ mfa });
+		if (err) return res.json(err);
+
+		const result = totp.verify({
+			secret: user.mfa,
+			encoding: 'base32',
+			token: mfa,
+		});
+
+		if (!result) return res.json(CreateResponse(MFA_INCORRECT));
 	}
 
 	logIn(req, user.id);

@@ -136,7 +136,7 @@ router.get('/generate2fa', isAuth, async (req, res) => {
 		otpauth_url: true,
 	});
 
-	await setKey(MFA_PREFIX + userId, secret.ascii);
+	await setKey(MFA_PREFIX + userId, secret.base32);
 
 	return qrcode.toDataURL(secret.otpauth_url as string, (err, data) => {
 		if (err) return res.json(CreateResponse(MFA_ACTIVATION_FAILED));
@@ -164,13 +164,13 @@ router.post('/activate2fa', isAuth, async (req: Request, res: Response) => {
 
 	const result = totp.verify({
 		secret,
-		encoding: 'ascii',
+		encoding: 'base32',
 		token: code,
 	});
 
 	if (!result) return res.json(CreateResponse(MFA_INCORRECT));
 
-	user.mfa = true;
+	user.mfa = secret;
 	await User.save(user);
 	await removeKey(MFA_PREFIX + userId);
 
