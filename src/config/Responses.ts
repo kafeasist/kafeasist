@@ -43,7 +43,7 @@ export const USER_CANNOT_BE_FOUND: CustomResponse = {
 export const SAME_PASSWORD: CustomResponse = {
 	code: 7,
 	message: 'Oluşturacağınız şifre öncekiyle aynı olamaz.',
-	fields: ['newPassword', 'confirmNewPassword'],
+	fields: ['password', 'confirmPassword'],
 };
 
 export const PASSWORD_CHANGED: CustomResponse = {
@@ -326,4 +326,58 @@ export const SUBSCRIPTION_NOT_FOUND: CustomResponse = {
 export const SLOW_DOWN: CustomResponse = {
 	code: 58,
 	message: 'Lütfen sunuculara istek gönderirken yavaşlayın!',
+};
+
+export const ROLE_CANNOT_BE_FOUND: CustomResponse = {
+	code: 59,
+	message: 'Belirttiğiniz rol bulunamadı!',
+};
+
+export const EMPLOYEE_CREATED: CustomResponse = {
+	code: 60,
+	message: 'Çalışan profili oluşturuldu',
+	error: false,
+};
+
+export const EMPLOYEE_CANNOT_BE_FOUND: CustomResponse = {
+	code: 61,
+	message: 'Çalışan bulunamadı!',
+};
+
+export const EMPLOYEE_REMOVED: CustomResponse = {
+	code: 62,
+	message: 'Çalışan profili başarıyla silindi!',
+	error: false,
+};
+
+export const EMPLOYEE_REMOVE_FAILED: CustomResponse = {
+	code: 63,
+	message: 'Çalışan profili silinirken bir hatayla karşılaşıldı!',
+};
+
+export const EMPLOYEE_EDIT_FAILED: CustomResponse = {
+	code: 64,
+	message: 'Çalışan profili düzenlenirken bir hatayla karşılaşıldı!',
+};
+
+export const EMPLOYEE_EDITED: CustomResponse = {
+	code: 65,
+	message: 'Çalışan profili başarıyla düzenlendi!',
+	error: false,
+};
+
+export const NO_EMPLOYEE_FOUND: CustomResponse = {
+	code: 66,
+	message: 'Belirtilen şirketin hiçbir çalışan profili bulunamadı!',
+};
+
+export const EMPLOYEE_CREATE_FAILED: CustomResponse = {
+	code: 67,
+	message: 'Çalışan profili oluşturulurken bir hatayla karşılaşıldı!',
+};
+
+export const INPUT_USERNAME: CustomResponse = {
+	code: 68,
+	message:
+		'Kullanıcı adı 8-20 karakter arası sadece İngilizce küçük harflerle yazılmalıdır.',
 };

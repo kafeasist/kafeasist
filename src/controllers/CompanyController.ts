@@ -16,6 +16,7 @@ import {
 	EMPTY_ID,
 	LIMIT_REACHED,
 	NO_CATEGORY_FOUND,
+	NO_EMPLOYEE_FOUND,
 	NO_TABLE_FOUND,
 	SUBSCRIPTION_NOT_FOUND,
 	USER_CANNOT_BE_FOUND,
@@ -88,6 +89,28 @@ router.get('/categories', async (req: Request, res: Response) => {
 	if (!categories) return res.json(CreateResponse(NO_CATEGORY_FOUND));
 
 	return res.json(categories);
+});
+
+router.get('/employees', async (req: Request, res: Response) => {
+	const { id }: any = req.query;
+
+	if (!id) return res.json(CreateResponse(EMPTY_ID));
+
+	const err = isInt([id]);
+	if (err) return res.json(err);
+
+	const company = await companyRepository.findOne({
+		where: { id: parseInt(id) },
+		relations: ['employees'],
+	});
+
+	if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
+
+	const employees = company.employees;
+
+	if (!employees) return res.json(CreateResponse(NO_EMPLOYEE_FOUND));
+
+	return res.json(employees);
 });
 
 router.post('/create', isAuth, async (req: Request, res: Response) => {

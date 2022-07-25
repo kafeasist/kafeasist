@@ -7,11 +7,15 @@ import CompanyController from '../controllers/CompanyController';
 import TableController from '../controllers/TableController';
 import FoodController from '../controllers/FoodController';
 import CategoryController from '../controllers/CategoryController';
+import EmployeeController from '../controllers/EmployeeController';
 import { API_NOT_FOUND } from '../config/Responses';
+import { __version__ } from '../config/constants';
 
 const router = Router();
 
-router.get('/', (_: Request, res: Response) => res.json({ version: 1 }));
+router.get('/', (_: Request, res: Response) =>
+	res.json({ version: __version__ }),
+);
 
 // routers
 router.use('/auth', AuthController);
@@ -20,6 +24,7 @@ router.use('/company', isAuth, CompanyController);
 router.use('/table', isAuth, TableController);
 router.use('/food', isAuth, FoodController);
 router.use('/category', isAuth, CategoryController);
+router.use('/employee', isAuth, EmployeeController);
 
 router.use((_: Request, res: Response) => {
 	res.status(404);

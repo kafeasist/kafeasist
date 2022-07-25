@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 import { Secret } from 'jsonwebtoken';
 dotenv.config();
 
+export const __version__ = 1;
+
 export const __port__ = process.env.PORT;
 export const __prod__ = process.env.NODE_ENV === 'prod';
 export const __cors_origin__ = 'http://localhost:3000';

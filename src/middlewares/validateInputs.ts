@@ -1,5 +1,6 @@
 import {
 	INPUT_ADDRESS,
+	INPUT_USERNAME,
 	INPUT_EMAIL,
 	INPUT_LAST_NAME,
 	INPUT_NAME,
@@ -16,6 +17,7 @@ import {
 	nameValidation,
 	passwordValidation,
 	phoneValidation,
+	usernameValidation,
 } from '../utils/validation';
 
 interface InputOptions {
@@ -25,6 +27,7 @@ interface InputOptions {
 }
 
 export interface InputsInterface {
+	username?: string | InputOptions;
 	name?: string | InputOptions;
 	last_name?: string | InputOptions;
 	phone?: string | InputOptions;
@@ -38,6 +41,14 @@ export interface InputsInterface {
 export const validateInputs = (
 	inputs: InputsInterface,
 ): KafeasistResponse | void => {
+	if (inputs.username) {
+		let username = inputs.username as string;
+		if (typeof inputs.username !== 'string')
+			username = inputs.username.value;
+		if (!usernameValidation(username))
+			return CreateResponse(INPUT_USERNAME);
+	}
+
 	if (inputs.name) {
 		let name = inputs.name as string;
 		if (typeof inputs.name !== 'string') name = inputs.name.value;
