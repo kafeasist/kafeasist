@@ -1,20 +1,13 @@
 import connectRedis from 'connect-redis';
 import session from 'express-session';
 import Redis from 'ioredis';
-import {
-	__cookie_name__,
-	__prod__,
-	__redis_host__,
-	__redis_password__,
-	__redis_port__,
-	__session_secret__,
-} from '../config/constants';
+import { env } from '../config/constants';
 
 export const RedisStore = connectRedis(session);
+// TODO why export?
 export const redis = new Redis({
-	host: __redis_host__,
-	port: __redis_port__,
-	// password: __redis_password__,
+	port: parseInt(env.REDIS_PORT),
+	host: env.REDIS_HOST,
 	enableReadyCheck: false,
 });
 

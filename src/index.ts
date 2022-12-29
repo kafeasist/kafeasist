@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { __port__ } from './config/constants';
+import { env } from './config/constants';
 import { orm } from './config/typeorm.config';
 import app from './app';
 
@@ -7,8 +7,8 @@ if (require.main === module) {
 	orm.initialize()
 		.then(() => {
 			console.log('Database connected');
-			app.listen(__port__, () =>
-				console.log(`Listening on :${__port__}`),
+			app.listen(env.PORT, () =>
+				console.log(`Listening on :${env.PORT}`),
 			);
 		})
 		.catch((err) => console.log(err.message));

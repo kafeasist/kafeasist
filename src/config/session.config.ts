@@ -1,5 +1,5 @@
 import { SessionOptions } from 'express-session';
-import { __cookie_name__, __prod__, __session_secret__ } from './constants';
+import { env } from './constants';
 import { RedisStore, redis } from '../utils/connectRedis';
 
 export const sessionStore = new RedisStore({
@@ -8,15 +8,15 @@ export const sessionStore = new RedisStore({
 });
 
 export const sessionOptions: SessionOptions = {
-	name: __cookie_name__,
+	name: env.COOKIE_NAME,
 	store: sessionStore,
 	cookie: {
 		maxAge: 1000 * 60 * 60 * 24 * 365 * 2, // 2 years
 		httpOnly: true,
 		sameSite: 'lax',
-		secure: __prod__,
+		secure: env.PROD,
 	},
 	saveUninitialized: false,
-	secret: __session_secret__,
+	secret: env.SESSION_SECRET,
 	resave: false,
 };

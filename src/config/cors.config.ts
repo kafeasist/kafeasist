@@ -1,7 +1,7 @@
 import { CorsOptions } from 'cors';
-import { __cors_origin__ } from './constants';
+import { env } from './constants';
 
 export const corsOptions = {
-	origin: __cors_origin__,
+	origin: env.CORS_ORIGIN,
 	credentials: true,
 } as CorsOptions;

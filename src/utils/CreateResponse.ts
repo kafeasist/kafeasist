@@ -1,5 +1,5 @@
 import { CustomResponse, KafeasistResponse } from '../types/ErrorStack';
-import { __prod__ } from '../config/constants';
+import { env } from '../config/constants';
 
 export const CreateResponse = (
 	{ error, code, message, fields }: CustomResponse,
@@ -21,7 +21,7 @@ export const CreateResponse = (
 			error: err.message,
 			fields,
 			help: `https://destek.kafeasist.com/hata?kod=${code}`,
-			stack: __prod__
+			stack: env.PROD
 				? 'Stack not reachable due to production reasons.'
 				: err.stack,
 			issuer,

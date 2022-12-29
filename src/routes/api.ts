@@ -9,12 +9,12 @@ import FoodController from '../controllers/FoodController';
 import CategoryController from '../controllers/CategoryController';
 import EmployeeController from '../controllers/EmployeeController';
 import { API_NOT_FOUND } from '../config/Responses';
-import { __version__ } from '../config/constants';
+import { env } from '../config/constants';
 
 const router = Router();
 
 router.get('/', (_: Request, res: Response) =>
-	res.json({ version: __version__ }),
+	res.json({ version: env.VERSION }),
 );
 
 // routers

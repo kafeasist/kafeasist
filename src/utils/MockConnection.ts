@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { __db_user__, __db_pass__, __db_name__ } from '../config/constants';
+import { env } from '../config/constants';
 import { DataSource } from 'typeorm';
 import app from '../app';
 import { Server } from 'http';
@@ -9,8 +9,8 @@ export const mockConnection = new DataSource({
 	type: 'postgres',
 	host: 'localhost',
 	port: 5432,
-	username: __db_user__,
-	password: __db_pass__,
+	username: env.DB_USER,
+	password: env.DB_PASS,
 	database: 'kafeasist_test',
 	synchronize: true,
 	logging: false,

@@ -1,26 +1,33 @@
+import { z } from 'zod';
 import dotenv from 'dotenv';
-import { Secret } from 'jsonwebtoken';
 dotenv.config();
 
-export const __version__ = 1;
+const envSchema = z.object({
+	CORS_ORIGIN: z.string().url() || 'http://localhost:3000',
+	VERSION: z.string() || '1',
+	PORT: z.string() || '8000',
+	NODE_ENV: z.string() || 'dev',
+	JWT_SECRET: z.string().nullable(), // TODO: Parse as Secret
+	COOKIE_NAME: z.string() || 'qid',
+	SESSION_SECRET: z.string(),
+	REDIS_HOST: z.string() || 'localhost',
+	REDIS_PORT: z.string() || '6379',
+	DB_HOST: z.string() || 'localhost',
+	DB_PORT: z.string() || '5432',
+	DB_NAME: z.string() || 'kafeasist',
+	DB_USER: z.string() || 'postgres',
+	DB_PASS: z.string(),
+	ABSTRACT_API_KEY: z.string().nullable(),
+});
 
-export const __port__ = process.env.PORT;
-export const __prod__ = process.env.NODE_ENV === 'prod';
-export const __cors_origin__ = 'http://localhost:3000';
+const parsed = envSchema.safeParse(process.env);
 
-export const __jwt_secret__ = process.env.JWT_SECRET as Secret;
+if (!parsed.success) {
+	console.error(
+		'Invalid environment variables:',
+		JSON.stringify(parsed.error.format(), null, 4),
+	);
+	process.exit(1);
+}
 
-export const __cookie_name__: string = process.env.COOKIE_NAME || 'qid';
-export const __session_secret__: string =
-	process.env.COOKIE_SECRET || 'secretcookie';
-
-export const __redis_host__: string = process.env.REDIS_HOST || 'localhost';
-export const __redis_port__: number =
-	parseInt(process.env.REDIS_PORT as string) || 6379;
-export const __redis_password__: string = process.env.REDIS_PASSWORD || '';
-
-export const __db_name__ = 'kafeasist';
-export const __db_user__: string = process.env.DB_USER || 'postgres';
-export const __db_pass__: string = process.env.DB_PASS || '';
-
-export const ABSTRACT_API_KEY = process.env.ABSTRACT_API_KEY;
+export const env = { ...parsed.data, PROD: parsed.data.NODE_ENV === 'prod' };

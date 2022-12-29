@@ -1,10 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { CreateResponse } from '../utils/CreateResponse';
-import {
-	ABSTRACT_API_KEY,
-	__jwt_secret__,
-	__prod__,
-} from '../config/constants';
+import { env } from '../config/constants';
 import * as argon2 from 'argon2';
 import { logIn, logOut } from '../utils/logUser';
 import { v4 as uuidv4 } from 'uuid';
@@ -84,7 +80,7 @@ router.post('/login', isNotAuth, async (req, res) => {
 	if (!(await argon2.verify(user.password, password))) {
 		await axios.get(
 			'https://ipgeolocation.abstractapi.com/v1/?api_key=' +
-				ABSTRACT_API_KEY,
+				env.ABSTRACT_API_KEY,
 		);
 
 		return res.json(error);
