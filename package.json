@@ -7,15 +7,14 @@
 	"license": "MIT",
 	"scripts": {
 		"lint": "eslint --fix",
-		"lint:init": "eslint --init",
 		"watch": "tsc -w",
 		"build": "tsc --build",
 		"dev": "nodemon dist/index.js",
 		"start": "node dist/index.js",
+		"start:prod": "NODE_ENV=prod node dist/index.js",
 		"test": "jest"
 	},
 	"devDependencies": {
-		"@types/argon2": "^0.15.0",
 		"@types/connect-redis": "^0.0.18",
 		"@types/cors": "^2.8.12",
 		"@types/express": "^4.17.13",
