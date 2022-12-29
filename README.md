@@ -191,5 +191,5 @@ This project is licensed under `GNU General Public License v3.0` if you want to 
 [stars-url]: https://github.com/EgeOnder/kafeasist-node/stargazers
 [issues-shield]: https://img.shields.io/github/issues/EgeOnder/kafeasist-node.svg?style=for-the-badge
 [issues-url]: https://github.com/EgeOnder/kafeasist-node/issues
-[license-shield]: https://img.shields.io/github/license/EgeOnder/kafeasist-node.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/EgeOnder/kafeasist-node?style=for-the-badge
 [license-url]: https://github.com/EgeOnder/kafeasist-node/blob/main/LICENSE
