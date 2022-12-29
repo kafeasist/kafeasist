@@ -173,7 +173,7 @@ Contributions to the project is highly appreciated. If you have any suggestions/
 
 ## License
 
-This project is licensed under `MIT License` if you want to see more, please check [LICENSE][license-url] for more information.
+This project is licensed under `GNU General Public License v3.0` if you want to see more, please check [LICENSE][license-url] for more information.
 
 ## Maintainers
 
