@@ -40,7 +40,7 @@ export const __test_db_port__ = process.env.TEST_DB_PORT;
 export const __iyzipay_config__: IyzipayConfig = {
 	apiKey: process.env.IYZIPAY_API_KEY,
 	secretKey: process.env.IYZIPAY_SECRET_KEY,
-	uri: process.env.IYZIPAY_URI,
+	uri: process.env.IYZIPAY_URI || 'https://sandbox-api.iyzipay.com',
 };
 
 export const __iyzipay_number__ = process.env.IYZIPAY_NUMBER;
