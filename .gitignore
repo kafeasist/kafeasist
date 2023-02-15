@@ -114,3 +114,6 @@ cache/
 
 # Docker Compose
 docker-compose.yml
+
+# .DS_Store
+.DS_Store

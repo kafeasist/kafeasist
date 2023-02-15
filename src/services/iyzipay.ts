@@ -42,7 +42,7 @@ const initSubscriptionCheckoutForm = (
 			subscriptionInitialStatus:
 				Iyzipay.SUBSCRIPTION_INITIAL_STATUS.ACTIVE,
 		},
-		async (_, result) => {
+		async (_: any, result: any) => {
 			if (
 				result.status === 'failure' ||
 				result?.conversationId !== __iyzipay_number__
@@ -78,7 +78,7 @@ const retrieveSubscriptionCheckoutForm = (
 			...props,
 			conversationId: __iyzipay_number__,
 		},
-		async (_, result) => {
+		async (_: any, result: any) => {
 			if (
 				result.status === 'failure' ||
 				result?.conversationId !== __iyzipay_number__
