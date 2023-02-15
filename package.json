@@ -8,17 +8,16 @@
 	"types": "./src/types/iyzipay.d.ts",
 	"scripts": {
 		"lint": "eslint --fix",
-		"lint:init": "eslint --init",
 		"watch": "tsc -w",
 		"build": "tsc --build",
 		"dev": "nodemon dist/index.js",
 		"start": "node dist/index.js",
-		"test": "TS_NODE_FILES=true mocha --recursive --timeout 8000 --exit",
+		"start:prod": "NODE_ENV=prod node dist/index.js",
+		"test": "NODE_ENV=test TS_NODE_FILES=true mocha --recursive --timeout 8000 --exit",
 		"test:cover": "nyc npm run test && nyc report --reporter=lcov"
 	},
 	"devDependencies": {
 		"@istanbuljs/nyc-config-typescript": "^1.0.2",
-		"@types/argon2": "^0.15.0",
 		"@types/chai": "^4.3.3",
 		"@types/connect-redis": "^0.0.18",
 		"@types/cors": "^2.8.12",
@@ -58,7 +57,7 @@
 		"express-session": "^1.17.3",
 		"ioredis": "^5.0.6",
 		"iyzipay": "^2.0.48",
-		"jsonwebtoken": "^8.5.1",
+		"jsonwebtoken": "^9.0.0",
 		"pg": "^8.8.0",
 		"qrcode": "^1.5.0",
 		"reflect-metadata": "^0.1.13",
