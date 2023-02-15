@@ -1,25 +1,43 @@
 {
-  "name": "kafeasist",
-  "version": "0.0.0",
-  "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  },
-  "devDependencies": {
-    "eslint-config-custom": "workspace:*",
-    "prettier": "latest",
-    "turbo": "latest"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "dependencies": {},
-  "packageManager": "pnpm@7.27.0"
+	"name": "kafeasist",
+	"version": "0.0.0",
+	"description": "",
+	"author": {
+		"name": "Ege Onder",
+		"email": "40398628+EgeOnder@users.noreply.github.com",
+		"url": "https://github.com/EgeOnder"
+	},
+	"type": "module",
+	"license": "GNU General Public License v3.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/EgeOnder/kafeasist.git"
+	},
+	"scripts": {
+		"typecheck": "turbo typecheck",
+		"build": "turbo build",
+		"build:www": "turbo --filter=www build",
+		"build:api": "turbo --filter=api build",
+		"start": "turbo start",
+		"start:www": "turbo --filter=www start",
+		"start:api": "turbo --filter=api start",
+		"dev": "turbo dev",
+		"dev:www": "turbo --filter=www dev",
+		"dev:api": "turbo --filter=api dev",
+		"lint": "turbo lint",
+		"format": "turbo format && prettier --write \"**/*.{ts,tsx,md}\"",
+		"release": "changeset version"
+	},
+	"devDependencies": {
+		"eslint-config-custom": "workspace:*",
+		"prettier": "latest",
+		"turbo": "latest"
+	},
+	"engines": {
+		"node": ">=14.0.0"
+	},
+	"dependencies": {
+		"@changesets/cli": "^2.26.0"
+	},
+	"packageManager": "pnpm@7.27.0"
 }

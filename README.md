@@ -1,73 +1,58 @@
-# Turborepo starter
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/40398628/219168270-f14d82ed-1466-4cf2-9d2f-e02bdf00bce4.png" width="130" alt="Logo" />
+</p>
 
-This is an official pnpm starter turborepo.
+<h1 align="center">
+  kafeasist
+</h1>
 
-## What's inside?
+<p align="center">
+  kafeasist is a café/restaurant/bar management software made with ❤️. kafeasist is a software as a service that you can subscribe to monthly or yearly and leave whenever you want. kafeasist makes managing your business much more simpler with easy-to-use dashboard. Keeps track of your data and stores it in a cloud server so you wouldn't lose any of it! With kafeasist, you won't need any other software to run your business.
+</p>
 
-This turborepo uses [pnpm](https://pnpm.io) as a package manager. It includes the following packages/apps:
+<div align="center">
 
-### Apps and Packages
+[![Build][build-shield]][build-url]
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+</div>
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+# Table of contents
 
-### Utilities
+-   [Getting Started](#getting-started)
+    -   [kafeasist Stack](#kafeasist-stack)
+    -   [Why?](#why)
+-   [Contributing](#contributing)
+-   [License](#license)
+-   [Maintainers](#maintainers)
 
-This turborepo has some additional tools already setup for you:
+# Getting Started
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+## kafeasist Stack
 
-### Build
+## Why?
 
-To build all apps and packages, run the following command:
+# Contributing
 
-```
-cd my-turborepo
-pnpm run build
-```
+Contributions to the project is highly appreciated. If you have any suggestions/questions/requests please consider [opening an issue](https://github.com/EgeOnder/kafeasist/issues/new). If you want to contribute to the project, fixing an open issue is greatly recommended and appreciated. To see the all contribution rules please check the [contribution rules](CONTRIBUTING.md).
 
-### Develop
+# License
 
-To develop all apps and packages, run the following command:
+This project is licensed under `GNU General Public License v3.0` if you want to see more, please check [LICENSE][license-url] for more information.
 
-```
-cd my-turborepo
-pnpm run dev
-```
+# Maintainers
 
-### Remote Caching
+| Name      | E-Mail                                     | Twitter                                       | Role      |
+| --------- | ------------------------------------------ | --------------------------------------------- | --------- |
+| Ege Onder | 40398628+EgeOnder@users.noreply.github.com | [@EgeOnder23](https://twitter.com/EgeOnder23) | developer |
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-pnpm dlx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your turborepo:
-
-```
-pnpm dlx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+[build-shield]: https://img.shields.io/github/actions/workflow/status/EgeOnder/kafeasist/main.yml?style=for-the-badge
+[build-url]: https://github.com/EgeOnder/kafeasist/actions
+[contributors-shield]: https://img.shields.io/github/contributors/EgeOnder/kafeasist.svg?style=for-the-badge
+[contributors-url]: https://github.com/EgeOnder/kafeasist/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/EgeOnder/kafeasist.svg?style=for-the-badge
+[forks-url]: https://github.com/EgeOnder/kafeasist/network/members
+[stars-shield]: https://img.shields.io/github/stars/EgeOnder/kafeasist.svg?style=for-the-badge
+[stars-url]: https://github.com/EgeOnder/kafeasist/stargazers
