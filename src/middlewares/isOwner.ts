@@ -6,8 +6,7 @@ import {
 } from '../config/Responses';
 import { orm } from '../config/typeorm.config';
 import { Company } from '../entities/Company';
-import { KafeasistResponse } from '../types/ErrorStack';
-import { CreateResponse } from '../utils/CreateResponse';
+import { CreateResponse, KafeasistResponse } from '../utils/CreateResponse';
 
 const companyRepository = orm.getRepository(Company);
 

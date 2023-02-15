@@ -5,6 +5,7 @@ import {
 	phoneValidation,
 	usernameValidation,
 } from '../validation';
+import { expect } from 'chai';
 
 describe('validation util function', () => {
 	it('username validation', () => {
@@ -29,10 +30,10 @@ describe('validation util function', () => {
 		];
 
 		succeed.forEach((username) =>
-			expect(usernameValidation(username)).toBe(true),
+			expect(usernameValidation(username)).equal(true),
 		);
 		fail.forEach((username) =>
-			expect(usernameValidation(username)).toBe(false),
+			expect(usernameValidation(username)).equal(false),
 		);
 	});
 
@@ -57,8 +58,8 @@ describe('validation util function', () => {
 			'na.me',
 		];
 
-		succeed.forEach((name) => expect(nameValidation(name)).toBe(true));
-		fail.forEach((name) => expect(nameValidation(name)).toBe(false));
+		succeed.forEach((name) => expect(nameValidation(name)).equal(true));
+		fail.forEach((name) => expect(nameValidation(name)).equal(false));
 	});
 
 	it('phone validation', async () => {
@@ -83,8 +84,8 @@ describe('validation util function', () => {
 			'123 123 1212a',
 		];
 
-		succeed.forEach((phone) => expect(phoneValidation(phone)).toBe(true));
-		fail.forEach((phone) => expect(phoneValidation(phone)).toBe(false));
+		succeed.forEach((phone) => expect(phoneValidation(phone)).equal(true));
+		fail.forEach((phone) => expect(phoneValidation(phone)).equal(false));
 	});
 
 	it('email validation', async () => {
@@ -103,8 +104,8 @@ describe('validation util function', () => {
 			'@hotmail.com',
 		];
 
-		succeed.forEach((email) => expect(emailValidation(email)).toBe(true));
-		fail.forEach((email) => expect(emailValidation(email)).toBe(false));
+		succeed.forEach((email) => expect(emailValidation(email)).equal(true));
+		fail.forEach((email) => expect(emailValidation(email)).equal(false));
 	});
 
 	it('password validation', async () => {
@@ -124,7 +125,7 @@ describe('validation util function', () => {
 			'NeeDNumbeR',
 		];
 
-		succeed.forEach((pass) => expect(passwordValidation(pass)).toBe(true));
-		fail.forEach((pass) => expect(passwordValidation(pass)).toBe(false));
+		succeed.forEach((pass) => expect(passwordValidation(pass)).equal(true));
+		fail.forEach((pass) => expect(passwordValidation(pass)).equal(false));
 	});
 });

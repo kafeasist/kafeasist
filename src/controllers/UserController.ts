@@ -6,7 +6,7 @@ import { CreateResponse } from '../utils/CreateResponse';
 import { logger } from '../utils/logger';
 import speakeasy, { GeneratedSecretWithOtpAuthUrl, totp } from 'speakeasy';
 import qrcode from 'qrcode';
-import { getKey, removeKey, setKey } from '../utils/connectRedis';
+import { getKey, removeKey, setKey } from '../services/connectRedis';
 import {
 	ALREADY_SUBSCRIBED,
 	EMPTY_ID,
@@ -22,15 +22,25 @@ import {
 	USER_REMOVE_FAILED,
 } from '../config/Responses';
 import { isInt } from '../middlewares/isInt';
-import { validateInputs } from '../middlewares/validateInputs';
+import { validateInputs } from '../utils/validateInputs';
 import { isAdmin } from '../middlewares/isAdmin';
 import { getSubscriptionType } from '../utils/getSubscriptionType';
+import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';
 
 const router = Router();
 
 const MFA_PREFIX: string = '2fa_secret_';
 
 const userRepository = orm.getRepository(User);
+
+export interface UserActivate2FAParams {
+	code: string;
+}
+
+export interface UserUpdateSubsTypeParams {
+	id: any;
+	subs_type: any;
+}
 
 router.get('/me', isAuth, async (req: Request, res: Response) => {
 	const id = req.session.userId;
@@ -76,8 +86,8 @@ router.get('/get', isAdmin, async (req: Request, res: Response) => {
 	return res.json(user);
 });
 
-router.get('/companies', async (req: Request, res: Response) => {
-	const { id }: any = req.query;
+router.get('/companies', async (req: IDRequest, res: Response) => {
+	const { id } = req.query;
 
 	if (!id) return res.json(CreateResponse(EMPTY_ID));
 
@@ -118,7 +128,7 @@ router.delete('/remove', isAdmin, async (req: Request, res: Response) => {
 		});
 });
 
-router.get('/generate2fa', isAuth, async (req, res) => {
+router.get('/generate2fa', isAuth, async (req: Request, res: Response) => {
 	const userId: number | undefined = req.session.userId;
 
 	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
@@ -145,59 +155,69 @@ router.get('/generate2fa', isAuth, async (req, res) => {
 	});
 });
 
-router.post('/activate2fa', isAuth, async (req: Request, res: Response) => {
-	const { code } = req.body;
+router.post(
+	'/activate2fa',
+	isAuth,
+	async (req: ExtendedRequest<UserActivate2FAParams>, res: Response) => {
+		const { code } = req.body;
 
-	const userId = req.session.userId;
-	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+		const userId = req.session.userId;
+		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
-	const user = await userRepository.findOne({ where: { id: userId } });
-	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+		const user = await userRepository.findOne({ where: { id: userId } });
+		if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
-	if (user.mfa) return res.json(CreateResponse(MFA_ALREADY_ACTIVE));
+		if (user.mfa) return res.json(CreateResponse(MFA_ALREADY_ACTIVE));
 
-	const secret = await getKey(MFA_PREFIX + userId);
-	if (!secret) return res.json(CreateResponse(TRY_AGAIN_SERVER));
+		const secret = await getKey(MFA_PREFIX + userId);
+		if (!secret) return res.json(CreateResponse(TRY_AGAIN_SERVER));
 
-	const err = validateInputs({ mfa: code });
-	if (err) return res.json(err);
+		const err = validateInputs({ mfa: code });
+		if (err) return res.json(err);
 
-	const result = totp.verify({
-		secret,
-		encoding: 'base32',
-		token: code,
-	});
+		const result = totp.verify({
+			secret,
+			encoding: 'base32',
+			token: code,
+		});
 
-	if (!result) return res.json(CreateResponse(MFA_INCORRECT));
+		if (!result) return res.json(CreateResponse(MFA_INCORRECT));
 
-	user.mfa = secret;
-	await User.save(user);
-	await removeKey(MFA_PREFIX + userId);
+		user.mfa = secret;
+		await User.save(user);
+		await removeKey(MFA_PREFIX + userId);
 
-	return res.json(CreateResponse(MFA_SUCCEEDED));
-});
+		return res.json(CreateResponse(MFA_SUCCEEDED));
+	},
+);
 
-router.post('/updateSubType', isAdmin, async (req: Request, res: Response) => {
-	const { id, subs_type } = req.body;
+router.post(
+	'/updateSubType',
+	isAdmin,
+	async (req: ExtendedRequest<UserUpdateSubsTypeParams>, res: Response) => {
+		const { id, subs_type } = req.body;
 
-	if (!id || !subs_type) return res.json(EMPTY_ID);
+		if (!id || !subs_type) return res.json(EMPTY_ID);
 
-	const err = isInt([id, subs_type]);
-	if (err) return res.json(err);
+		const err = isInt([id, subs_type]);
+		if (err) return res.json(err);
 
-	const user = await userRepository.findOne({ where: { id: parseInt(id) } });
-	if (!user) return res.json(USER_CANNOT_BE_FOUND);
+		const user = await userRepository.findOne({
+			where: { id: parseInt(id) },
+		});
+		if (!user) return res.json(USER_CANNOT_BE_FOUND);
 
-	if (user.subs_type === parseInt(subs_type))
-		return res.json(ALREADY_SUBSCRIBED);
+		if (user.subs_type === parseInt(subs_type))
+			return res.json(ALREADY_SUBSCRIBED);
 
-	if (getSubscriptionType(parseInt(subs_type)) === null)
-		return res.json(SUBSCRIPTION_NOT_FOUND);
+		if (getSubscriptionType(parseInt(subs_type)) === null)
+			return res.json(SUBSCRIPTION_NOT_FOUND);
 
-	user.subs_type = parseInt(subs_type);
-	await userRepository.save(user);
+		user.subs_type = parseInt(subs_type);
+		await userRepository.save(user);
 
-	return res.json(SUBSCRIPTION_CHANGED);
-});
+		return res.json(SUBSCRIPTION_CHANGED);
+	},
+);
 
 export default router;

@@ -1,32 +1,41 @@
-import app from '../../app';
-import request from 'supertest';
 import { API_404, API_NOT_FOUND } from '../../config/Responses';
-import { CreateResponse } from '../../utils/CreateResponse';
 import { __version__ } from '../../config/constants';
+import { assert } from 'chai';
+import { TestFactory } from '../../utils/TestFactory';
 
 describe('GET /', () => {
-	it('should give 404 error', async () => {
-		const response = await request(app).get('/');
+	const factory: TestFactory = new TestFactory();
 
-		expect({ ...response.body, stack: undefined }).toEqual({
-			...CreateResponse(API_404),
-			stack: undefined,
+	before(async () => {
+		await factory.init();
+	});
+
+	after(async () => {
+		await factory.close();
+	});
+
+	it('should give 404 error', (done) => {
+		factory.app.get('/').end((err, res) => {
+			if (err) return done(err);
+			assert(res.body.error === API_404.message);
+			return done();
 		});
 	});
 
-	it('should give the version of the API', async () => {
-		const response = await request(app).get('/api');
-
-		expect(response.body).toEqual({ version: __version__ });
+	it('should give the version of the API', (done) => {
+		factory.app.get('/api').end((err, res) => {
+			if (err) return done(err);
+			assert(res.body.version === __version__);
+			return done();
+		});
 	});
 
-	it('should give not found error', async () => {
+	it('should give not found error', (done) => {
 		const random = (Math.random() + 1).toString(36).substring(7);
-		const response = await request(app).get('/api/' + random);
-
-		expect({ ...response.body, stack: undefined }).toEqual({
-			...CreateResponse(API_NOT_FOUND),
-			stack: undefined,
+		factory.app.get('/api/' + random).end((err, res) => {
+			if (err) return done(err);
+			assert(res.body.error === API_NOT_FOUND.message);
+			return done();
 		});
 	});
 });

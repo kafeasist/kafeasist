@@ -1,4 +1,4 @@
-import { SubscriptionTypes } from '../types/SubscriptionInfo';
+import { SubscriptionTypes } from './SubscriptionInfo';
 
 export const getSubscriptionType = (
 	subsType: number,

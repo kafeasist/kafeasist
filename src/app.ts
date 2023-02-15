@@ -7,6 +7,16 @@ import { sessionOptions } from './config/session.config';
 import apiRoutes from './routes/api';
 import { CreateResponse } from './utils/CreateResponse';
 import rateLimit from 'express-rate-limit';
+import { io } from 'socket.io-client';
+import { __socket_server__, __testing__ } from './config/constants';
+import { logger } from './utils/logger';
+import { isTesting } from './middlewares/isTesting';
+
+export const socket = io(__socket_server__);
+
+socket.on('connect_error', (err) => {
+	logger(err.message);
+});
 
 const apiRateLimiter = rateLimit({
 	windowMs: 15 * 1000,
@@ -14,6 +24,7 @@ const apiRateLimiter = rateLimit({
 	standardHeaders: true,
 	legacyHeaders: false,
 	message: CreateResponse(SLOW_DOWN),
+	skip: isTesting,
 });
 
 const app = express()

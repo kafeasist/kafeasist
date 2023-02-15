@@ -1,17 +1,33 @@
-import { CustomResponse, KafeasistResponse } from '../types/ErrorStack';
 import { __prod__ } from '../config/constants';
+
+export interface KafeasistResponse {
+	code: number;
+	error?: string;
+	message?: string;
+	help: string;
+	fields?: string[] | string;
+	stack?: string | undefined;
+	data?: any;
+}
+
+export interface CustomResponse {
+	code: number;
+	message: string;
+	error?: boolean | true;
+	fields?: string[] | string;
+}
 
 export const CreateResponse = (
 	{ error, code, message, fields }: CustomResponse,
-	issuer?: string,
+	data?: any,
 ): KafeasistResponse => {
 	if (error === false) {
 		return {
 			code,
 			message,
 			fields,
-			help: `https://destek.kafeasist.com/mesaj/kod?=${code}`,
-			issuer,
+			help: `https://destek.kafeasist.com/mesaj?kod=${code}`,
+			data,
 		};
 	} else {
 		const err = new Error(message);
@@ -24,7 +40,7 @@ export const CreateResponse = (
 			stack: __prod__
 				? 'Stack not reachable due to production reasons.'
 				: err.stack,
-			issuer,
+			data,
 		};
 	}
 };

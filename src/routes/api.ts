@@ -8,8 +8,10 @@ import TableController from '../controllers/TableController';
 import FoodController from '../controllers/FoodController';
 import CategoryController from '../controllers/CategoryController';
 import EmployeeController from '../controllers/EmployeeController';
+import IyzipayController from '../controllers/IyzipayController';
 import { API_NOT_FOUND } from '../config/Responses';
 import { __version__ } from '../config/constants';
+import { isAdmin } from '../middlewares/isAdmin';
 
 const router = Router();
 
@@ -25,6 +27,7 @@ router.use('/table', isAuth, TableController);
 router.use('/food', isAuth, FoodController);
 router.use('/category', isAuth, CategoryController);
 router.use('/employee', isAuth, EmployeeController);
+router.use('/iyzipay', isAdmin, IyzipayController);
 
 router.use((_: Request, res: Response) => {
 	res.status(404);

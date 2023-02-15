@@ -1,7 +1,7 @@
-import { Request, Response, Router } from 'express';
+import { Response, Router } from 'express';
 import { isInt } from '../middlewares/isInt';
 import { CreateResponse } from '../utils/CreateResponse';
-import { validateInputs } from '../middlewares/validateInputs';
+import { validateInputs } from '../utils/validateInputs';
 import { isOwner } from '../middlewares/isOwner';
 import { orm } from '../config/typeorm.config';
 import { Food } from '../entities/Food';
@@ -20,6 +20,7 @@ import {
 	USER_CANNOT_BE_FOUND,
 } from '../config/Responses';
 import { logger } from '../utils/logger';
+import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';
 
 const router = Router();
 
@@ -27,142 +28,181 @@ const foodRepository = orm.getRepository(Food);
 const categoryRepository = orm.getRepository(Category);
 const companyRepository = orm.getRepository(Company);
 
-router.get('/get', async (req: Request, res: Response) => {
-	const { id }: any = req.query;
+export interface FoodCreateParams {
+	name: string;
+	priceFirst: any;
+	priceLast: any;
+	description?: string;
+	categoryId: any;
+	companyId: any;
+}
+
+export interface FoodEditParams {
+	foodId: any;
+	name?: string;
+	priceFirst?: any;
+	priceLast?: any;
+	description?: string;
+	categoryId?: any;
+}
+
+router.get('/get', async (req: IDRequest, res: Response) => {
+	const { id } = req.query;
 
 	const err = isInt([id]);
 	if (err) return res.json(err);
 
-	const food = await foodRepository.findOne({ where: { id: parseInt(id) } });
+	const food = await foodRepository.findOne({
+		where: { id: parseInt(id) },
+	});
 
 	if (!food) return res.json(CreateResponse(FOOD_CANNOT_BE_FOUND));
 
 	return res.json(food);
 });
 
-router.post('/create', async (req: Request, res: Response) => {
-	let { name, priceFirst, priceLast, description, categoryId, companyId } =
-		req.body;
+router.post(
+	'/create',
+	async (req: ExtendedRequest<FoodCreateParams>, res: Response) => {
+		let {
+			name,
+			priceFirst,
+			priceLast,
+			description,
+			categoryId,
+			companyId,
+		} = req.body;
 
-	const userId = req.session.userId;
-	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+		const userId = req.session.userId;
+		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
-	const err = isInt([priceFirst, priceLast, categoryId, companyId]);
-	if (err) return res.json(err);
+		const err = isInt([priceFirst, priceLast, categoryId, companyId]);
+		if (err) return res.json(err);
 
-	const errors = validateInputs({ name });
-	if (errors) return res.json(errors);
+		const errors = validateInputs({ name });
+		if (errors) return res.json(errors);
 
-	const category = await categoryRepository.findOne({
-		where: { id: parseInt(categoryId) },
-	});
-
-	if (!category) return res.json(CreateResponse(CATEGORY_CANNOT_BE_FOUND));
-
-	const company = await companyRepository.findOne({
-		where: { id: parseInt(companyId) },
-		relations: ['owner'],
-	});
-
-	if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
-
-	if (priceLast.length < 2) priceLast = '0' + priceLast;
-	const price =
-		parseInt(priceFirst) + parseInt(priceLast[0] + priceLast[1]) / 100;
-
-	if (company.owner.id !== userId)
-		return res.json(CreateResponse(OWNER_ERROR));
-
-	const newFood = new Food();
-	newFood.name = name;
-	newFood.price = price;
-	newFood.category = category;
-	newFood.company = company;
-	newFood.description = description;
-
-	return await foodRepository
-		.save(newFood)
-		.then(() => res.json(CreateResponse(FOOD_CREATED)))
-		.catch((e) => console.log(e));
-});
-
-router.put('/edit', async (req: Request, res: Response) => {
-	let { foodId, name, priceFirst, priceLast, description, categoryId } =
-		req.body;
-
-	const userId = req.session.userId;
-	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
-
-	const err = isInt([
-		foodId,
-		priceFirst ? priceFirst : 0,
-		priceLast ? priceLast : 0,
-		categoryId ? categoryId : 0,
-	]);
-	if (err) return res.json(err);
-
-	const error = validateInputs({ name });
-	if (error) return res.json(error);
-
-	const food = await foodRepository.findOne({
-		where: { id: parseInt(foodId) },
-		relations: ['company'],
-	});
-	if (!food) return res.json(CreateResponse(FOOD_CANNOT_BE_FOUND));
-
-	if (!isOwner(userId, food.company.id))
-		return res.json(CreateResponse(OWNER_ERROR));
-
-	let category: Category | null = null;
-	if (categoryId) {
-		category = await categoryRepository.findOne({
+		const category = await categoryRepository.findOne({
 			where: { id: parseInt(categoryId) },
 		});
+
 		if (!category)
 			return res.json(CreateResponse(CATEGORY_CANNOT_BE_FOUND));
-	}
 
-	let price: number | null = null;
-	if (priceFirst && priceLast) {
-		if (priceLast.length < 2) priceLast = '0' + priceLast;
-		price =
-			parseInt(priceFirst) + parseInt(priceLast[0] + priceLast[1]) / 100;
-	}
-
-	food.name = name ? name : food.name;
-	food.price = price ? price : food.price;
-	food.description = description ? description : food.description;
-	food.category = category ? category : food.category;
-
-	foodRepository.save(food).catch((e) => {
-		logger(e);
-		return res.json(CreateResponse(FOOD_EDIT_FAILED));
-	});
-
-	return res.json(CreateResponse(FOOD_EDIT_SUCCEEDED));
-});
-
-router.delete('/remove', async (req: Request, res: Response) => {
-	const { id } = req.body;
-
-	const userId = req.session.userId;
-	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
-
-	const err = isInt([id]);
-	if (err) return res.json(err);
-
-	const food = await foodRepository.findOne({ where: { id: parseInt(id) } });
-	if (!food) return res.json(CreateResponse(FOOD_CANNOT_BE_FOUND));
-
-	if (!isOwner(userId, food.company.id))
-		return res.json(CreateResponse(OWNER_ERROR));
-
-	return await foodRepository
-		.remove(food)
-		.then(() => res.json(FOOD_REMOVED))
-		.catch(() => {
-			return res.json(CreateResponse(FOOD_REMOVE_ERROR));
+		const company = await companyRepository.findOne({
+			where: { id: parseInt(companyId) },
+			relations: ['owner'],
 		});
-});
+
+		if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
+
+		if (priceLast.length < 2) priceLast = '0' + priceLast;
+		const price =
+			parseInt(priceFirst) + parseInt(priceLast[0] + priceLast[1]) / 100;
+
+		if (company.owner.id !== userId)
+			return res.json(CreateResponse(OWNER_ERROR));
+
+		const newFood = new Food();
+		newFood.name = name;
+		newFood.price = price;
+		newFood.category = category;
+		newFood.company = company;
+		newFood.description = description;
+
+		return await foodRepository
+			.save(newFood)
+			.then(() => res.json(CreateResponse(FOOD_CREATED)))
+			.catch((e) => console.log(e));
+	},
+);
+
+router.put(
+	'/edit',
+	async (req: ExtendedRequest<FoodEditParams>, res: Response) => {
+		let { foodId, name, priceFirst, priceLast, description, categoryId } =
+			req.body;
+
+		const userId = req.session.userId;
+		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+
+		const err = isInt([
+			foodId,
+			priceFirst ? priceFirst : 0,
+			priceLast ? priceLast : 0,
+			categoryId ? categoryId : 0,
+		]);
+		if (err) return res.json(err);
+
+		const error = validateInputs({ name });
+		if (error) return res.json(error);
+
+		const food = await foodRepository.findOne({
+			where: { id: parseInt(foodId) },
+			relations: ['company'],
+		});
+		if (!food) return res.json(CreateResponse(FOOD_CANNOT_BE_FOUND));
+
+		if (!isOwner(userId, food.company.id))
+			return res.json(CreateResponse(OWNER_ERROR));
+
+		let category: Category | null = null;
+		if (categoryId) {
+			category = await categoryRepository.findOne({
+				where: { id: parseInt(categoryId) },
+			});
+			if (!category)
+				return res.json(CreateResponse(CATEGORY_CANNOT_BE_FOUND));
+		}
+
+		let price: number | null = null;
+		if (priceFirst && priceLast) {
+			if (priceLast.length < 2) priceLast = '0' + priceLast;
+			price =
+				parseInt(priceFirst) +
+				parseInt(priceLast[0] + priceLast[1]) / 100;
+		}
+
+		food.name = name ? name : food.name;
+		food.price = price ? price : food.price;
+		food.description = description ? description : food.description;
+		food.category = category ? category : food.category;
+
+		foodRepository.save(food).catch((e) => {
+			logger(e);
+			return res.json(CreateResponse(FOOD_EDIT_FAILED));
+		});
+
+		return res.json(CreateResponse(FOOD_EDIT_SUCCEEDED));
+	},
+);
+
+router.delete(
+	'/remove',
+	async (req: ExtendedRequest<{ id: any }>, res: Response) => {
+		const { id } = req.body;
+
+		const userId = req.session.userId;
+		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+
+		const err = isInt([id]);
+		if (err) return res.json(err);
+
+		const food = await foodRepository.findOne({
+			where: { id: parseInt(id) },
+		});
+		if (!food) return res.json(CreateResponse(FOOD_CANNOT_BE_FOUND));
+
+		if (!isOwner(userId, food.company.id))
+			return res.json(CreateResponse(OWNER_ERROR));
+
+		return await foodRepository
+			.remove(food)
+			.then(() => res.json(FOOD_REMOVED))
+			.catch(() => {
+				return res.json(CreateResponse(FOOD_REMOVE_ERROR));
+			});
+	},
+);
 
 export default router;

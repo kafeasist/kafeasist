@@ -1,6 +1,6 @@
 import { SessionOptions } from 'express-session';
 import { __cookie_name__, __prod__, __session_secret__ } from './constants';
-import { RedisStore, redis } from '../utils/connectRedis';
+import { RedisStore, redis } from '../services/connectRedis';
 
 export const sessionStore = new RedisStore({
 	client: redis,

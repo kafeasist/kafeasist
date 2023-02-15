@@ -1,9 +1,9 @@
-import { Request, Response, Router } from 'express';
+import { Response, Router } from 'express';
 import { CreateResponse } from '../utils/CreateResponse';
 import { isAuth } from '../middlewares/isAuth';
-import { validateInputs } from '../middlewares/validateInputs';
+import { validateInputs } from '../utils/validateInputs';
 import { getSubscriptionType } from '../utils/getSubscriptionType';
-import { SubscriptionLimits } from '../types/SubscriptionInfo';
+import { SubscriptionLimits } from '../utils/SubscriptionInfo';
 import { logger } from '../utils/logger';
 import { orm } from '../config/typeorm.config';
 import { Company } from '../entities/Company';
@@ -26,14 +26,32 @@ import {
 } from '../config/Responses';
 import { isInt } from '../middlewares/isInt';
 import { isOwner } from '../middlewares/isOwner';
+import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';
 
 const router = Router();
 
 const companyRepository = orm.getRepository(Company);
 const userRepository = orm.getRepository(User);
 
-router.get('/get', async (req: Request, res: Response) => {
-	const { id }: any = req.query;
+export interface CompanyCreateParams {
+	name: string;
+	address: string;
+	phone: string;
+	image_url?: string;
+	description?: string;
+}
+
+export interface CompanyEditParams {
+	companyId: any;
+	name?: string;
+	address?: string;
+	phone?: string;
+	image_url?: string;
+	description?: string;
+}
+
+router.get('/get', async (req: IDRequest, res: Response) => {
+	const { id } = req.query;
 
 	if (!id) return res.json(CreateResponse(EMPTY_ID));
 
@@ -51,8 +69,8 @@ router.get('/get', async (req: Request, res: Response) => {
 	return res.json(company);
 });
 
-router.get('/tables', async (req: Request, res: Response) => {
-	const { id }: any = req.query;
+router.get('/tables', async (req: IDRequest, res: Response) => {
+	const { id } = req.query;
 
 	if (!id) return res.json(CreateResponse(EMPTY_ID));
 
@@ -73,8 +91,8 @@ router.get('/tables', async (req: Request, res: Response) => {
 	return res.json(tables);
 });
 
-router.get('/categories', async (req: Request, res: Response) => {
-	const { id }: any = req.query;
+router.get('/categories', async (req: IDRequest, res: Response) => {
+	const { id } = req.query;
 
 	if (!id) return res.json(CreateResponse(EMPTY_ID));
 
@@ -95,8 +113,8 @@ router.get('/categories', async (req: Request, res: Response) => {
 	return res.json(categories);
 });
 
-router.get('/employees', async (req: Request, res: Response) => {
-	const { id }: any = req.query;
+router.get('/employees', async (req: IDRequest, res: Response) => {
+	const { id } = req.query;
 
 	if (!id) return res.json(CreateResponse(EMPTY_ID));
 
@@ -117,90 +135,104 @@ router.get('/employees', async (req: Request, res: Response) => {
 	return res.json(employees);
 });
 
-router.post('/create', isAuth, async (req: Request, res: Response) => {
-	const { name, address, phone, image_url, description } = req.body;
+router.post(
+	'/create',
+	isAuth,
+	async (req: ExtendedRequest<CompanyCreateParams>, res: Response) => {
+		const { name, address, phone, image_url, description } = req.body;
 
-	const err = validateInputs({ name, address, phone });
-	if (err) return res.json(err);
+		const err = validateInputs({ name, address, phone });
+		if (err) return res.json(err);
 
-	const userId = req.session.userId;
-	if (!userId) return res.json(USER_CANNOT_BE_FOUND);
-	const user = await userRepository.findOne({
-		where: { id: userId },
-		relations: ['companies'],
-	});
+		const userId = req.session.userId;
+		if (!userId) return res.json(USER_CANNOT_BE_FOUND);
+		const user = await userRepository.findOne({
+			where: { id: userId },
+			relations: ['companies'],
+		});
 
-	if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
-	const userCompanies = user?.companies;
+		if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+		const userCompanies = user?.companies;
 
-	const subscription = getSubscriptionType(user.subs_type);
-	if (subscription === null) return res.json(SUBSCRIPTION_NOT_FOUND);
-	const companyLimit = new SubscriptionLimits().getCompany;
+		const subscription = getSubscriptionType(user.subs_type);
+		if (subscription === null) return res.json(SUBSCRIPTION_NOT_FOUND);
+		const companyLimit = new SubscriptionLimits().getCompany;
 
-	if (userCompanies && userCompanies?.length >= companyLimit(subscription))
-		return res.json(CreateResponse(LIMIT_REACHED));
+		if (
+			userCompanies &&
+			userCompanies?.length >= companyLimit(subscription)
+		)
+			return res.json(CreateResponse(LIMIT_REACHED));
 
-	let exists = false;
-	userCompanies.forEach((company) => {
-		if (company.name === name) exists = true;
-	});
+		let exists = false;
+		userCompanies.forEach((company) => {
+			if (company.name === name) exists = true;
+		});
 
-	if (exists)
-		return res.json(CreateResponse({ ...ALREADY_IN_USE, fields: 'name' }));
+		if (exists)
+			return res.json(
+				CreateResponse({ ...ALREADY_IN_USE, fields: 'name' }),
+			);
 
-	const newCompany = new Company();
-	newCompany.name = name;
-	newCompany.address = address;
-	newCompany.phone = phone;
-	newCompany.image_url = image_url;
-	newCompany.description = description;
-	newCompany.owner = user;
+		const newCompany = new Company();
+		newCompany.name = name;
+		newCompany.address = address;
+		newCompany.phone = phone;
+		newCompany.image_url = image_url;
+		newCompany.description = description;
+		newCompany.owner = user;
 
-	await companyRepository.save(newCompany).catch((error) => logger(error));
+		await companyRepository
+			.save(newCompany)
+			.catch((error) => logger(error));
 
-	return res.json(newCompany);
-});
+		return res.json(newCompany);
+	},
+);
 
-router.put('/edit', async (req: Request, res: Response) => {
-	const { companyId, name, address, phone, image_url, description } =
-		req.body;
+router.put(
+	'/edit',
+	async (req: ExtendedRequest<CompanyEditParams>, res: Response) => {
+		const { companyId, name, address, phone, image_url, description } =
+			req.body;
 
-	const userId = req.session.userId;
-	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+		const userId = req.session.userId;
+		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
-	const err = isInt([companyId]);
-	if (err) return res.json(err);
+		const err = isInt([companyId]);
+		if (err) return res.json(err);
 
-	const company = await companyRepository.findOne({
-		where: { id: parseInt(companyId) },
-	});
-	if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
+		const company = await companyRepository.findOne({
+			where: { id: parseInt(companyId) },
+		});
+		if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
 
-	if (!isOwner(userId, company.id))
-		return res.json(CreateResponse(OWNER_ERROR));
+		if (!isOwner(userId, company.id))
+			return res.json(CreateResponse(OWNER_ERROR));
 
-	const errors = validateInputs({
-		name: name ? name : company.name,
-		address: address ? address : company.address,
-		phone: phone ? phone : company.phone,
-	});
-	if (errors) return res.json(errors);
+		const errors = validateInputs({
+			name: name ? name : company.name,
+			address: address ? address : company.address,
+			phone: phone ? phone : company.phone,
+		});
+		if (errors) return res.json(errors);
 
-	company.name = name ? name : company.name;
-	company.address = address ? address : company.address;
-	company.phone = phone ? phone : company.phone;
-	company.image_url = image_url ? image_url : company.image_url;
-	company.description = description ? description : company.description;
-	await companyRepository.save(company).catch((e) => {
-		logger(e);
-		return res.json(CreateResponse(COMPANY_EDIT_FAILED));
-	});
+		company.name = name ? name : company.name;
+		company.address = address ? address : company.address;
+		company.phone = phone ? phone : company.phone;
+		company.image_url = image_url ? image_url : company.image_url;
+		company.description = description ? description : company.description;
+		await companyRepository.save(company).catch((e) => {
+			logger(e);
+			return res.json(CreateResponse(COMPANY_EDIT_FAILED));
+		});
 
-	return res.json(CreateResponse(COMPANY_EDIT_SUCCEEDED));
-});
+		return res.json(CreateResponse(COMPANY_EDIT_SUCCEEDED));
+	},
+);
 
-router.delete('/remove', async (req: Request, res: Response) => {
-	const { id }: any = req.query;
+router.delete('/remove', async (req: IDRequest, res: Response) => {
+	const { id } = req.query;
 
 	if (!id) return res.json(CreateResponse(EMPTY_ID));
 

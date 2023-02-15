@@ -1,6 +1,4 @@
-import { ObjectId } from 'mongoose';
-import { JwtExtendedPayload } from './jwt';
-
+import { JwtExtendedPayload } from 'jwt';
 declare global {
 	namespace Express {
 		interface Request {
@@ -10,8 +8,9 @@ declare global {
 	}
 }
 
+import session from 'express-session';
 declare module 'express-session' {
-	interface SessionData {
+	export interface SessionData {
 		userId: number;
 	}
 }

@@ -1,4 +1,4 @@
-import { CustomResponse } from '../types/ErrorStack';
+import { CustomResponse } from '../utils/CreateResponse';
 
 export const ACCOUNT_CREATED: CustomResponse = {
 	code: 0,
@@ -423,5 +423,27 @@ export const CATEGORY_EDIT_FAILED: CustomResponse = {
 export const CATEGORY_EDIT_SUCCEEDED: CustomResponse = {
 	code: 76,
 	message: 'Kategori başarıyla düzenlendi!',
+	error: false,
+};
+
+export const FAILED_IYZIPAY_INIT_SUBSCRIPTION: CustomResponse = {
+	code: 77,
+	message: 'Ödeme formu oluşturulamadı!',
+};
+
+export const IYZIPAY_INIT_SUBSCRIPTION: CustomResponse = {
+	code: 78,
+	message: 'Ödeme formu başarıyla oluşturuldu.',
+	error: false,
+};
+
+export const FAILED_IYZIPAY_RETRIEVE_SUBSCRIPTION: CustomResponse = {
+	code: 79,
+	message: 'Ödeme formu bilgileri alınırken bir hatayla karşılaşıldı!',
+};
+
+export const IYZIPAY_RETRIEVE_SUBSCRIPTION: CustomResponse = {
+	code: 79,
+	message: 'Ödeme formu bilgileri başarıyla alındı.',
 	error: false,
 };

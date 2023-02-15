@@ -21,7 +21,7 @@ export class Company extends DefaultEntity {
 	image_url?: string;
 
 	@Column({ nullable: true })
-	description?: boolean;
+	description?: string;
 
 	@ManyToOne(() => User, (user) => user.companies, { onDelete: 'CASCADE' })
 	owner: User;

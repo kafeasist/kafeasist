@@ -1,5 +1,5 @@
-import { CustomResponse } from '../../types/ErrorStack';
-import { CreateResponse } from '../CreateResponse';
+import { CreateResponse, CustomResponse } from '../CreateResponse';
+import { expect } from 'chai';
 
 describe('Create Response function', () => {
 	it('should work with error responses', async () => {
@@ -11,11 +11,11 @@ describe('Create Response function', () => {
 
 		const response = CreateResponse(error);
 
-		expect(response).toHaveProperty('code', error.code);
-		expect(response).toHaveProperty('error', error.message);
-		expect(response).toHaveProperty('help');
-		expect(response).toHaveProperty('fields', error.fields);
-		expect(response).toHaveProperty('stack');
+		expect(response).haveOwnProperty('code', error.code);
+		expect(response).haveOwnProperty('error', error.message);
+		expect(response).haveOwnProperty('help');
+		expect(response).haveOwnProperty('fields', error.fields);
+		expect(response).haveOwnProperty('stack');
 	});
 
 	it('should work with success responses', async () => {
@@ -28,27 +28,30 @@ describe('Create Response function', () => {
 
 		const response = CreateResponse(success);
 
-		expect(response).toHaveProperty('code', success.code);
-		expect(response).toHaveProperty('message', success.message);
-		expect(response).toHaveProperty('help');
-		expect(response).toHaveProperty('fields', success.fields);
+		expect(response).haveOwnProperty('code', success.code);
+		expect(response).haveOwnProperty('message', success.message);
+		expect(response).haveOwnProperty('help');
+		expect(response).haveOwnProperty('fields', success.fields);
 	});
 
-	it('should work with issuer context', async () => {
+	it('should work with additional data', async () => {
 		const error: CustomResponse = {
 			code: 0,
 			message: 'Test message',
 		};
 
 		const success: CustomResponse = { ...error, error: false };
-		const issuer = 'test';
+		const randomData = {
+			test: 'test',
+			testing: 'testing',
+		};
 
-		const errorResponse = CreateResponse(error, issuer);
-		const successResponse = CreateResponse(success, issuer);
+		const errorResponse = CreateResponse(error, randomData);
+		const successResponse = CreateResponse(success, randomData);
 
-		expect(errorResponse).toHaveProperty('issuer', issuer);
-		expect(errorResponse).toHaveProperty('error', error.message);
-		expect(successResponse).toHaveProperty('issuer', issuer);
-		expect(successResponse).toHaveProperty('message', success.message);
+		expect(errorResponse).haveOwnProperty('data', randomData);
+		expect(errorResponse).haveOwnProperty('error', error.message);
+		expect(successResponse).haveOwnProperty('data', randomData);
+		expect(successResponse).haveOwnProperty('message', success.message);
 	});
 });

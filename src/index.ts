@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { __port__ } from './config/constants';
+import { __port__, __testing__ } from './config/constants';
 import { orm } from './config/typeorm.config';
 import app from './app';
 

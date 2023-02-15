@@ -1,9 +1,11 @@
 {
+	
 	"ts-node": {
 		"compilerOptions": {
 			"target": "ES2022",
-			"module": "commonjs"
-		}
+			"module": "commonjs",
+			"baseUrl": "."
+		},
 	},
 	"compilerOptions": {
 		"target": "ES2022",
@@ -27,7 +29,7 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"resolveJsonModule": true,
-		"baseUrl": "."
+		"baseUrl": ".",
 	},
 	"exclude": ["node_modules"],
 	"include": ["./src/**/*.ts"]

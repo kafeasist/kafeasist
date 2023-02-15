@@ -9,8 +9,8 @@ import {
 	INPUT_PHONE,
 	MFA_FAILED,
 } from '../config/Responses';
-import { KafeasistResponse } from '../types/ErrorStack';
-import { CreateResponse } from '../utils/CreateResponse';
+import { KafeasistResponse } from './CreateResponse';
+import { CreateResponse } from './CreateResponse';
 import {
 	addressValidation,
 	emailValidation,
@@ -18,7 +18,7 @@ import {
 	passwordValidation,
 	phoneValidation,
 	usernameValidation,
-} from '../utils/validation';
+} from './validation';
 
 interface InputOptions {
 	value: string;

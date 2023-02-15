@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { KafeasistJwt } from '../types/Authorization';
 import { ADMIN_ERROR } from '../config/Responses';
 import { CreateResponse } from '../utils/CreateResponse';
 import { __jwt_secret__ } from '../config/constants';
+
+export type KafeasistJwt = { user: string };
 
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
 	const { authorization } = req.headers;
