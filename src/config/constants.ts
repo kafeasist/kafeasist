@@ -42,4 +42,5 @@ export const __iyzipay_config__: IyzipayConfig = {
 	secretKey: process.env.IYZIPAY_SECRET_KEY,
 	uri: process.env.IYZIPAY_URI,
 };
+
 export const __iyzipay_number__ = process.env.IYZIPAY_NUMBER;
