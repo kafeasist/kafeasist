@@ -26,18 +26,20 @@
 		"dev:api": "turbo --filter=api dev",
 		"lint": "turbo lint",
 		"format": "turbo format && prettier --write \"**/*.{ts,tsx,md}\"",
-		"release": "changeset version"
-	},
-	"devDependencies": {
-		"eslint-config-custom": "workspace:*",
-		"prettier": "latest",
-		"turbo": "latest"
+		"release": "changeset version",
+		"manypkg:check": "manypkg check",
+		"manypkg:fix": "manypkg fix",
+		"test:api": "cd api && yarn test && cd .."
 	},
 	"engines": {
 		"node": ">=14.0.0"
 	},
 	"dependencies": {
-		"@changesets/cli": "^2.26.0"
+		"@changesets/cli": "^2.26.0",
+		"@manypkg/cli": "^0.20.0",
+		"eslint-config-custom": "0.0.0",
+		"prettier": "latest",
+		"turbo": "latest"
 	},
 	"packageManager": "pnpm@7.27.0"
 }
