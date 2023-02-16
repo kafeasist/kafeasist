@@ -29,7 +29,7 @@
 		"release": "changeset version",
 		"manypkg:check": "manypkg check",
 		"manypkg:fix": "manypkg fix",
-		"test:api": "cd api && yarn test && cd .."
+		"test:api": "cd api && pnpm test && cd .."
 	},
 	"engines": {
 		"node": ">=14.0.0"
