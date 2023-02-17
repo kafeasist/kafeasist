@@ -93,7 +93,7 @@ describe('validation util function', () => {
 			'test@test.com',
 			'testing@t.com',
 			'foo@bar.xyz',
-			'a@b.c',
+			'a@b.co',
 		];
 
 		const fail = [
@@ -102,6 +102,7 @@ describe('validation util function', () => {
 			'username@password',
 			'root@toor.',
 			'@hotmail.com',
+			'a@b.c',
 		];
 
 		succeed.forEach((email) => expect(emailValidation(email)).equal(true));
