@@ -29,6 +29,10 @@ jobs:
                   node-version: 16
                   cache: 'pnpm'
 
+            - name: Create .env file
+              run: |
+                  echo "${{ secrets.ENV_API }}" > .env
+
             - name: Install dependencies
               run: pnpm install
 
