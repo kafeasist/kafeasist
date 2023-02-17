@@ -17,6 +17,7 @@
 		"build": "turbo build",
 		"build:www": "turbo --filter=www build",
 		"build:api": "turbo --filter=api build",
+		"build:pkg": "turbo --filter='./packages/*' build",
 		"start": "turbo start",
 		"start:www": "turbo --filter=www start",
 		"start:api": "turbo --filter=api start",
@@ -29,15 +30,17 @@
 		"manypkg:check": "manypkg check",
 		"manypkg:fix": "manypkg fix",
 		"test": "turbo test",
-		"test:api": "turbo --filter=api test"
+		"test:api": "turbo --filter=api test",
+		"test:pkg": "turbo --filter='./packages/*' test",
+		"check": "pnpm lint && pnpm format && pnpm manypkg:fix && pnpm test"
 	},
 	"engines": {
 		"node": ">=14.0.0"
 	},
 	"dependencies": {
 		"@changesets/cli": "^2.26.0",
+		"@kafeasist/responses": "1.0.0",
 		"@manypkg/cli": "^0.20.0",
-		"eslint-config-custom": "0.0.0",
 		"prettier": "latest",
 		"turbo": "latest"
 	},

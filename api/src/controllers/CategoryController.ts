@@ -2,7 +2,7 @@ import { Router, Response } from 'express';
 import { validateInputs, InputsInterface } from '../utils/validateInputs';
 import { SubscriptionLimits } from '../utils/SubscriptionInfo';
 import { getSubscriptionType } from '../utils/getSubscriptionType';
-import { CreateResponse } from '../utils/CreateResponse';
+import { CreateResponse } from '@kafeasist/responses';
 import { isOwner } from '../middlewares/isOwner';
 import { orm } from '../config/typeorm.config';
 import { Category } from '../entities/Category';
@@ -22,7 +22,7 @@ import {
 	OWNER_ERROR,
 	SUBSCRIPTION_NOT_FOUND,
 	USER_CANNOT_BE_FOUND,
-} from '../config/Responses';
+} from '@kafeasist/responses';
 import { isInt } from '../middlewares/isInt';
 import { logger } from '../utils/logger';
 import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';

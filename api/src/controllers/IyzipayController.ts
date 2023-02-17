@@ -1,11 +1,11 @@
 import { Response, Router } from 'express';
-import { CreateResponse } from '../utils/CreateResponse';
+import { CreateResponse } from '@kafeasist/responses';
 import iyzipay, {
 	InitSubscriptionCheckoutFormInterface,
 	RetrieveSubscriptionCheckoutFormInterface,
 } from '../services/iyzipay';
 import { ExtendedRequest } from '../types/ExtendedRequest';
-import { USER_CANNOT_BE_FOUND } from '../config/Responses';
+import { USER_CANNOT_BE_FOUND } from '@kafeasist/responses';
 
 const router = Router();
 

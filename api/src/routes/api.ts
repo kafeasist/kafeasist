@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { CreateResponse } from '../utils/CreateResponse';
+import { CreateResponse } from '@kafeasist/responses';
 import { isAuth } from '../middlewares/isAuth';
 import AuthController from '../controllers/AuthController';
 import UserController from '../controllers/UserController';
@@ -9,7 +9,7 @@ import FoodController from '../controllers/FoodController';
 import CategoryController from '../controllers/CategoryController';
 import EmployeeController from '../controllers/EmployeeController';
 import IyzipayController from '../controllers/IyzipayController';
-import { API_NOT_FOUND } from '../config/Responses';
+import { API_NOT_FOUND } from '@kafeasist/responses';
 import { __version__ } from '../config/constants';
 import { isAdmin } from '../middlewares/isAdmin';
 

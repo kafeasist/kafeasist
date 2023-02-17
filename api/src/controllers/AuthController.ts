@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { CreateResponse } from '../utils/CreateResponse';
+import { CreateResponse } from '@kafeasist/responses';
 import { __testing__ } from '../config/constants';
 import * as argon2 from 'argon2';
 import { logIn, logOut } from '../utils/logUser';
@@ -21,7 +21,7 @@ import {
 	SUCCESSFUL_LOGOUT,
 	USERNAME_OR_PASSWORD_NOT_FOUND,
 	USER_CANNOT_BE_FOUND,
-} from '../config/Responses';
+} from '@kafeasist/responses';
 import { isAuth } from '../middlewares/isAuth';
 import { isNotAuth } from '../middlewares/isNotAuth';
 import { totp } from 'speakeasy';

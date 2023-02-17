@@ -4,13 +4,13 @@ import Iyzipay, { IyzipayCustomer, IyzipayPaymentCard } from 'iyzipay';
 import { logger } from '../utils/logger';
 import { __iyzipay_config__, __iyzipay_number__ } from '../config/constants';
 import { Response } from 'express';
-import { CreateResponse } from '../utils/CreateResponse';
+import { CreateResponse } from '@kafeasist/responses';
 import {
 	FAILED_IYZIPAY_INIT_SUBSCRIPTION,
 	FAILED_IYZIPAY_RETRIEVE_SUBSCRIPTION,
 	IYZIPAY_INIT_SUBSCRIPTION,
 	IYZIPAY_RETRIEVE_SUBSCRIPTION,
-} from '../config/Responses';
+} from '@kafeasist/responses';
 import { getKey, setKey } from './connectRedis';
 
 export interface InitSubscriptionCheckoutFormInterface {

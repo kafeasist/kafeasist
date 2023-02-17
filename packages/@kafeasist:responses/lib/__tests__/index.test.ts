@@ -1,4 +1,4 @@
-import { CreateResponse, CustomResponse } from '../CreateResponse';
+import { CreateResponse, CustomResponse } from '../index';
 import { expect } from 'chai';
 
 describe('Create Response function', () => {

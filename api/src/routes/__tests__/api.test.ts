@@ -1,4 +1,4 @@
-import { API_404, API_NOT_FOUND } from '../../config/Responses';
+import { API_404, API_NOT_FOUND } from '@kafeasist/responses';
 import { __version__ } from '../../config/constants';
 import { assert } from 'chai';
 import { TestFactory } from '../../utils/TestFactory';

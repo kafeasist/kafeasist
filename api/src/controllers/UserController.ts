@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 import { orm } from '../config/typeorm.config';
 import { User } from '../entities/User';
 import { isAuth } from '../middlewares/isAuth';
-import { CreateResponse } from '../utils/CreateResponse';
+import { CreateResponse } from '@kafeasist/responses';
 import { logger } from '../utils/logger';
 import speakeasy, { GeneratedSecretWithOtpAuthUrl, totp } from 'speakeasy';
 import qrcode from 'qrcode';
@@ -20,7 +20,7 @@ import {
 	USER_CANNOT_BE_FOUND,
 	USER_REMOVED,
 	USER_REMOVE_FAILED,
-} from '../config/Responses';
+} from '@kafeasist/responses';
 import { isInt } from '../middlewares/isInt';
 import { validateInputs } from '../utils/validateInputs';
 import { isAdmin } from '../middlewares/isAdmin';

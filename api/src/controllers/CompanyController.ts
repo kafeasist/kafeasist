@@ -1,5 +1,5 @@
 import { Response, Router } from 'express';
-import { CreateResponse } from '../utils/CreateResponse';
+import { CreateResponse } from '@kafeasist/responses';
 import { isAuth } from '../middlewares/isAuth';
 import { validateInputs } from '../utils/validateInputs';
 import { getSubscriptionType } from '../utils/getSubscriptionType';
@@ -23,7 +23,7 @@ import {
 	OWNER_ERROR,
 	SUBSCRIPTION_NOT_FOUND,
 	USER_CANNOT_BE_FOUND,
-} from '../config/Responses';
+} from '@kafeasist/responses';
 import { isInt } from '../middlewares/isInt';
 import { isOwner } from '../middlewares/isOwner';
 import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';

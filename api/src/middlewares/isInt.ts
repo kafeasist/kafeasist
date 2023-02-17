@@ -1,5 +1,5 @@
-import { EMPTY_ID, MUST_BE_INT } from '../config/Responses';
-import { CreateResponse, KafeasistResponse } from '../utils/CreateResponse';
+import { EMPTY_ID, MUST_BE_INT } from '@kafeasist/responses';
+import { CreateResponse, KafeasistResponse } from '@kafeasist/responses';
 
 export const isInt = (integers: string[]): KafeasistResponse | null => {
 	if (!integers) return CreateResponse(EMPTY_ID);

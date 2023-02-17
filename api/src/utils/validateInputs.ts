@@ -8,9 +8,9 @@ import {
 	INPUT_PASSWORD_MATCH,
 	INPUT_PHONE,
 	MFA_FAILED,
-} from '../config/Responses';
-import { KafeasistResponse } from './CreateResponse';
-import { CreateResponse } from './CreateResponse';
+} from '@kafeasist/responses';
+import { KafeasistResponse } from '@kafeasist/responses';
+import { CreateResponse } from '@kafeasist/responses';
 import {
 	addressValidation,
 	emailValidation,
@@ -97,7 +97,7 @@ export const validateInputs = (
 	}
 
 	if (inputs.mfa) {
-		let code = inputs.mfa as string;
+		const code = inputs.mfa as string;
 		if (!code || code.length !== 6 || !/^\d+$/.test(code))
 			return CreateResponse(MFA_FAILED);
 	}

@@ -1,9 +1,9 @@
-import { CreateResponse } from '../utils/CreateResponse';
+import { CreateResponse } from '@kafeasist/responses';
 import { Employee } from '../entities/Employee';
 import {
 	COMPANY_CANNOT_BE_FOUND,
 	EMPLOYEE_CANNOT_BE_FOUND,
-} from '../config/Responses';
+} from '@kafeasist/responses';
 import { orm } from '../config/typeorm.config';
 
 const employeeRepository = orm.getRepository(Employee);

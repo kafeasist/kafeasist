@@ -14,14 +14,14 @@ import {
 	ROLE_CANNOT_BE_FOUND,
 	SAME_PASSWORD,
 	USER_CANNOT_BE_FOUND,
-} from '../config/Responses';
+} from '@kafeasist/responses';
 import { isInt } from '../middlewares/isInt';
 import { Employee, isValidRole, UserRoles } from '../entities/Employee';
 import { isOwner } from '../middlewares/isOwner';
 import { orm } from '../config/typeorm.config';
 import { Company } from '../entities/Company';
 import argon2 from 'argon2';
-import { CreateResponse } from '../utils/CreateResponse';
+import { CreateResponse } from '@kafeasist/responses';
 import { logger } from '../utils/logger';
 import { getUniqueItem } from '../utils/getUniqueItem';
 import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';
