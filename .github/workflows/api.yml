@@ -10,6 +10,7 @@ jobs:
         env:
             TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
             TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+            IYZIPAY_URI: ${{ secrets.IYZIPAY_URI }}
 
         name: Test API
         steps:
@@ -28,10 +29,6 @@ jobs:
               with:
                   node-version: 16
                   cache: 'pnpm'
-
-            - name: Create .env file
-              run: |
-                  echo "${{ secrets.ENV_API }}" > .env
 
             - name: Install dependencies
               run: pnpm install
