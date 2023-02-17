@@ -14,7 +14,6 @@
 		"url": "https://github.com/EgeOnder/kafeasist.git"
 	},
 	"scripts": {
-		"typecheck": "turbo typecheck",
 		"build": "turbo build",
 		"build:www": "turbo --filter=www build",
 		"build:api": "turbo --filter=api build",
@@ -29,7 +28,8 @@
 		"release": "changeset version",
 		"manypkg:check": "manypkg check",
 		"manypkg:fix": "manypkg fix",
-		"test:api": "cd api && pnpm test && cd .."
+		"test": "turbo test",
+		"test:api": "turbo --filter=api test"
 	},
 	"engines": {
 		"node": ">=14.0.0"
