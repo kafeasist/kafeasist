@@ -1,4 +1,4 @@
-import { CustomResponse } from '../utils/CreateResponse';
+import { CustomResponse } from './index';
 
 export const ACCOUNT_CREATED: CustomResponse = {
 	code: 0,

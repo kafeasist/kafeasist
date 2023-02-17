@@ -3,10 +3,10 @@ import {
 	OWNER_CANNOT_BE_FOUND,
 	OWNER_ERROR,
 	USER_CANNOT_BE_FOUND,
-} from '../config/Responses';
+} from '@kafeasist/responses';
 import { orm } from '../config/typeorm.config';
 import { Company } from '../entities/Company';
-import { CreateResponse, KafeasistResponse } from '../utils/CreateResponse';
+import { CreateResponse, KafeasistResponse } from '@kafeasist/responses';
 
 const companyRepository = orm.getRepository(Company);
 

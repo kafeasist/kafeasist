@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { ADMIN_ERROR } from '../config/Responses';
-import { CreateResponse } from '../utils/CreateResponse';
+import { ADMIN_ERROR } from '@kafeasist/responses';
+import { CreateResponse } from '@kafeasist/responses';
 import { __jwt_secret__ } from '../config/constants';
 
 export type KafeasistJwt = { user: string };

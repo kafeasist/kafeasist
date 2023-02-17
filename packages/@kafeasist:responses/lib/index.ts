@@ -1,4 +1,9 @@
-import { __prod__ } from '../config/constants';
+import dotenv from 'dotenv';
+dotenv.config();
+
+export * from './responses';
+
+const __prod__ = process.env.NODE_ENV === 'prod';
 
 export interface KafeasistResponse {
 	code: number;

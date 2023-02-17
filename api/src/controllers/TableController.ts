@@ -1,5 +1,5 @@
 import { Response, Router } from 'express';
-import { CreateResponse } from '../utils/CreateResponse';
+import { CreateResponse } from '@kafeasist/responses';
 import { isOwner } from '../middlewares/isOwner';
 import { getSubscriptionType } from '../utils/getSubscriptionType';
 import { SubscriptionLimits } from '../utils/SubscriptionInfo';
@@ -26,7 +26,7 @@ import {
 	TABLE_EDIT_SUCCEEDED,
 	TABLE_REMOVE_FAILED,
 	USER_CANNOT_BE_FOUND,
-} from '../config/Responses';
+} from '@kafeasist/responses';
 import { logger } from '../utils/logger';
 import { isEmployee } from '../middlewares/isEmployee';
 import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';

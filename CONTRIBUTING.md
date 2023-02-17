@@ -20,6 +20,7 @@ This project is a monorepo built with [Turborepo](https://turbo.build/). Therefo
 | `pnpm lint`   | Lints all the packages using ESLint           |
 | `pnpm format` | Format checks all the packages using Prettier |
 | `pnpm test`   | Runs the tests on all the packages            |
+| `pnpm check`  | Checks generally if there is any faults       |
 
 ### 🐛 **Did you find a bug?**
 

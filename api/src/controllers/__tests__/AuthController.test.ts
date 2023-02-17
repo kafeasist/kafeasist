@@ -25,7 +25,7 @@ import {
 	SUCCESSFUL_LOGIN,
 	SUCCESSFUL_LOGOUT,
 	USERNAME_OR_PASSWORD_NOT_FOUND,
-} from '../../config/Responses';
+} from '@kafeasist/responses';
 
 describe('TESTING /api/auth', () => {
 	const factory: TestFactory = new TestFactory();

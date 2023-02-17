@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { AUTH_ERROR } from '../config/Responses';
-import { CreateResponse } from '../utils/CreateResponse';
+import { AUTH_ERROR } from '@kafeasist/responses';
+import { CreateResponse } from '@kafeasist/responses';
 
 export const isAuth = (req: Request, res: Response, next: NextFunction) => {
 	const userId = req.session.userId;

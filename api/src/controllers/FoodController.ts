@@ -1,6 +1,6 @@
 import { Response, Router } from 'express';
 import { isInt } from '../middlewares/isInt';
-import { CreateResponse } from '../utils/CreateResponse';
+import { CreateResponse } from '@kafeasist/responses';
 import { validateInputs } from '../utils/validateInputs';
 import { isOwner } from '../middlewares/isOwner';
 import { orm } from '../config/typeorm.config';
@@ -18,7 +18,7 @@ import {
 	FOOD_REMOVE_ERROR,
 	OWNER_ERROR,
 	USER_CANNOT_BE_FOUND,
-} from '../config/Responses';
+} from '@kafeasist/responses';
 import { logger } from '../utils/logger';
 import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';
 
