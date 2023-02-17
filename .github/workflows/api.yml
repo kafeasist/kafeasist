@@ -7,6 +7,7 @@ on:
 jobs:
     lint:
         runs-on: ubuntu-latest
+        environment: kafeasist-testing
         env:
             TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
             TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -34,10 +35,6 @@ jobs:
 
             - name: Build the project
               run: pnpm build:api
-
-            - name: Create .env file
-              run: |
-                  echo "${{ secrets.ENV_FILE }}" > .env
 
             - name: Run the tests
               run: pnpm test:api
