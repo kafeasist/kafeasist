@@ -8,8 +8,25 @@ jobs:
     lint:
         runs-on: ubuntu-latest
         env:
+            NODE_ENV: test
             TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
             TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+            IYZIPAY_URI: ${{ secrets.IYZIPAY_URI }}
+            IYZIPAY_API_KEY: ${{ secrets.IYZIPAY_API_KEY }}
+            IYZIPAY_SECRET_KEY: ${{ secrets.IYZIPAY_SECRET_KEY }}
+            IYZIPAY_NUMBER: ${{ secrets.IYZIPAY_NUMBER }}
+            REDIS_HOST: ${{ secrets.REDIS_HOST }}
+            REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+            REDIS_PORT: ${{ secrets.REDIS_PORT }}
+            REDIS_USER: ${{ secrets.REDIS_USER }}
+            TEST_DB_HOST: ${{ secrets.TEST_DB_HOST }}
+            TEST_DB_NAME: ${{ secrets.TEST_DB_NAME }}
+            TEST_DB_PASS: ${{ secrets.TEST_DB_PASS }}
+            TEST_DB_PORT: ${{ secrets.TEST_DB_PORT }}
+            TEST_DB_USER: ${{ secrets.TEST_DB_USER }}
+            JWT_SECRET: ${{ secrets.JWT_SECRET }}
+            COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
+            COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
 
         name: Test API
         steps:
