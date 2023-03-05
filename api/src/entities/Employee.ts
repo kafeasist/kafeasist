@@ -15,7 +15,10 @@ export class Employee extends DefaultEntity {
 	username!: string;
 
 	@Column()
-	name!: string;
+	first_name!: string;
+
+	@Column()
+	last_name!: string;
 
 	@Column({ nullable: true })
 	image_url?: string;

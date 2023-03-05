@@ -33,7 +33,8 @@ const employeeRepository = orm.getRepository(Employee);
 
 export interface EmployeeCreateParams {
 	username: string;
-	name: string;
+	first_name: string;
+	last_name: string;
 	image_url?: string;
 	role: string;
 	password: string;
@@ -43,7 +44,8 @@ export interface EmployeeCreateParams {
 
 export interface EmployeeEditParams {
 	employeeId: string;
-	name?: string;
+	first_name?: string;
+	last_name?: string;
 	image_url?: string;
 	role?: string;
 	password?: string;
@@ -75,7 +77,8 @@ router.post(
 	async (req: ExtendedRequest<EmployeeCreateParams>, res: Response) => {
 		const {
 			username,
-			name,
+			first_name,
+			last_name,
 			image_url,
 			role,
 			password,
@@ -88,7 +91,8 @@ router.post(
 
 		const err = validateInputs({
 			username,
-			name,
+			name: first_name,
+			last_name,
 			password,
 			confirmPassword,
 		});
@@ -114,7 +118,8 @@ router.post(
 
 		const employee = new Employee();
 		employee.username = username;
-		employee.name = name;
+		employee.first_name = first_name;
+		employee.last_name = last_name;
 		employee.image_url = image_url;
 		employee.role = role;
 		employee.password = hashedPassword;
@@ -123,9 +128,9 @@ router.post(
 		return await employeeRepository
 			.save(employee)
 			.then(() => res.json(CreateResponse(EMPLOYEE_CREATED)))
-			.catch((err) => {
+			.catch((err: any) => {
 				if (err.code === '23505') {
-					const item = getUniqueItem(err);
+					const item = getUniqueItem(err.detail);
 					return res.json(
 						CreateResponse({ ...ALREADY_IN_USE, fields: item }),
 					);
@@ -140,8 +145,15 @@ router.post(
 router.put(
 	'/edit',
 	async (req: ExtendedRequest<EmployeeEditParams>, res: Response) => {
-		const { employeeId, name, image_url, role, password, confirmPassword } =
-			req.body;
+		const {
+			employeeId,
+			first_name,
+			last_name,
+			image_url,
+			role,
+			password,
+			confirmPassword,
+		} = req.body;
 
 		const userId = req.session.userId;
 		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
@@ -149,7 +161,12 @@ router.put(
 		const error = isInt([employeeId]);
 		if (error) return res.json(error);
 
-		const err = validateInputs({ name, password, confirmPassword });
+		const err = validateInputs({
+			name: first_name,
+			last_name,
+			password,
+			confirmPassword,
+		});
 		if (err) return res.json(err);
 
 		const employee = await employeeRepository.findOne({
@@ -169,7 +186,8 @@ router.put(
 			employee.password = hashedPassword;
 		}
 
-		employee.name = name ? name : employee.name;
+		employee.first_name = first_name ? first_name : employee.first_name;
+		employee.last_name = last_name ? last_name : employee.last_name;
 		employee.image_url = image_url ? image_url : employee.image_url;
 		employee.role = role ? (role as UserRoles) : employee.role;
 
