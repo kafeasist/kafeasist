@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "ESNext",
-		"module": "NodeNext",
+		"module": "CommonJS",
 		"moduleResolution": "node",
 		"lib": ["DOM", "DOM.Iterable", "ESNext"],
 		"outDir": "./dist",

@@ -13,8 +13,8 @@
 		"lint": "eslint --fix",
 		"watch": "tsc -w",
 		"build": "tsc --build",
-		"dev": "nodemon dist/index.js",
-		"start": "node dist/index.js",
+		"dev": "nodemon --loader ts-node/esm --es-module-specifier-resolution=node ./dist/index",
+		"start": "node --loader ts-node/esm --experimental-specifier-resolution=node ./dist/index",
 		"start:prod": "NODE_ENV=prod node dist/index.js",
 		"test": "NODE_ENV=test TS_NODE_FILES=true mocha --recursive --timeout 8000 --exit",
 		"test:cover": "nyc npm run test && nyc report --reporter=lcov"
