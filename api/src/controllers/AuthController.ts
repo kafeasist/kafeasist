@@ -1,8 +1,7 @@
-import { Request, Response, Router } from 'express';
+import { Response, Router } from 'express';
 import { CreateResponse } from '@kafeasist/responses';
 import { __testing__ } from '../config/constants';
 import * as argon2 from 'argon2';
-import { logIn, logOut } from '../utils/logUser';
 import { v4 as uuidv4 } from 'uuid';
 import { setKey, getKey, removeKey } from '../services/connectRedis';
 import { validateInputs } from '../utils/validateInputs';
@@ -18,15 +17,14 @@ import {
 	SAME_PASSWORD,
 	SUCCESSFUL_FORGOT_PASSWORD,
 	SUCCESSFUL_LOGIN,
-	SUCCESSFUL_LOGOUT,
 	USERNAME_OR_PASSWORD_NOT_FOUND,
 	USER_CANNOT_BE_FOUND,
 } from '@kafeasist/responses';
-import { isAuth } from '../middlewares/isAuth';
 import { isNotAuth } from '../middlewares/isNotAuth';
 import { totp } from 'speakeasy';
 import { ExtendedRequest } from '../types/ExtendedRequest';
 import { getUniqueItem } from '../utils/getUniqueItem';
+import { JwtPayload, JwtSign } from '@kafeasist/auth';
 
 const router = Router();
 
@@ -88,9 +86,19 @@ router.post(
 
 		return await User.save(newUser)
 			.then((newUser) => {
-				logIn(req, newUser.id);
+				const payload: JwtPayload = {
+					id: newUser.id,
+					first_name: newUser.first_name,
+					last_name: newUser.last_name,
+					email: newUser.email,
+					phone: newUser.phone,
+					subs_type: newUser.subs_type,
+					verified: newUser.verified,
+				};
 
-				return res.json(CreateResponse(ACCOUNT_CREATED));
+				const token = JwtSign(payload);
+
+				return res.json(CreateResponse(ACCOUNT_CREATED, { token }));
 			})
 			.catch((err) => {
 				if (err.code === '23505') {
@@ -149,26 +157,21 @@ router.post(
 			if (!result) return res.json(CreateResponse(MFA_INCORRECT));
 		}
 
-		logIn(req, user.id);
+		const payload: JwtPayload = {
+			id: user.id,
+			first_name: user.first_name,
+			last_name: user.last_name,
+			email: user.email,
+			phone: user.phone,
+			subs_type: user.subs_type,
+			verified: user.verified,
+		};
 
-		return res.json(
-			CreateResponse(SUCCESSFUL_LOGIN, {
-				first_name: user.first_name,
-				last_name: user.last_name,
-				email: user.email,
-				phone: user.phone,
-				subs_type: user.subs_type,
-				verified: user.verified,
-			}),
-		);
+		const token = JwtSign(payload);
+
+		return res.json(CreateResponse(SUCCESSFUL_LOGIN, { token }));
 	},
 );
-
-router.post('/logout', isAuth, async (req: Request, res: Response) => {
-	logOut(req, res);
-
-	return res.json(CreateResponse(SUCCESSFUL_LOGOUT));
-});
 
 router.post(
 	'/forgot-password',

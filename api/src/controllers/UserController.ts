@@ -26,6 +26,7 @@ import { validateInputs } from '../utils/validateInputs';
 import { isAdmin } from '../middlewares/isAdmin';
 import { getSubscriptionType } from '../utils/getSubscriptionType';
 import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';
+import { getUserFromRequest } from '../utils/getUserFromRequest';
 
 const router = Router();
 
@@ -43,7 +44,8 @@ export interface UserUpdateSubsTypeParams {
 }
 
 router.get('/me', isAuth, async (req: Request, res: Response) => {
-	const id = req.session.userId;
+	const id = getUserFromRequest(req);
+	if (!id) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const user = await userRepository.findOne({ where: { id } });
 
@@ -129,8 +131,7 @@ router.delete('/remove', isAdmin, async (req: Request, res: Response) => {
 });
 
 router.get('/generate2fa', isAuth, async (req: Request, res: Response) => {
-	const userId: number | undefined = req.session.userId;
-
+	const userId = getUserFromRequest(req);
 	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const user: User | null = await userRepository.findOne({
@@ -161,7 +162,7 @@ router.post(
 	async (req: ExtendedRequest<UserActivate2FAParams>, res: Response) => {
 		const { code } = req.body;
 
-		const userId = req.session.userId;
+		const userId = getUserFromRequest(req);
 		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 		const user = await userRepository.findOne({ where: { id: userId } });

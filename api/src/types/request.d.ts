@@ -1,16 +1,9 @@
-import { JwtExtendedPayload } from 'jwt';
+import { JwtExtendedPayload } from 'jsonwebtoken';
 declare global {
 	namespace Express {
 		interface Request {
 			token: string;
 			issuer: JwtExtendedPayload;
 		}
-	}
-}
-
-import session from 'express-session';
-declare module 'express-session' {
-	export interface SessionData {
-		userId: number;
 	}
 }

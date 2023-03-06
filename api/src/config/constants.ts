@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { IyzipayConfig } from 'iyzipay';
-import { Secret } from 'jsonwebtoken';
 dotenv.config();
 
 export const __version__ = 1;
@@ -14,8 +13,6 @@ export const __prod__ = process.env.NODE_ENV === 'prod';
 export const __cors_origin__ = 'http://localhost:5173';
 
 export const __socket_server__ = 'http://localhost:4000';
-
-export const __jwt_secret__ = process.env.JWT_SECRET as Secret;
 
 export const __cookie_name__ = process.env.COOKIE_NAME;
 export const __session_secret__ = process.env.COOKIE_SECRET;

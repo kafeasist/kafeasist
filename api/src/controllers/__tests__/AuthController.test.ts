@@ -10,7 +10,6 @@ import { TestFactory } from '../../utils/TestFactory';
 import {
 	ACCOUNT_CREATED,
 	ALREADY_IN_USE,
-	AUTH_ERROR,
 	FAILED_FORGOT_PASSWORD,
 	INPUT_EMAIL,
 	INPUT_LAST_NAME,
@@ -23,7 +22,6 @@ import {
 	SAME_PASSWORD,
 	SUCCESSFUL_FORGOT_PASSWORD,
 	SUCCESSFUL_LOGIN,
-	SUCCESSFUL_LOGOUT,
 	USERNAME_OR_PASSWORD_NOT_FOUND,
 } from '@kafeasist/responses';
 
@@ -179,7 +177,7 @@ describe('TESTING /api/auth', () => {
 		});
 	});
 
-	let cookies: string;
+	let authToken: string;
 	describe('POST /login', () => {
 		it('logs in with e-mail', (done) => {
 			factory.app
@@ -191,7 +189,7 @@ describe('TESTING /api/auth', () => {
 				.expect(200)
 				.end((err, res) => {
 					if (err) return done(err);
-					cookies = res.headers['set-cookie'].pop().split(';')[0];
+					authToken = res.body.data.token;
 					assert(res.body.message === SUCCESSFUL_LOGIN.message);
 					return done();
 				});
@@ -200,34 +198,11 @@ describe('TESTING /api/auth', () => {
 		it('should fail already logged in', (done) => {
 			factory.app
 				.post('/api/auth/login')
-				.set('Cookie', cookies)
+				.set('Authorization', authToken)
 				.expect(200)
 				.end((err, res) => {
 					if (err) return done(err);
 					assert(res.body.error === NOT_AUTH_ERROR.message);
-					return done();
-				});
-		});
-
-		it('should fail auth', (done) => {
-			factory.app
-				.post('/api/auth/logout')
-				.expect(401)
-				.end((err, res) => {
-					if (err) return done(err);
-					assert(res.body.error === AUTH_ERROR.message);
-					return done();
-				});
-		});
-
-		it('should logout', (done) => {
-			factory.app
-				.post('/api/auth/logout')
-				.set('Cookie', cookies)
-				.expect(200)
-				.end((err, res) => {
-					if (err) return done(err);
-					assert(res.body.message === SUCCESSFUL_LOGOUT.message);
 					return done();
 				});
 		});

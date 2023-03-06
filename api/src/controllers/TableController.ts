@@ -18,7 +18,6 @@ import {
 	FOOD_FAILED_ON_TABLE,
 	FOOD_NOT_OWNED,
 	LIMIT_REACHED,
-	OWNER_ERROR,
 	SUBSCRIPTION_NOT_FOUND,
 	TABLE_CANNOT_BE_FOUND,
 	TABLE_CREATED,
@@ -30,6 +29,7 @@ import {
 import { logger } from '../utils/logger';
 import { isEmployee } from '../middlewares/isEmployee';
 import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';
+import { getUserFromRequest } from '../utils/getUserFromRequest';
 
 const router = Router();
 
@@ -79,7 +79,7 @@ router.post(
 		const err = isInt([foodId, tableId, amount]);
 		if (err) return res.json(err);
 
-		const userId = req.session.userId;
+		const userId = getUserFromRequest(req);
 		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 		const food = await foodRepository.findOne({
@@ -99,11 +99,11 @@ router.post(
 		if (food.company.id !== table.company.id)
 			return res.json(CreateResponse(FOOD_NOT_OWNED));
 
-		if (
-			!isOwner(userId, table.company.id) ||
-			!isEmployee(userId, table.company.id)
-		)
-			return res.json(CreateResponse(OWNER_ERROR));
+		const employee = await isEmployee(userId, table.company.id);
+		if (!employee) return res.json(employee);
+
+		const ownership = await isOwner(userId, table.company.id);
+		if (ownership) return res.json(ownership);
 
 		const orderItem = new OrderItem();
 		orderItem.amount = parseFloat(amount);
@@ -140,7 +140,9 @@ router.post(
 	'/create',
 	async (req: ExtendedRequest<TableCreateParams>, res: Response) => {
 		const { companyId, name, description } = req.body;
-		const userId = req.session.userId;
+
+		const userId = getUserFromRequest(req);
+		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 		if (!companyId) return res.json(CreateResponse(EMPTY_ID));
 
@@ -183,6 +185,9 @@ router.put(
 	async (req: ExtendedRequest<TableEditParams>, res: Response) => {
 		const { tableId, name, description } = req.body;
 
+		const userId = getUserFromRequest(req);
+		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+
 		const err = isInt([tableId]);
 		if (err) return res.json(err);
 
@@ -192,8 +197,8 @@ router.put(
 		});
 		if (!table) return res.json(CreateResponse(TABLE_CANNOT_BE_FOUND));
 
-		if (!isOwner(req.session.userId, table.company.id))
-			return res.json(CreateResponse(OWNER_ERROR));
+		const ownership = await isOwner(userId, table.company.id);
+		if (ownership) return res.json(ownership);
 
 		table.name = name ? name : table.name;
 		table.description = description ? description : table.description;
@@ -211,7 +216,7 @@ router.delete(
 	async (req: ExtendedRequest<{ id: string }>, res: Response) => {
 		const { id } = req.body;
 
-		const userId = req.session.userId;
+		const userId = getUserFromRequest(req);
 		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 		const err = isInt([id]);
@@ -224,8 +229,8 @@ router.delete(
 
 		if (!table) return res.json(CreateResponse(TABLE_CANNOT_BE_FOUND));
 
-		if (!isOwner(userId, table.company.id))
-			return res.json(CreateResponse(OWNER_ERROR));
+		const ownership = await isOwner(userId, table.company.id);
+		if (ownership) return res.json(ownership);
 
 		return await tableRepository
 			.remove(table)
