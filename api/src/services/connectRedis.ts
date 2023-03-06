@@ -1,5 +1,3 @@
-import connectRedis from 'connect-redis';
-import session from 'express-session';
 import Redis from 'ioredis';
 import {
 	__redis_host__,
@@ -8,7 +6,6 @@ import {
 	__redis_user__,
 } from '../config/constants';
 
-export const RedisStore = connectRedis(session);
 export const redis = new Redis({
 	username: __redis_user__,
 	password: __redis_password__,
