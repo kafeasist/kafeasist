@@ -2,12 +2,11 @@ import { Router, Response } from 'express';
 import { validateInputs, InputsInterface } from '../utils/validateInputs';
 import { SubscriptionLimits } from '../utils/SubscriptionInfo';
 import { getSubscriptionType } from '../utils/getSubscriptionType';
-import { CreateResponse } from '@kafeasist/responses';
+import { CreateResponse, USER_CANNOT_BE_FOUND } from '@kafeasist/responses';
 import { isOwner } from '../middlewares/isOwner';
 import { orm } from '../config/typeorm.config';
 import { Category } from '../entities/Category';
 import { Company } from '../entities/Company';
-import { User } from '../entities/User';
 import {
 	ALREADY_IN_USE,
 	CATEGORY_CANNOT_BE_FOUND,
@@ -19,13 +18,14 @@ import {
 	COMPANY_CANNOT_BE_FOUND,
 	EMPTY_ID,
 	LIMIT_REACHED,
-	OWNER_ERROR,
 	SUBSCRIPTION_NOT_FOUND,
-	USER_CANNOT_BE_FOUND,
 } from '@kafeasist/responses';
 import { isInt } from '../middlewares/isInt';
 import { logger } from '../utils/logger';
 import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';
+import { isAuth } from '../middlewares/isAuth';
+import { getUserFromRequest } from '../utils/getUserFromRequest';
+import { User } from '../entities/User';
 
 const router = Router();
 
@@ -65,6 +65,7 @@ router.get('/get', async (req: IDRequest, res: Response) => {
 
 router.post(
 	'/create',
+	isAuth,
 	async (req: ExtendedRequest<CategoryCreate>, res: Response) => {
 		const { name, description, companyId } = req.body;
 
@@ -84,14 +85,15 @@ router.post(
 		const err = validateInputs({ name } as InputsInterface);
 		if (err) return res.json(err);
 
-		const userId = req.session.userId;
+		const userId = getUserFromRequest(req);
 		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
-		if (!isOwner(userId, numberId))
-			return res.json(CreateResponse(OWNER_ERROR));
+		const owner = await isOwner(userId, numberId);
+		if (owner) return res.json(owner);
 
 		const user = await userRepository.findOne({ where: { id: userId } });
 		if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+
 		const subscription = getSubscriptionType(user.subs_type);
 		if (subscription === null) return res.json(SUBSCRIPTION_NOT_FOUND);
 		const limit = new SubscriptionLimits().getCategory(subscription);
@@ -118,7 +120,7 @@ router.post(
 		newCategory.description = description;
 		newCategory.company = company;
 
-		return await categoryRepository
+		return categoryRepository
 			.save(newCategory)
 			.then(() => {
 				return res.json(CreateResponse(CATEGORY_CREATED));
@@ -133,9 +135,6 @@ router.put(
 	'/edit',
 	async (req: ExtendedRequest<CategoryEdit>, res: Response) => {
 		const { categoryId, name, description } = req.body;
-
-		const userId = req.session.userId;
-		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 		const err = isInt([categoryId]);
 		if (err) return res.json(err);
@@ -181,11 +180,11 @@ router.delete(
 		if (!category)
 			return res.json(CreateResponse(CATEGORY_CANNOT_BE_FOUND));
 
-		const userId = req.session.userId;
+		const userId = getUserFromRequest(req);
 		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
-		if (!isOwner(userId, numberId))
-			return res.json(CreateResponse(OWNER_ERROR));
+		const owner = await isOwner(userId, numberId);
+		if (owner) return res.json(owner);
 
 		return await categoryRepository
 			.remove(category)

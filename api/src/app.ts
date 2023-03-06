@@ -1,9 +1,7 @@
 import cors from 'cors';
 import express, { Request, Response } from 'express';
-import session from 'express-session';
 import { corsOptions } from './config/cors.config';
 import { API_404, SLOW_DOWN } from '@kafeasist/responses';
-import { sessionOptions } from './config/session.config';
 import apiRoutes from './routes/api';
 import { CreateResponse } from '@kafeasist/responses';
 import rateLimit from 'express-rate-limit';
@@ -30,8 +28,7 @@ const apiRateLimiter = rateLimit({
 const app = express()
 	.use(cors(corsOptions))
 	.use(express.json())
-	.use(express.urlencoded({ extended: true }))
-	.use(session(sessionOptions));
+	.use(express.urlencoded({ extended: true }));
 
 app.use('/api', apiRateLimiter, apiRoutes);
 

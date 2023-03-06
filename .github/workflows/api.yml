@@ -25,6 +25,7 @@ jobs:
             TEST_DB_PORT: ${{ secrets.TEST_DB_PORT }}
             TEST_DB_USER: ${{ secrets.TEST_DB_USER }}
             JWT_SECRET: ${{ secrets.JWT_SECRET }}
+            JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
             COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
             COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
 

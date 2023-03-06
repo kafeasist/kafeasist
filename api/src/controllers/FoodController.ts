@@ -21,6 +21,7 @@ import {
 } from '@kafeasist/responses';
 import { logger } from '../utils/logger';
 import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';
+import { getUserFromRequest } from '../utils/getUserFromRequest';
 
 const router = Router();
 
@@ -73,7 +74,7 @@ router.post(
 			companyId,
 		} = req.body;
 
-		const userId = req.session.userId;
+		const userId = getUserFromRequest(req);
 		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 		const err = isInt([priceFirst, priceLast, categoryId, companyId]);
@@ -122,7 +123,7 @@ router.put(
 		const { foodId, name, priceFirst, priceLast, description, categoryId } =
 			req.body;
 
-		const userId = req.session.userId;
+		const userId = getUserFromRequest(req);
 		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 		const err = isInt([
@@ -142,8 +143,8 @@ router.put(
 		});
 		if (!food) return res.json(CreateResponse(FOOD_CANNOT_BE_FOUND));
 
-		if (!isOwner(userId, food.company.id))
-			return res.json(CreateResponse(OWNER_ERROR));
+		const ownership = await isOwner(userId, food.company.id);
+		if (ownership) return res.json(ownership);
 
 		let category: Category | null = null;
 		if (categoryId) {
@@ -180,7 +181,7 @@ router.delete(
 	async (req: ExtendedRequest<{ id: string }>, res: Response) => {
 		const { id } = req.body;
 
-		const userId = req.session.userId;
+		const userId = getUserFromRequest(req);
 		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 		const err = isInt([id]);
@@ -191,8 +192,8 @@ router.delete(
 		});
 		if (!food) return res.json(CreateResponse(FOOD_CANNOT_BE_FOUND));
 
-		if (!isOwner(userId, food.company.id))
-			return res.json(CreateResponse(OWNER_ERROR));
+		const ownership = await isOwner(userId, food.company.id);
+		if (ownership) return res.json(ownership);
 
 		return await foodRepository
 			.remove(food)

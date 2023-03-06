@@ -6,6 +6,7 @@ import iyzipay, {
 } from '../services/iyzipay';
 import { ExtendedRequest } from '../types/ExtendedRequest';
 import { USER_CANNOT_BE_FOUND } from '@kafeasist/responses';
+import { getUserFromRequest } from '../utils/getUserFromRequest';
 
 const router = Router();
 
@@ -15,13 +16,9 @@ router.post(
 		req: ExtendedRequest<InitSubscriptionCheckoutFormInterface>,
 		res: Response,
 	) => {
-		if (!req.session.userId)
-			return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
-		return iyzipay.initSubscriptionCheckoutForm(
-			res,
-			req.session.userId,
-			req.body,
-		);
+		const userId = getUserFromRequest(req);
+		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+		return iyzipay.initSubscriptionCheckoutForm(res, userId, req.body);
 	},
 );
 
@@ -31,13 +28,9 @@ router.get(
 		req: ExtendedRequest<RetrieveSubscriptionCheckoutFormInterface>,
 		res: Response,
 	) => {
-		if (!req.session.userId)
-			return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
-		return iyzipay.retrieveSubscriptionCheckoutForm(
-			res,
-			req.session.userId,
-			req.body,
-		);
+		const userId = getUserFromRequest(req);
+		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+		return iyzipay.retrieveSubscriptionCheckoutForm(res, userId, req.body);
 	},
 );
 

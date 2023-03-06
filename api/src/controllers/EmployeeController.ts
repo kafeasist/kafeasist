@@ -25,6 +25,7 @@ import { CreateResponse } from '@kafeasist/responses';
 import { logger } from '../utils/logger';
 import { getUniqueItem } from '../utils/getUniqueItem';
 import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';
+import { getUserFromRequest } from '../utils/getUserFromRequest';
 
 const router = Router();
 
@@ -55,7 +56,7 @@ export interface EmployeeEditParams {
 router.get('/get', async (req: IDRequest, res: Response) => {
 	const { id } = req.query;
 
-	const userId = req.session.userId;
+	const userId = getUserFromRequest(req);
 	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	if (!id) return res.json(CreateResponse(EMPTY_ID));
@@ -85,8 +86,8 @@ router.post(
 			confirmPassword,
 			companyId,
 		} = req.body;
-		const userId = req.session.userId;
 
+		const userId = getUserFromRequest(req);
 		if (!userId) return res.json(USER_CANNOT_BE_FOUND);
 
 		const err = validateInputs({
@@ -107,7 +108,7 @@ router.post(
 			return res.json(CreateResponse(ROLE_CANNOT_BE_FOUND));
 
 		const ownership = await isOwner(userId, parsedCompanyId);
-		if (ownership !== null) return res.json(ownership);
+		if (ownership) return res.json(ownership);
 
 		const company = await companyRepository.findOne({
 			where: { id: parseInt(companyId) },
@@ -155,7 +156,7 @@ router.put(
 			confirmPassword,
 		} = req.body;
 
-		const userId = req.session.userId;
+		const userId = getUserFromRequest(req);
 		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 		const error = isInt([employeeId]);
@@ -203,7 +204,7 @@ router.put(
 router.delete('/remove', async (req: IDRequest, res: Response) => {
 	const { id } = req.query;
 
-	const userId = req.session.userId;
+	const userId = getUserFromRequest(req);
 	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	if (!id) return res.json(CreateResponse(EMPTY_ID));

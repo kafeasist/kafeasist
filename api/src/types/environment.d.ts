@@ -2,7 +2,6 @@ namespace NodeJS {
 	interface ProcessEnv {
 		PORT: number;
 		NODE_ENV: 'test' | 'prod' | 'dev';
-		JWT_SECRET: string;
 		COOKIE_NAME: string;
 		COOKIE_SECRET: string;
 		REDIS_USER: string;

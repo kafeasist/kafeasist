@@ -1,5 +1,5 @@
-import { Response, Router } from 'express';
-import { CreateResponse } from '@kafeasist/responses';
+import { Request, Response, Router } from 'express';
+import { CreateResponse, USER_CANNOT_BE_FOUND } from '@kafeasist/responses';
 import { isAuth } from '../middlewares/isAuth';
 import { validateInputs } from '../utils/validateInputs';
 import { getSubscriptionType } from '../utils/getSubscriptionType';
@@ -20,13 +20,12 @@ import {
 	NO_CATEGORY_FOUND,
 	NO_EMPLOYEE_FOUND,
 	NO_TABLE_FOUND,
-	OWNER_ERROR,
 	SUBSCRIPTION_NOT_FOUND,
-	USER_CANNOT_BE_FOUND,
 } from '@kafeasist/responses';
 import { isInt } from '../middlewares/isInt';
 import { isOwner } from '../middlewares/isOwner';
 import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';
+import { getUserFromRequest } from '../utils/getUserFromRequest';
 
 const router = Router();
 
@@ -69,10 +68,13 @@ router.get('/get', async (req: IDRequest, res: Response) => {
 	return res.json(company);
 });
 
-router.get('/tables', async (req: IDRequest, res: Response) => {
-	const { id } = req.query;
+router.get('/tables', isAuth, async (req: Request, res: Response) => {
+	const { id }: any = req.query;
 
 	if (!id) return res.json(CreateResponse(EMPTY_ID));
+
+	const userId = getUserFromRequest(req);
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const err = isInt([id]);
 	if (err) return res.json(err);
@@ -84,6 +86,9 @@ router.get('/tables', async (req: IDRequest, res: Response) => {
 
 	if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
 
+	const ownership = await isOwner(userId, company.id);
+	if (ownership) return res.json(ownership);
+
 	const tables = company.tables;
 
 	if (!tables) return res.json(CreateResponse(NO_TABLE_FOUND));
@@ -91,10 +96,13 @@ router.get('/tables', async (req: IDRequest, res: Response) => {
 	return res.json(tables);
 });
 
-router.get('/categories', async (req: IDRequest, res: Response) => {
-	const { id } = req.query;
+router.get('/categories', isAuth, async (req: Request, res: Response) => {
+	const { id }: any = req.query;
 
 	if (!id) return res.json(CreateResponse(EMPTY_ID));
+
+	const userId = getUserFromRequest(req);
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const err = isInt([id]);
 	if (err) return res.json(err);
@@ -106,6 +114,9 @@ router.get('/categories', async (req: IDRequest, res: Response) => {
 
 	if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
 
+	const ownership = await isOwner(userId, company.id);
+	if (ownership) return res.json(ownership);
+
 	const categories = company.categories;
 
 	if (!categories) return res.json(CreateResponse(NO_CATEGORY_FOUND));
@@ -113,10 +124,12 @@ router.get('/categories', async (req: IDRequest, res: Response) => {
 	return res.json(categories);
 });
 
-router.get('/employees', async (req: IDRequest, res: Response) => {
-	const { id } = req.query;
-
+router.get('/employees', isAuth, async (req: Request, res: Response) => {
+	const { id }: any = req.query;
 	if (!id) return res.json(CreateResponse(EMPTY_ID));
+
+	const userId = getUserFromRequest(req);
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const err = isInt([id]);
 	if (err) return res.json(err);
@@ -127,6 +140,9 @@ router.get('/employees', async (req: IDRequest, res: Response) => {
 	});
 
 	if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
+
+	const ownership = await isOwner(userId, company.id);
+	if (ownership) return res.json(ownership);
 
 	const employees = company.employees;
 
@@ -144,15 +160,15 @@ router.post(
 		const err = validateInputs({ name, address, phone });
 		if (err) return res.json(err);
 
-		const userId = req.session.userId;
-		if (!userId) return res.json(USER_CANNOT_BE_FOUND);
+		const userId = getUserFromRequest(req);
+		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+
 		const user = await userRepository.findOne({
 			where: { id: userId },
 			relations: ['companies'],
 		});
-
 		if (!user) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
-		const userCompanies = user?.companies;
+		const userCompanies = user.companies;
 
 		const subscription = getSubscriptionType(user.subs_type);
 		if (subscription === null) return res.json(SUBSCRIPTION_NOT_FOUND);
@@ -160,7 +176,7 @@ router.post(
 
 		if (!userCompanies)
 			return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
-		if (userCompanies?.length >= companyLimit(subscription))
+		if (userCompanies.length >= companyLimit(subscription))
 			return res.json(CreateResponse(LIMIT_REACHED));
 
 		let exists = false;
@@ -181,9 +197,7 @@ router.post(
 		newCompany.description = description;
 		newCompany.owner = user;
 
-		await companyRepository
-			.save(newCompany)
-			.catch((error) => logger(error));
+		companyRepository.save(newCompany).catch((error) => logger(error));
 
 		return res.json(newCompany);
 	},
@@ -195,9 +209,6 @@ router.put(
 		const { companyId, name, address, phone, image_url, description } =
 			req.body;
 
-		const userId = req.session.userId;
-		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
-
 		const err = isInt([companyId]);
 		if (err) return res.json(err);
 
@@ -206,8 +217,11 @@ router.put(
 		});
 		if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
 
-		if (!isOwner(userId, company.id))
-			return res.json(CreateResponse(OWNER_ERROR));
+		const userId = getUserFromRequest(req);
+		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+
+		const owner = await isOwner(userId, company.id);
+		if (owner) return res.json(owner);
 
 		const errors = validateInputs({
 			name: name ? name : company.name,
@@ -230,10 +244,12 @@ router.put(
 	},
 );
 
-router.delete('/remove', async (req: IDRequest, res: Response) => {
-	const { id } = req.query;
-
+router.delete('/remove', isAuth, async (req: Request, res: Response) => {
+	const { id }: any = req.query;
 	if (!id) return res.json(CreateResponse(EMPTY_ID));
+
+	const userId = getUserFromRequest(req);
+	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
 
 	const err = isInt([id]);
 	if (err) return res.json(err);
@@ -245,6 +261,9 @@ router.delete('/remove', async (req: IDRequest, res: Response) => {
 	});
 
 	if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
+
+	const ownership = await isOwner(userId, company.id);
+	if (ownership) return res.json(ownership);
 
 	return companyRepository
 		.remove(company)
