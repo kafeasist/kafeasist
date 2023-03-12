@@ -4,13 +4,19 @@ import dotenv from 'dotenv';
 import { IyzipayConfig } from 'iyzipay';
 dotenv.config();
 
-export const __version__ = 1;
+export const __version__ = process.env.npm_package_version;
+export const __api_name__ = 'kafeasist_api';
+export const __api_info__ = {
+	version: __version__,
+	name: __api_name__,
+};
+
 export const __port__ = process.env.PORT;
 
 export const __testing__ = process.env.NODE_ENV === 'test';
 export const __prod__ = process.env.NODE_ENV === 'prod';
 
-export const __cors_origin__ = 'http://localhost:5173';
+export const __cors_origin__ = 'http://localhost:3002';
 
 export const __socket_server__ = 'http://localhost:4000';
 

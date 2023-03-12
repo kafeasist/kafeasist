@@ -1,15 +1,16 @@
-import { NextFunction, Request, Response } from 'express';
+import { TRPCError } from '@trpc/server';
 import { AUTH_ERROR } from '@kafeasist/responses';
-import { CreateResponse } from '@kafeasist/responses';
 import { JwtVerify } from '@kafeasist/auth';
+import { middleware } from '../routes/trpc';
 
-export const isAuth = (req: Request, res: Response, next: NextFunction) => {
-	const token = req.headers['authorization'];
+export const isAuth = middleware(async ({ next, ctx }) => {
+	const token = ctx.req.headers['authorization'];
 
-	if (!token || !JwtVerify(token)) {
-		res.status(401);
-		return res.json(CreateResponse(AUTH_ERROR));
-	}
+	if (!token || !JwtVerify(token))
+		throw new TRPCError({
+			code: 'UNAUTHORIZED',
+			message: AUTH_ERROR.message,
+		});
 
-	return next();
-};
+	return next({ ctx });
+});

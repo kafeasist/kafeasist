@@ -39,6 +39,7 @@
 	},
 	"dependencies": {
 		"@changesets/cli": "^2.26.0",
+		"@kafeasist/api": "1.1.0",
 		"@kafeasist/auth": "1.0.0",
 		"@kafeasist/responses": "2.0.0",
 		"@manypkg/cli": "^0.20.0",

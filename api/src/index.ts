@@ -1,7 +1,6 @@
-import 'reflect-metadata';
+import app from './app';
 import { __port__ } from './config/constants';
 import { orm } from './config/typeorm.config';
-import app from './app';
 
 if (require.main === module) {
 	orm.initialize()

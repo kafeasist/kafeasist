@@ -1,9 +1,14 @@
-import { NextFunction, Request, Response } from 'express';
 import { NOT_AUTH_ERROR } from '@kafeasist/responses';
-import { CreateResponse } from '@kafeasist/responses';
+import { middleware } from '../routes/trpc';
+import { TRPCError } from '@trpc/server';
 
-export const isNotAuth = (req: Request, res: Response, next: NextFunction) => {
-	const token = req.headers['authorization'];
-	if (token) return res.json(CreateResponse(NOT_AUTH_ERROR));
-	return next();
-};
+export const isNotAuth = middleware(async ({ next, ctx }) => {
+	const token = ctx.req.headers['authorization'];
+	if (token)
+		throw new TRPCError({
+			code: 'UNAUTHORIZED',
+			message: NOT_AUTH_ERROR.message,
+		});
+
+	return next({ ctx });
+});
