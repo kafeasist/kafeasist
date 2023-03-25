@@ -447,3 +447,8 @@ export const IYZIPAY_RETRIEVE_SUBSCRIPTION: CustomResponse = {
 	message: 'Ödeme formu bilgileri başarıyla alındı.',
 	error: false,
 };
+
+export const UNKNOWN_ERROR: CustomResponse = {
+	code: 80,
+	message: 'Beklenmeyen bir hatayla karşılaşıldı!',
+};

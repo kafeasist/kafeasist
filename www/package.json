@@ -11,6 +11,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"autoprefixer": "^10.4.13",
+		"dotenv": "^16.0.1",
 		"eslint": "^8.16.0",
 		"postcss": "^8.4.21",
 		"prettier": "^2.8.4",
@@ -22,6 +23,7 @@
 	},
 	"dependencies": {
 		"@kafeasist/api": "1.1.0",
+		"@kafeasist/responses": "latest",
 		"@tanstack/react-query": "^5.0.0-alpha.0",
 		"@tanstack/solid-query": "^5.0.0-alpha.0",
 		"@trpc/client": "^10.14.1",

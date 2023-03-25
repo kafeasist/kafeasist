@@ -178,11 +178,13 @@ importers:
   www:
     specifiers:
       '@kafeasist/api': 1.1.0
+      '@kafeasist/responses': latest
       '@tanstack/react-query': ^5.0.0-alpha.0
       '@tanstack/solid-query': ^5.0.0-alpha.0
       '@trpc/client': ^10.14.1
       '@trpc/server': ^10.14.1
       autoprefixer: ^10.4.13
+      dotenv: ^16.0.1
       eslint: ^8.16.0
       postcss: ^8.4.21
       prettier: ^2.8.4
@@ -198,6 +200,7 @@ importers:
       vite-plugin-solid: ^2.5.0
     dependencies:
       '@kafeasist/api': link:../api
+      '@kafeasist/responses': link:../packages/@kafeasist:responses
       '@tanstack/react-query': 5.0.0-alpha.5_biqbaboplfbrettd7655fr4n2y
       '@tanstack/solid-query': 5.0.0-alpha.5_solid-js@1.6.11
       '@trpc/client': 10.14.1_@trpc+server@10.14.1
@@ -209,6 +212,7 @@ importers:
       solid-trpc: 0.0.11-rc.3_aoi6ad7qkd4cqwoxqbjzo64bty
     devDependencies:
       autoprefixer: 10.4.13_postcss@8.4.21
+      dotenv: 16.0.3
       eslint: 8.34.0
       postcss: 8.4.21
       prettier: 2.8.4

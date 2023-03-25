@@ -1,9 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 export * from './responses';
-
-const __prod__ = process.env.NODE_ENV === 'prod';
 
 export interface KafeasistResponse {
 	api: {
@@ -15,7 +10,6 @@ export interface KafeasistResponse {
 	message?: string;
 	help: string;
 	fields?: string[] | string;
-	stack?: string | undefined;
 	data?: any;
 }
 
@@ -55,9 +49,6 @@ export const CreateResponse = (
 			error: err.message,
 			fields,
 			help: `https://destek.kafeasist.com/hata?kod=${code}`,
-			stack: __prod__
-				? 'Stack not reachable due to production reasons.'
-				: err.stack,
 			data,
 		};
 	}
