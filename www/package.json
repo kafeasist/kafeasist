@@ -23,7 +23,7 @@
 	},
 	"dependencies": {
 		"@kafeasist/api": "1.1.0",
-		"@kafeasist/responses": "latest",
+		"@kafeasist/responses": "2.0.0",
 		"@tanstack/react-query": "^5.0.0-alpha.0",
 		"@tanstack/solid-query": "^5.0.0-alpha.0",
 		"@trpc/client": "^10.14.1",
