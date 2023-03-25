@@ -48,11 +48,11 @@ This project is licensed under `GNU General Public License v3.0` if you want to 
 | --------- | ------------------------------------------ | --------------------------------------------- | --------- |
 | Ege Onder | 40398628+EgeOnder@users.noreply.github.com | [@EgeOnder23](https://twitter.com/EgeOnder23) | developer |
 
-[build-shield]: https://img.shields.io/github/actions/workflow/status/EgeOnder/kafeasist/main.yml?style=for-the-badge
-[build-url]: https://github.com/EgeOnder/kafeasist/actions
-[contributors-shield]: https://img.shields.io/github/contributors/EgeOnder/kafeasist.svg?style=for-the-badge
-[contributors-url]: https://github.com/EgeOnder/kafeasist/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/EgeOnder/kafeasist.svg?style=for-the-badge
-[forks-url]: https://github.com/EgeOnder/kafeasist/network/members
-[stars-shield]: https://img.shields.io/github/stars/EgeOnder/kafeasist.svg?style=for-the-badge
-[stars-url]: https://github.com/EgeOnder/kafeasist/stargazers
+[build-shield]: https://img.shields.io/github/actions/workflow/status/kafeasist/kafeasist/main.yml?style=for-the-badge
+[build-url]: https://github.com/kafeasist/kafeasist/actions
+[contributors-shield]: https://img.shields.io/github/contributors/kafeasist/kafeasist.svg?style=for-the-badge
+[contributors-url]: https://github.com/kafeasist/kafeasist/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/kafeasist/kafeasist.svg?style=for-the-badge
+[forks-url]: https://github.com/kafeasist/kafeasist/network/members
+[stars-shield]: https://img.shields.io/github/stars/kafeasist/kafeasist.svg?style=for-the-badge
+[stars-url]: https://github.com/kafeasist/kafeasist/stargazers
