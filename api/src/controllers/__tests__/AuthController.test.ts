@@ -1,10 +1,4 @@
 import 'module-alias/register';
-import {
-	ForgotPasswordParams,
-	LoginParams,
-	RegisterParams,
-	ResetPasswordParams,
-} from '../AuthController';
 import { assert } from 'chai';
 import { TestFactory } from '../../utils/TestFactory';
 import {
@@ -36,7 +30,7 @@ describe('TESTING /api/auth', () => {
 		await factory.close();
 	});
 
-	const registerOptions: RegisterParams = {
+	const registerOptions = {
 		first_name: 'Test',
 		last_name: 'Test',
 		email: 'test@test.com',
@@ -185,7 +179,7 @@ describe('TESTING /api/auth', () => {
 				.send({
 					emailOrPhone: registerOptions.email,
 					password: registerOptions.password,
-				} as LoginParams)
+				})
 				.expect(200)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -213,7 +207,7 @@ describe('TESTING /api/auth', () => {
 				.send({
 					emailOrPhone: 'test',
 					password: registerOptions.password,
-				} as LoginParams)
+				})
 				.expect(200)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -231,7 +225,7 @@ describe('TESTING /api/auth', () => {
 				.send({
 					emailOrPhone: registerOptions.email,
 					password: 'test',
-				} as LoginParams)
+				})
 				.expect(200)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -249,7 +243,7 @@ describe('TESTING /api/auth', () => {
 				.send({
 					emailOrPhone: registerOptions.phone,
 					password: registerOptions.password,
-				} as LoginParams)
+				})
 				.expect(200)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -266,7 +260,7 @@ describe('TESTING /api/auth', () => {
 				.post('/api/auth/forgot-password')
 				.send({
 					emailOrPhone: registerOptions.email,
-				} as ForgotPasswordParams)
+				})
 				.expect(200)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -284,7 +278,7 @@ describe('TESTING /api/auth', () => {
 				.post('/api/auth/forgot-password')
 				.send({
 					emailOrPhone: registerOptions.phone,
-				} as ForgotPasswordParams)
+				})
 				.expect(200)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -300,7 +294,7 @@ describe('TESTING /api/auth', () => {
 				.post('/api/auth/forgot-password')
 				.send({
 					emailOrPhone: 'test',
-				} as ForgotPasswordParams)
+				})
 				.expect(200)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -319,7 +313,7 @@ describe('TESTING /api/auth', () => {
 				.send({
 					password: registerOptions.password,
 					confirmPassword: registerOptions.passwordAgain,
-				} as ResetPasswordParams)
+				})
 				.expect(200)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -334,7 +328,7 @@ describe('TESTING /api/auth', () => {
 				.send({
 					password: 'NewTestPass123',
 					confirmPassword: 'NewTestPass123',
-				} as ResetPasswordParams)
+				})
 				.expect(200)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -349,7 +343,7 @@ describe('TESTING /api/auth', () => {
 				.send({
 					password: 'NewTestPass123',
 					confirmPassword: 'NewTestPass123',
-				} as ResetPasswordParams)
+				})
 				.expect(200)
 				.end((err, res) => {
 					if (err) return done(err);

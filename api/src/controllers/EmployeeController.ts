@@ -1,8 +1,7 @@
-import { Response, Router } from 'express';
-import { validateInputs } from '../utils/validateInputs';
 import {
 	ALREADY_IN_USE,
 	COMPANY_CANNOT_BE_FOUND,
+	CreateResponse,
 	EMPLOYEE_CANNOT_BE_FOUND,
 	EMPLOYEE_CREATED,
 	EMPLOYEE_CREATE_FAILED,
@@ -15,219 +14,209 @@ import {
 	SAME_PASSWORD,
 	USER_CANNOT_BE_FOUND,
 } from '@kafeasist/responses';
-import { isInt } from '../middlewares/isInt';
-import { Employee, isValidRole, UserRoles } from '../entities/Employee';
-import { isOwner } from '../middlewares/isOwner';
+import argon2 from 'argon2';
+import { z } from 'zod';
 import { orm } from '../config/typeorm.config';
 import { Company } from '../entities/Company';
-import argon2 from 'argon2';
-import { CreateResponse } from '@kafeasist/responses';
-import { logger } from '../utils/logger';
+import { Employee, isValidRole, UserRoles } from '../entities/Employee';
+import { isOwner } from '../middlewares/isOwner';
+import { publicProcedure, router } from '../routes/trpc';
 import { getUniqueItem } from '../utils/getUniqueItem';
-import { ExtendedRequest, IDRequest } from '../types/ExtendedRequest';
-import { getUserFromRequest } from '../utils/getUserFromRequest';
-
-const router = Router();
+import { logger } from '../utils/logger';
+import { validateInputs } from '../utils/validateInputs';
 
 const companyRepository = orm.getRepository(Company);
 const employeeRepository = orm.getRepository(Employee);
 
-export interface EmployeeCreateParams {
-	username: string;
-	first_name: string;
-	last_name: string;
-	image_url?: string;
-	role: string;
-	password: string;
-	confirmPassword: string;
-	companyId: string;
-}
+// TODO: isAuth
+export const employeeRouter = router({
+	get: publicProcedure
+		.input(
+			z.object({
+				id: z.number(),
+			}),
+		)
+		.query(async ({ input, ctx }) => {
+			const { id } = input;
 
-export interface EmployeeEditParams {
-	employeeId: string;
-	first_name?: string;
-	last_name?: string;
-	image_url?: string;
-	role?: string;
-	password?: string;
-	confirmPassword?: string;
-}
+			const userId = ctx.userId;
+			if (!userId) return CreateResponse(USER_CANNOT_BE_FOUND);
 
-router.get('/get', async (req: IDRequest, res: Response) => {
-	const { id } = req.query;
+			if (!id) return CreateResponse(EMPTY_ID);
 
-	const userId = getUserFromRequest(req);
-	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
-
-	if (!id) return res.json(CreateResponse(EMPTY_ID));
-
-	const err = isInt([id]);
-	if (err) return res.json(err);
-
-	const employee = await employeeRepository.findOne({
-		where: { id: parseInt(id) },
-	});
-
-	if (!employee) return res.json(CreateResponse(EMPLOYEE_CANNOT_BE_FOUND));
-
-	return res.json(employee);
-});
-
-router.post(
-	'/create',
-	async (req: ExtendedRequest<EmployeeCreateParams>, res: Response) => {
-		const {
-			username,
-			first_name,
-			last_name,
-			image_url,
-			role,
-			password,
-			confirmPassword,
-			companyId,
-		} = req.body;
-
-		const userId = getUserFromRequest(req);
-		if (!userId) return res.json(USER_CANNOT_BE_FOUND);
-
-		const err = validateInputs({
-			username,
-			name: first_name,
-			last_name,
-			password,
-			confirmPassword,
-		});
-		if (err) return res.json(err);
-
-		const error = isInt([companyId]);
-		if (error) return res.json(error);
-
-		const parsedCompanyId = parseInt(companyId);
-
-		if (!isValidRole(role))
-			return res.json(CreateResponse(ROLE_CANNOT_BE_FOUND));
-
-		const ownership = await isOwner(userId, parsedCompanyId);
-		if (ownership) return res.json(ownership);
-
-		const company = await companyRepository.findOne({
-			where: { id: parseInt(companyId) },
-		});
-		if (!company) return res.json(CreateResponse(COMPANY_CANNOT_BE_FOUND));
-
-		const hashedPassword = await argon2.hash(password);
-
-		const employee = new Employee();
-		employee.username = username;
-		employee.first_name = first_name;
-		employee.last_name = last_name;
-		employee.image_url = image_url;
-		employee.role = role;
-		employee.password = hashedPassword;
-		employee.company = company;
-
-		return await employeeRepository
-			.save(employee)
-			.then(() => res.json(CreateResponse(EMPLOYEE_CREATED)))
-			.catch((err: any) => {
-				if (err.code === '23505') {
-					const item = getUniqueItem(err.detail);
-					return res.json(
-						CreateResponse({ ...ALREADY_IN_USE, fields: item }),
-					);
-				} else {
-					logger(err);
-					return res.json(CreateResponse(EMPLOYEE_CREATE_FAILED));
-				}
+			const employee = await employeeRepository.findOne({
+				where: { id: id },
 			});
-	},
-);
 
-router.put(
-	'/edit',
-	async (req: ExtendedRequest<EmployeeEditParams>, res: Response) => {
-		const {
-			employeeId,
-			first_name,
-			last_name,
-			image_url,
-			role,
-			password,
-			confirmPassword,
-		} = req.body;
+			if (!employee) return CreateResponse(EMPLOYEE_CANNOT_BE_FOUND);
 
-		const userId = getUserFromRequest(req);
-		if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+			return employee;
+		}),
+	create: publicProcedure
+		.input(
+			z.object({
+				username: z.string(),
+				first_name: z.string(),
+				last_name: z.string(),
+				image_url: z.string().url().optional(),
+				role: z.string(),
+				password: z.string(),
+				confirmPassword: z.string(),
+				companyId: z.number(),
+			}),
+		)
+		.mutation(async ({ input, ctx }) => {
+			const {
+				username,
+				first_name,
+				last_name,
+				image_url,
+				role,
+				password,
+				confirmPassword,
+				companyId,
+			} = input;
 
-		const error = isInt([employeeId]);
-		if (error) return res.json(error);
+			const userId = ctx.userId;
+			if (!userId) return USER_CANNOT_BE_FOUND;
 
-		const err = validateInputs({
-			name: first_name,
-			last_name,
-			password,
-			confirmPassword,
-		});
-		if (err) return res.json(err);
+			const err = validateInputs({
+				username,
+				name: first_name,
+				last_name,
+				password,
+				confirmPassword,
+			});
+			if (err) return err;
 
-		const employee = await employeeRepository.findOne({
-			where: { id: parseInt(employeeId) },
-		});
+			if (!isValidRole(role)) return CreateResponse(ROLE_CANNOT_BE_FOUND);
 
-		if (!employee)
-			return res.json(CreateResponse(EMPLOYEE_CANNOT_BE_FOUND));
+			const ownership = await isOwner(userId, companyId);
+			if (ownership) return ownership;
 
-		if (role && !isValidRole(role))
-			return res.json(CreateResponse(ROLE_CANNOT_BE_FOUND));
+			const company = await companyRepository.findOne({
+				where: { id: companyId },
+			});
+			if (!company) return CreateResponse(COMPANY_CANNOT_BE_FOUND);
 
-		if (password) {
-			const isSame = await argon2.verify(employee.password, password);
-			if (isSame) return res.json(CreateResponse(SAME_PASSWORD));
 			const hashedPassword = await argon2.hash(password);
+
+			const employee = new Employee();
+			employee.username = username;
+			employee.first_name = first_name;
+			employee.last_name = last_name;
+			employee.image_url = image_url;
+			employee.role = role;
 			employee.password = hashedPassword;
-		}
+			employee.company = company;
 
-		employee.first_name = first_name ? first_name : employee.first_name;
-		employee.last_name = last_name ? last_name : employee.last_name;
-		employee.image_url = image_url ? image_url : employee.image_url;
-		employee.role = role ? (role as UserRoles) : employee.role;
+			return await employeeRepository
+				.save(employee)
+				.then(() => CreateResponse(EMPLOYEE_CREATED))
+				.catch((err: any) => {
+					if (err.code === '23505') {
+						const item = getUniqueItem(err.detail);
+						return CreateResponse({
+							...ALREADY_IN_USE,
+							fields: item,
+						});
+					} else {
+						logger(err);
+						return CreateResponse(EMPLOYEE_CREATE_FAILED);
+					}
+				});
+		}),
+	edit: publicProcedure
+		.input(
+			z.object({
+				employeeId: z.number(),
+				first_name: z.string().optional(),
+				last_name: z.string().optional(),
+				image_url: z.string().url().optional(),
+				role: z.string().optional(),
+				password: z.string().optional(),
+				confirmPassword: z.string().optional(),
+			}),
+		)
+		.mutation(async ({ input, ctx }) => {
+			const {
+				employeeId,
+				first_name,
+				last_name,
+				image_url,
+				role,
+				password,
+				confirmPassword,
+			} = input;
 
-		await employeeRepository.save(employee).catch((err) => {
-			logger(err);
-			return res.json(CreateResponse(EMPLOYEE_EDIT_FAILED));
-		});
+			const userId = ctx.userId;
+			if (!userId) return CreateResponse(USER_CANNOT_BE_FOUND);
 
-		return res.json(CreateResponse(EMPLOYEE_EDITED));
-	},
-);
+			const err = validateInputs({
+				name: first_name,
+				last_name,
+				password,
+				confirmPassword,
+			});
+			if (err) return err;
 
-router.delete('/remove', async (req: IDRequest, res: Response) => {
-	const { id } = req.query;
+			const employee = await employeeRepository.findOne({
+				where: { id: employeeId },
+			});
 
-	const userId = getUserFromRequest(req);
-	if (!userId) return res.json(CreateResponse(USER_CANNOT_BE_FOUND));
+			if (!employee) return CreateResponse(EMPLOYEE_CANNOT_BE_FOUND);
 
-	if (!id) return res.json(CreateResponse(EMPTY_ID));
+			if (role && !isValidRole(role))
+				return CreateResponse(ROLE_CANNOT_BE_FOUND);
 
-	const err = isInt([id]);
-	if (err) return res.json(err);
+			if (password) {
+				const isSame = await argon2.verify(employee.password, password);
+				if (isSame) return CreateResponse(SAME_PASSWORD);
+				const hashedPassword = await argon2.hash(password);
+				employee.password = hashedPassword;
+			}
 
-	const employee = await employeeRepository.findOne({
-		where: { id: parseInt(id) },
-		relations: ['company'],
-	});
+			employee.first_name = first_name ? first_name : employee.first_name;
+			employee.last_name = last_name ? last_name : employee.last_name;
+			employee.image_url = image_url ? image_url : employee.image_url;
+			employee.role = role ? (role as UserRoles) : employee.role;
 
-	if (!employee) return res.json(CreateResponse(EMPLOYEE_CANNOT_BE_FOUND));
+			await employeeRepository.save(employee).catch((err) => {
+				logger(err);
+				return CreateResponse(EMPLOYEE_EDIT_FAILED);
+			});
 
-	const ownership = isOwner(userId, employee.company.id);
-	if (ownership !== null) return res.json(ownership);
+			return CreateResponse(EMPLOYEE_EDITED);
+		}),
+	remove: publicProcedure
+		.input(
+			z.object({
+				id: z.number(),
+			}),
+		)
+		.mutation(async ({ input, ctx }) => {
+			const { id } = input;
 
-	await employeeRepository.remove(employee).catch((error) => {
-		logger(error);
-		return res.json(CreateResponse(EMPLOYEE_REMOVE_FAILED));
-	});
+			const userId = ctx.userId;
+			if (!userId) return CreateResponse(USER_CANNOT_BE_FOUND);
 
-	return res.json(CreateResponse(EMPLOYEE_REMOVED));
+			const employee = await employeeRepository.findOne({
+				where: { id: id },
+				relations: ['company'],
+			});
+
+			if (!employee) return CreateResponse(EMPLOYEE_CANNOT_BE_FOUND);
+
+			const ownership = isOwner(userId, employee.company.id);
+			if (ownership !== null) return ownership;
+
+			await employeeRepository.remove(employee).catch((error) => {
+				logger(error);
+				return CreateResponse(EMPLOYEE_REMOVE_FAILED);
+			});
+
+			return CreateResponse(EMPLOYEE_REMOVED);
+		}),
 });
 
 export default router;

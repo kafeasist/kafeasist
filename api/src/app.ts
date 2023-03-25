@@ -1,40 +1,51 @@
-import cors from 'cors';
-import express, { Request, Response } from 'express';
+import express from 'express';
+import * as trpcExpress from '@trpc/server/adapters/express';
+import { router, createContext, publicProcedure } from './routes/trpc';
+import { __port__ } from './config/constants';
+import { authRouter } from './controllers/AuthController';
+import { rateLimiter } from './services/rateLimiter';
 import { corsOptions } from './config/cors.config';
-import { API_404, SLOW_DOWN } from '@kafeasist/responses';
-import apiRoutes from './routes/api';
-import { CreateResponse } from '@kafeasist/responses';
-import rateLimit from 'express-rate-limit';
-import { io } from 'socket.io-client';
-import { __socket_server__ } from './config/constants';
-import { logger } from './utils/logger';
-import { isTesting } from './middlewares/isTesting';
+import cors from 'cors';
+import { API_NOT_FOUND, CreateResponse } from '@kafeasist/responses';
+import { categoryRouter } from './controllers/CategoryController';
+import { companyRouter } from './controllers/CompanyController';
+import { employeeRouter } from './controllers/EmployeeController';
+import { foodRouter } from './controllers/FoodController';
+import { iyzipayRouter } from './controllers/IyzipayController';
+import { tableRouter } from './controllers/TableController';
+import { userRouter } from './controllers/UserController';
 
-export const socket = io(__socket_server__);
+const app = express().use(cors(corsOptions));
 
-socket.on('connect_error', (err) => {
-	if (!isTesting) logger(err.message);
+const appRouter = router({
+	'': publicProcedure.query(() => {
+		return CreateResponse(API_NOT_FOUND);
+	}),
+	auth: authRouter,
+	category: categoryRouter,
+	company: companyRouter,
+	employee: employeeRouter,
+	food: foodRouter,
+	iyzipay: iyzipayRouter,
+	table: tableRouter,
+	user: userRouter,
 });
 
-const apiRateLimiter = rateLimit({
-	windowMs: 15 * 1000,
-	max: 10,
-	standardHeaders: true,
-	legacyHeaders: false,
-	message: CreateResponse(SLOW_DOWN),
-	skip: isTesting,
+app.use((req, _res, next) => {
+	console.log('⬅️ ', req.method, req.path, req.body ?? req.query);
+
+	next();
 });
 
-const app = express()
-	.use(cors(corsOptions))
-	.use(express.json())
-	.use(express.urlencoded({ extended: true }));
+app.use(
+	'/api',
+	rateLimiter,
+	trpcExpress.createExpressMiddleware({
+		router: appRouter,
+		createContext,
+	}),
+);
 
-app.use('/api', apiRateLimiter, apiRoutes);
-
-app.use((_: Request, res: Response) => {
-	res.status(404);
-	return res.json(CreateResponse(API_404));
-});
+export type AppRouter = typeof appRouter;
 
 export default app;

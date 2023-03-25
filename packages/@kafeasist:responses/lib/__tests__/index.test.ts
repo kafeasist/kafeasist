@@ -15,7 +15,6 @@ describe('Create Response function', () => {
 		expect(response).haveOwnProperty('error', error.message);
 		expect(response).haveOwnProperty('help');
 		expect(response).haveOwnProperty('fields', error.fields);
-		expect(response).haveOwnProperty('stack');
 	});
 
 	it('should work with success responses', async () => {

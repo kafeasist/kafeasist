@@ -1,22 +1,38 @@
-import { Request, Response, NextFunction } from 'express';
 import { ADMIN_ERROR } from '@kafeasist/responses';
-import { CreateResponse } from '@kafeasist/responses';
 import { JwtDecode, JwtPayload, JwtVerify } from '@kafeasist/auth';
+import { middleware } from '../routes/trpc';
+import { TRPCError } from '@trpc/server';
 
-export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
-	const { authorization } = req.headers;
+export const isAdmin = middleware(async ({ next, ctx }) => {
+	const { authorization } = ctx.req.headers;
 
-	if (!authorization) return res.json(CreateResponse(ADMIN_ERROR));
+	if (!authorization)
+		throw new TRPCError({
+			code: 'UNAUTHORIZED',
+			message: ADMIN_ERROR.message,
+		});
 	const token = authorization.split(' ')[1];
 
-	if (!token) return res.json(CreateResponse(ADMIN_ERROR));
+	if (!token)
+		throw new TRPCError({
+			code: 'UNAUTHORIZED',
+			message: ADMIN_ERROR.message,
+		});
 
-	if (!JwtVerify(token)) return res.json(CreateResponse(ADMIN_ERROR));
+	if (!JwtVerify(token))
+		throw new TRPCError({
+			code: 'UNAUTHORIZED',
+			message: ADMIN_ERROR.message,
+		});
 
 	const decoded = JwtDecode(token);
-	if (!decoded) return res.json(CreateResponse(ADMIN_ERROR));
+	if (!decoded)
+		throw new TRPCError({
+			code: 'UNAUTHORIZED',
+			message: ADMIN_ERROR.message,
+		});
 
-	req.issuer = (decoded as JwtPayload).id;
+	ctx.req.issuer = (decoded as JwtPayload).id;
 
-	return next();
-};
+	return next({ ctx });
+});
