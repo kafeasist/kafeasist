@@ -1,0 +1,32 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - "main"
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+      - name: Create release
+        id: create_release
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          publish: pnpm run build
+          commit: "chore(release): update versioning and publish"
+          title: "chore(release): update versioning and publish"

@@ -1,50 +1,42 @@
 {
-	"name": "kafeasist",
-	"version": "0.0.0",
-	"description": "",
-	"author": {
-		"name": "Ege Onder",
-		"email": "40398628+EgeOnder@users.noreply.github.com",
-		"url": "https://github.com/EgeOnder"
-	},
-	"type": "module",
-	"license": "GNU General Public License v3.0",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/EgeOnder/kafeasist.git"
-	},
-	"scripts": {
-		"build": "turbo build",
-		"build:www": "turbo --filter=www build",
-		"build:api": "turbo --filter=api build",
-		"build:pkg": "turbo --filter='./packages/*' build",
-		"start": "turbo start",
-		"start:www": "turbo --filter=www start",
-		"start:api": "turbo --filter=api start",
-		"dev": "turbo dev",
-		"dev:www": "turbo --filter=www dev",
-		"dev:api": "turbo --filter=api dev",
-		"lint": "turbo lint",
-		"format": "turbo format && prettier --write \"**/*.{ts,tsx,md}\"",
-		"release": "changeset version",
-		"manypkg:check": "manypkg check",
-		"manypkg:fix": "manypkg fix",
-		"test": "turbo test",
-		"test:api": "turbo --filter=api test",
-		"test:pkg": "turbo --filter='./packages/*' test",
-		"check": "pnpm lint && pnpm format && pnpm manypkg:fix && pnpm test"
-	},
-	"engines": {
-		"node": ">=14.0.0"
-	},
-	"dependencies": {
-		"@changesets/cli": "^2.26.0",
-		"@kafeasist/api": "1.1.0",
-		"@kafeasist/auth": "1.0.0",
-		"@kafeasist/responses": "2.0.0",
-		"@manypkg/cli": "^0.20.0",
-		"prettier": "latest",
-		"turbo": "latest"
-	},
-	"packageManager": "pnpm@7.27.0"
+  "name": "kafeasist",
+  "private": true,
+  "author": {
+    "name": "Ege Onder",
+    "email": "40398628+EgeOnder@users.noreply.github.com",
+    "url": "https://github.com/EgeOnder"
+  },
+  "license": "GNU General Public License v3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kafeasist/kafeasist.git"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "start": "turbo start",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "manypkg:check": "manypkg check",
+    "manypkg:fix": "manypkg fix",
+    "type-check": "turbo type-check"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.26.0",
+    "@ianvs/prettier-plugin-sort-imports": "^3.7.2",
+    "@kafeasist/auth": "1.0.0",
+    "@kafeasist/eslint": "0.1.0",
+    "@kafeasist/responses": "2.0.0",
+    "@kafeasist/tailwind": "0.1.0",
+    "@manypkg/cli": "^0.20.0",
+    "@types/prettier": "^2.7.2",
+    "eslint": "^8.16.0",
+    "prettier": "^2.8.7",
+    "prettier-plugin-tailwindcss": "^0.2.7",
+    "turbo": "latest",
+    "typescript": "^4.9.5"
+  },
+  "packageManager": "pnpm@8.3.1"
 }

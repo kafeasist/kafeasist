@@ -1,42 +1,38 @@
 name: CI
 
 on:
-    pull_request:
-        branches: ['*']
+  pull_request:
+    branches: ["*"]
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
 jobs:
-    lint:
-        runs-on: ubuntu-latest
-        env:
-            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-            TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  build:
+    runs-on: ubuntu-latest
 
-        name: Lint with ESLint
-        steps:
-            - name: Action start
-              uses: actions/checkout@v3
-              with:
-                  fetch-depth: 2
+    name: Build and lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-            - name: Setup pnpm
-              uses: pnpm/action-setup@v2
-              with:
-                  version: 7
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 8
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 16
-                  cache: 'pnpm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.6.0
+        with:
+          node-version: 18
+          cache: "pnpm"
 
-            - name: Install dependencies
-              run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-            - name: Check lint
-              run: pnpm lint
+      - name: Build, check lint, and check types
+        run: pnpm turbo build type-check
 
-            - name: Run Prettier for format check
-              run: pnpm format
-
-            - name: Check manypkg
-              run: pnpm manypkg:check
+      - name: Check manypkg
+        run: pnpm manypkg:check
