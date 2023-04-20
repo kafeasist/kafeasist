@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id Int @id @default(autoincrement())
+
+  firstName  String
+  lastName   String
+  company    Company?
+  phone      String
+  email      String   @unique
+  isVerified Boolean  @default(false)
+  token      String   @unique
+  password   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Company {
+  id Int @id @default(autoincrement())
+
+  name       String
+  user       User       @relation(fields: [userId], references: [id])
+  userId     Int        @unique
+  phone      String
+  address    String
+  taxCode    String
+  categories Category[]
+  employees  Employee[]
+  tables     Table[]
+  bills      Bill[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+
+  name        String
+  description String?
+  company     Company @relation(fields: [companyId], references: [id])
+  companyId   Int
+  foods       Food[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId])
+}
+
+model Food {
+  id Int @id @default(autoincrement())
+
+  name        String
+  description String?
+  price       Float
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  imageUrl    String?
+  orders      Order[]
+  bills       Bill[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+}
+
+model Employee {
+  id Int @id @default(autoincrement())
+
+  firstName String
+  lastName  String
+  username  String
+  phone     String
+  password  String
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId Int
+  role      Role    @relation(fields: [roleId], references: [id])
+  roleId    Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId])
+  @@index([roleId])
+}
+
+model Table {
+  id Int @id @default(autoincrement())
+
+  name        String
+  description String?
+  isAvailable Boolean @default(true)
+  isReserved  Boolean @default(false)
+  orders      Order[]
+  company     Company @relation(fields: [companyId], references: [id])
+  companyId   Int
+  bill        Bill?
+  billId      Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId])
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+
+  orderItems Food[]
+  total      Float
+  table      Table  @relation(fields: [tableId], references: [id])
+  tableId    Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tableId])
+}
+
+model Bill {
+  id Int @id @default(autoincrement())
+
+  total     Float
+  items     Food[]
+  table     Table   @relation(fields: [tableId], references: [id])
+  tableId   Int     @unique
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId])
+}
+
+model Role {
+  id Int @id @default(autoincrement())
+
+  name        String
+  description String
+  employees   Employee[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
