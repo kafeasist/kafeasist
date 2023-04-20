@@ -1,14 +1,11 @@
-'🌐 www':
-    - any: ['www/**/*']
+"🌐 www":
+  - any: ["apps/www/**/*"]
 
-'💻 api':
-    - any: ['api/**/*']
+"📱 mobile":
+  - any: ["apps/mobile/**/*"]
 
-'📦 packages':
-    - any: ['packages/**/*']
+"📦 packages":
+  - any: ["packages/**/*"]
 
-'📞 support':
-    - any: ['support/**/*']
-
-'🔄 ci':
-    - any: ['.github/**/*']
+"🔄 ci":
+  - any: [".github/**/*"]

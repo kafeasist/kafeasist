@@ -53,6 +53,7 @@
 	"dependencies": {
 		"@kafeasist/auth": "1.0.0",
 		"@kafeasist/responses": "2.0.0",
+		"@prisma/client": "^4.12.0",
 		"@trpc/server": "^10.14.1",
 		"argon2": "^0.28.5",
 		"axios": "^0.27.2",
@@ -64,6 +65,7 @@
 		"iyzipay": "^2.0.48",
 		"jsonwebtoken": "^9.0.0",
 		"pg": "^8.8.0",
+		"prisma": "^4.12.0",
 		"qrcode": "^1.5.0",
 		"reflect-metadata": "^0.1.13",
 		"socket.io-client": "^4.5.1",

@@ -1,31 +1,22 @@
 {
-	"include": ["api", "www"],
-	"compilerOptions": {
-		"target": "ESNext",
-		"module": "NodeNext",
-		"moduleResolution": "node",
-		"lib": ["DOM", "DOM.Iterable", "ESNext"],
-		"outDir": "./dist",
-
-		"declaration": true,
-		"declarationMap": true,
-		"sourceMap": true,
-		"removeComments": true,
-
-		"strict": true,
-		"noFallthroughCasesInSwitch": true,
-		"noImplicitOverride": true,
-		"noImplicitReturns": true,
-		"noUnusedParameters": true,
-		"noUnusedLocals": true,
-		"useUnknownInCatchVariables": true,
-
-		"allowSyntheticDefaultImports": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"skipLibCheck": true,
-		"useDefineForClassFields": true,
-
-		"experimentalDecorators": true
-	}
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "checkJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "include": [".eslintrc.js", "prettier.config.cjs"],
+  "exclude": ["node_modules"]
 }

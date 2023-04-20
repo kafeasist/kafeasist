@@ -1,5 +1,4 @@
 packages:
-    - 'api'
-    - 'www'
-    - 'support'
-    - 'packages/*'
+  - "apps/www"
+  - "apps/mobile"
+  - "packages/*"

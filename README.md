@@ -21,12 +21,12 @@
 
 # Table of contents
 
--   [Getting Started](#getting-started)
-    -   [kafeasist Stack](#kafeasist-stack)
-    -   [Why?](#why)
--   [Contributing](#contributing)
--   [License](#license)
--   [Maintainers](#maintainers)
+- [Getting Started](#getting-started)
+  - [kafeasist Stack](#kafeasist-stack)
+  - [Why?](#why)
+- [Contributing](#contributing)
+- [License](#license)
+- [Maintainers](#maintainers)
 
 # Getting Started
 
@@ -36,7 +36,7 @@
 
 # Contributing
 
-Contributions to the project is highly appreciated. If you have any suggestions/questions/requests please consider [opening an issue](https://github.com/EgeOnder/kafeasist/issues/new). If you want to contribute to the project, fixing an open issue is greatly recommended and appreciated. To see the all contribution rules please check the [contribution rules](CONTRIBUTING.md).
+Contributions to the project is highly appreciated. If you have any suggestions/questions/requests please consider [opening an issue](https://github.com/kafeasist/kafeasist/issues/new). If you want to contribute to the project, fixing an open issue is greatly recommended and appreciated. To see the all contribution rules please check the [contribution rules](CONTRIBUTING.md).
 
 # License
 
@@ -44,9 +44,9 @@ This project is licensed under `GNU General Public License v3.0` if you want to 
 
 # Maintainers
 
-| Name      | E-Mail                                     | Twitter                                       | Role      |
-| --------- | ------------------------------------------ | --------------------------------------------- | --------- |
-| Ege Onder | 40398628+EgeOnder@users.noreply.github.com | [@EgeOnder23](https://twitter.com/EgeOnder23) | developer |
+| Name      | E-Mail                                     | Twitter                                       |
+| --------- | ------------------------------------------ | --------------------------------------------- |
+| Ege Onder | 40398628+EgeOnder@users.noreply.github.com | [@EgeOnder23](https://twitter.com/EgeOnder23) |
 
 [build-shield]: https://img.shields.io/github/actions/workflow/status/kafeasist/kafeasist/main.yml?style=for-the-badge
 [build-url]: https://github.com/kafeasist/kafeasist/actions
