@@ -20,7 +20,7 @@ jobs:
           node-version: 18
           cache: "pnpm"
 
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - name: Create release
         id: create_release
         uses: changesets/action@v1
