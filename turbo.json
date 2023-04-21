@@ -25,5 +25,11 @@
       "dependsOn": ["^db:generate"],
       "cache": false
     }
-  }
+  },
+  "globalEnv": [
+    "DATABASE_URL",
+    "NODE_ENV",
+    "EXPO_ROUTER_APP_ROOT",
+    "JWT_SECRET"
+  ]
 }

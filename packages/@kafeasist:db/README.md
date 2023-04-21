@@ -71,3 +71,5 @@ To push the database schema to the database, run the following command:
 ```bash
 pnpm db:push
 ```
+
+[⬆ Back to top](#table-of-contents)

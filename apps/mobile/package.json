@@ -6,8 +6,6 @@
     "dev": "expo start",
     "dev:ios": "expo start --ios",
     "dev:android": "expo start --android",
-    "lint": "eslint .",
-    "lint:fix": "pnpm lint --fix",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
