@@ -21,18 +21,75 @@
 
 # Table of contents
 
-- [Getting Started](#getting-started)
-  - [kafeasist Stack](#kafeasist-stack)
-  - [Why?](#why)
+- [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Usage](#usage)
+- [kafeasist Stack](#kafeasist-stack)
+  - [Turborepo](#turborepo)
+  - [apps/](#apps/)
+  - [packages/](#packages/)
 - [Contributing](#contributing)
 - [License](#license)
 - [Maintainers](#maintainers)
 
-# Getting Started
+# Getting started
 
-## kafeasist Stack
+## Prerequisites
 
-## Why?
+This codebase is a monorepo, so you need to install `pnpm` globally to use it.
+
+- [Node.js](https://nodejs.org/en/) (v18.x or higher)
+- [pnpm](https://pnpm.io/) (v8.x or higher)
+
+## Installation
+
+Install the dependencies using `pnpm`:
+
+```bash
+pnpm install
+```
+
+## Usage
+
+To start the development server, run:
+
+```bash
+pnpm dev
+```
+
+# kafeasist Stack
+
+kafeasist is a monorepo that uses [pnpm](https://pnpm.io/) workspaces and uses the following technologies:
+
+| Technology                                            | Description                                           | Used in                   |
+| ----------------------------------------------------- | ----------------------------------------------------- | ------------------------- |
+| [TypeScript](https://www.typescriptlang.org/)         | Used for the main programming language of the project | `*`                       |
+| [Turborepo](https://turbo.build/)                     | Used for managing the monorepo                        | `*`                       |
+| [GitHub Actions](https://github.com/features/actions) | Used for the main CI pipeline for the project         | `*`                       |
+| [Tailwind CSS](https://tailwindcss.com/)              | Used for styling both web and mobile applications     | `apps/`                   |
+| [Next.js](https://nextjs.org/)                        | Powers the web application                            | `apps/www/`               |
+| [Expo](https://expo.dev/)                             | Powers the mobile application                         | `apps/mobile/`            |
+| [MySQL](https://www.mysql.com/)                       | Used for the main database of the project             | `packages/@kafeasist:db/` |
+| [Prisma](https://www.prisma.io/)                      | Manages and generates SQL for the database            | `packages/@kafeasist:db/` |
+
+The project is structured as follows:
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/40398628/233666479-ba44a2c6-ab72-46ae-a759-aaed58db2e70.png" alt="kafeasist Stack" height=500 />
+</p>
+
+## Turborepo
+
+[Turborepo](https://turbo.build/) is a tool that helps you manage your monorepo. It is used to manage the monorepo and to run the CI pipeline. It is also used to run the development server.
+
+## apps/
+
+For more information about the `apps/` folder, please check the [apps/](apps/) folder.
+
+## packages/
+
+For more information about the `packages/` folder, please check the [packages/](packages/) folder.
 
 # Contributing
 
