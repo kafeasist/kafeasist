@@ -48,7 +48,7 @@ This project is licensed under `GNU General Public License v3.0` if you want to 
 | --------- | ------------------------------------------ | --------------------------------------------- |
 | Ege Onder | 40398628+EgeOnder@users.noreply.github.com | [@EgeOnder23](https://twitter.com/EgeOnder23) |
 
-[build-shield]: https://img.shields.io/github/actions/workflow/status/kafeasist/kafeasist/main.yml?style=for-the-badge
+[build-shield]: https://img.shields.io/github/actions/workflow/status/kafeasist/kafeasist/ci.yml?style=for-the-badge
 [build-url]: https://github.com/kafeasist/kafeasist/actions
 [contributors-shield]: https://img.shields.io/github/contributors/kafeasist/kafeasist.svg?style=for-the-badge
 [contributors-url]: https://github.com/kafeasist/kafeasist/graphs/contributors
