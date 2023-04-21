@@ -1,5 +1,19 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Expo
+
+.expo/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*
+
 # Environment variables
 .env
 .env.local
