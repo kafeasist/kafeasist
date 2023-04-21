@@ -14,7 +14,7 @@ kafeasist `packages` contains the source code of the packages of kafeasist.
 
 ## [@kafeasist:auth](@kafeasist:auth)
 
-This is the authentication package of kafeasist. It is a [TypeScript](https://www.typescriptlang.org/) application. Authentication is built with [JWT](https://jwt.io/).
+This is the authentication package of kafeasist. It is a [TypeScript](https://www.typescriptlang.org/) application. Authentication is built with [JWT](https://jwt.io/). For more information about the architecture of the authentication package, please see the [README file for the `auth` package](@kafeasist:auth).
 
 ## [@kafeasist:db](@kafeasist:db)
 
@@ -27,3 +27,5 @@ This is the responses package of kafeasist. It is a [TypeScript](https://www.typ
 ## [@kafeasist:tailwind](@kafeasist:tailwind)
 
 This is the [Tailwind CSS](https://tailwindcss.com/) configuration package of kafeasist.
+
+[⬆ Back to top](#table-of-contents)

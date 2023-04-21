@@ -30,7 +30,6 @@ const config = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
-    project: ["./tsconfig.json"],
   },
   settings: {
     next: {
