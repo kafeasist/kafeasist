@@ -4,7 +4,7 @@
 
 - [About `packages`](#about-packages)
 - [@kafeasist:auth](#kafeasistauth)
-- [@kafeasist:eslint](#kafeasisteslint)
+- [@kafeasist:db](#kafeasistdb)
 - [@kafeasist:responses](#kafeasistresponses)
 - [@kafeasist:tailwind](#kafeasisttailwind)
 
@@ -16,9 +16,9 @@ kafeasist `packages` contains the source code of the packages of kafeasist.
 
 This is the authentication package of kafeasist. It is a [TypeScript](https://www.typescriptlang.org/) application. Authentication is built with [JWT](https://jwt.io/).
 
-## [@kafeasist:eslint](@kafeasist:eslint)
+## [@kafeasist:db](@kafeasist:db)
 
-This is the [ESLint](https://eslint.org) configuration package of kafeasist.
+This is the database package of kafeasist that uses [Prisma](https://www.prisma.io/) and [MySQL](https://www.mysql.com/). For more information including the tables and the schema of the database, please see the [README file for the `db` package](@kafeasist:db).
 
 ## [@kafeasist:responses](@kafeasist:responses)
 
