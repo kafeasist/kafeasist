@@ -1,6 +1,25 @@
 {
-  "extends": "expo/tsconfig.base",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "strict": true
-  }
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"]
+    },
+    "jsx": "react-native",
+    "types": [
+      // "nativewind/types",
+      "webpack-env",
+      "node"
+    ]
+  },
+  "include": [
+    "expo-plugins",
+    "*.ts",
+    "**/*.js",
+    "metro.config.js",
+    "babel.config.js",
+    "app",
+    "index.tsx"
+  ],
+  "exclude": ["node_modules"]
 }
