@@ -1,11 +1,14 @@
-"🌐 www":
+"🌐 web":
   - any: ["apps/www/**/*"]
 
 "📱 mobile":
   - any: ["apps/mobile/**/*"]
 
-"📦 packages":
-  - any: ["packages/**/*"]
+"💻 @kafeasist/api":
+  - any: ["packages/@kafeasist:api/**/*"]
 
-"🔄 ci":
-  - any: [".github/**/*"]
+"💾 @kafeasist/db":
+  - any: ["packages/@kafeasist:db/**/*"]
+
+"👤 @kafeasist/auth":
+  - any: ["packages/@kafeasist:auth/**/*"]
