@@ -14,9 +14,11 @@ This is the authentication package of kafeasist. It is used to manage the authen
 - [Response object](#response-object)
   - [success](#success)
   - [token](#token)
-  - [user](#user)
+  - [session](#session)
   - [message](#message)
   - [fields](#fields)
+- [How to use](#how-to-use)
+  - [Usage](#usage)
 
 ## About `kafeasist:auth`
 
@@ -73,7 +75,7 @@ type AuthResponse =
   | {
       success: true;
       token: string;
-      user: User;
+      session: Session;
     }
   | {
       success: false;
@@ -96,24 +98,23 @@ type AuthResponse =
 
 - The token is provided only if the `success` is `true`.
 
-### user
+### session
 
-`user` is an object that contains the information of the user.
+`session` is an object that contains the information of the user. The `session` object is declared as follows:
 
-- _**IMPORTANT**: Some fields of the `user` object are not provided in the response due to security reasons._
+```typescript
+type Session = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  isVerified: boolean;
+};
+```
 
-  ```typescript
-  type User = {
-    id: number;
-    firstName: string;
-    lastName: string;
-    phone: string;
-    email: string;
-    isVerified: boolean;
-  };
-  ```
-
-- The `user` object is provided only if the `success` is `true`.
+- The `session` object is provided only if the `success` is `true`.
+- The returned `session` object will be stored properly according to the application.
 
 ### message
 
@@ -126,5 +127,37 @@ type AuthResponse =
 `fields` is a string or an array of strings that contains the fields that caused the error.
 
 - The fields are provided only if the `success` is `false`.
+
+## How to use
+
+### Usage
+
+Import the desired procedure from the package:
+
+```typescript
+import { login } from "@kafeasist/auth";
+// OR
+import { register } from "@kafeasist/auth";
+```
+
+Await the response and do whatever you want with it:
+
+```typescript
+/** app.ts */
+import { login } from "@kafeasist/auth";
+
+const response = await login({
+  emailOrPhone: "foo@bar.com",
+  password: "Foobar123",
+});
+
+if (response.success) {
+  // The user is authenticated
+  ...
+} else {
+  // The user is not authenticated
+  ...
+}
+```
 
 [⬆ Back to top](#table-of-contents)

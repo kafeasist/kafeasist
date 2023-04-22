@@ -1,6 +1,6 @@
 import { JWT_SECRET, JWT_SIGNING_OPTIONS } from "../config";
 import { AuthResponse } from "../types/AuthResponse";
-import { User } from "../types/User";
+import { Session } from "../types/Session";
 import { prisma } from "@kafeasist/db";
 import { hash } from "argon2";
 import { sign } from "jsonwebtoken";
@@ -160,7 +160,7 @@ export const register = async (
       };
   }
 
-  const reducedUser: User = {
+  const session: Session = {
     id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
@@ -169,11 +169,11 @@ export const register = async (
     isVerified: false,
   };
 
-  const jwt = sign(reducedUser, JWT_SECRET, JWT_SIGNING_OPTIONS);
+  const jwt = sign(session, JWT_SECRET, JWT_SIGNING_OPTIONS);
 
   return {
     success: true,
     token: jwt,
-    user: reducedUser,
+    session,
   };
 };

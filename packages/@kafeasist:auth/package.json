@@ -11,7 +11,8 @@
   "dependencies": {
     "@kafeasist/db": "^0.1.1",
     "argon2": "^0.30.3",
-    "jsonwebtoken": "latest"
+    "jsonwebtoken": "latest",
+    "superjson": "^1.12.3"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "latest",

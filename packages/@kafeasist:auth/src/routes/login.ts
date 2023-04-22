@@ -1,5 +1,6 @@
 import { JWT_SECRET, JWT_SIGNING_OPTIONS } from "../config";
 import { AuthResponse } from "../types/AuthResponse";
+import { Session } from "../types/Session";
 import { prisma } from "@kafeasist/db";
 import { verify } from "argon2";
 import { sign } from "jsonwebtoken";
@@ -36,7 +37,7 @@ export const login = async (params: LoginParams): Promise<AuthResponse> => {
       fields: ["emailOrPhone", "password"],
     };
 
-  const reducedUser = {
+  const session: Session = {
     id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
@@ -45,11 +46,11 @@ export const login = async (params: LoginParams): Promise<AuthResponse> => {
     isVerified: user.isVerified,
   };
 
-  const jwt = sign(reducedUser, JWT_SECRET, JWT_SIGNING_OPTIONS);
+  const jwt = sign(session, JWT_SECRET, JWT_SIGNING_OPTIONS);
 
   return {
     success: true,
     token: jwt,
-    user: reducedUser,
+    session,
   };
 };

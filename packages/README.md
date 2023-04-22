@@ -3,6 +3,7 @@
 ## Table of contents
 
 - [About `packages`](#about-packages)
+- [@kafeasist:api](#kafeasistapi)
 - [@kafeasist:auth](#kafeasistauth)
 - [@kafeasist:db](#kafeasistdb)
 - [@kafeasist:responses](#kafeasistresponses)
@@ -11,6 +12,10 @@
 ## About `packages`
 
 kafeasist `packages` contains the source code of the packages of kafeasist.
+
+## [@kafeasist:api](@kafeasist:api)
+
+This is the API package of kafeasist. It is a [tRPC](https://trpc.io) package. For more information about the architecture of the API package, please see the [README file for the `api` package](@kafeasist:api).
 
 ## [@kafeasist:auth](@kafeasist:auth)
 

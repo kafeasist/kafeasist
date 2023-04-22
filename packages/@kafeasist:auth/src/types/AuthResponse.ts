@@ -1,10 +1,10 @@
-import { User } from "./User";
+import { Session } from "./Session";
 
 export type AuthResponse =
   | {
       success: true;
       token: string;
-      user: User;
+      session: Session;
     }
   | {
       success: false;
