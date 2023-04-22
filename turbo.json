@@ -30,6 +30,7 @@
     "DATABASE_URL",
     "NODE_ENV",
     "EXPO_ROUTER_APP_ROOT",
-    "JWT_SECRET"
+    "JWT_SECRET",
+    "COOKIE_NAME"
   ]
 }
