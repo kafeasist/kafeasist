@@ -8,7 +8,7 @@
 
 const config = {
   reactStrictMode: true,
-  // transpilePackages: [""],
+  transpilePackages: ["@kafeasist/api", "@kafeasist/auth"],
   eslint: { ignoreDuringBuilds: !!process.env.CI },
   typescript: { ignoreBuildErrors: !!process.env.CI },
 };
