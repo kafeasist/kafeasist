@@ -14,6 +14,15 @@ This is the API of kafeasist. The API is written in [TypeScript](https://typescr
     - [`getSession` (Public)](#getsession-public)
       - [Parameters](#parameters)
       - [Usage](#usage)
+    - [`register` (Public)](#register-public)
+      - [Parameters](#parameters)
+      - [Usage](#usage)
+    - [`login` (Public)](#login-public)
+      - [Parameters](#parameters)
+      - [Usage](#usage)
+    - [`logout` (Public)](#logout-public)
+      - [Parameters](#parameters)
+      - [Usage](#usage)
 
 ## About `kafeasist:api`
 
@@ -86,11 +95,28 @@ This procedure is used to get the user's session. It is used to check if the use
 
 This procedure does not take any parameters.
 
-#### Usage
+### `register` (Public)
 
-```typescript
-const { data } = trpc.auth.getSession.useQuery();
-//		 ^?	Session | null
-```
+This procedure is used to register a new user.
+
+#### Parameters
+
+Parameters of this procedure are defined in [@kafeasist:auth](../@kafeasist:auth/) package. You can find more information about them in the documentation of the package.
+
+### `login` (Public)
+
+This procedure is used to login a user.
+
+#### Parameters
+
+Parameters of this procedure are defined in [@kafeasist:auth](../@kafeasist:auth/) package. You can find more information about them in the documentation of the package.
+
+### `logout` (Public)
+
+This procedure is used to logout a user.
+
+#### Parameters
+
+This procedure does not take any parameters.
 
 [⬆ Back to top](#table-of-contents)

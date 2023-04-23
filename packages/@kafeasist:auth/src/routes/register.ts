@@ -6,9 +6,7 @@ import { hash } from "argon2";
 import { sign } from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 
-export type Register = typeof register;
-
-export interface RegisterParams {
+interface RegisterParams {
   firstName: string;
   lastName: string;
   phone: string;

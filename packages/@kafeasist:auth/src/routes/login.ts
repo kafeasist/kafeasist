@@ -5,9 +5,7 @@ import { prisma } from "@kafeasist/db";
 import { verify } from "argon2";
 import { sign } from "jsonwebtoken";
 
-export type Login = typeof login;
-
-export interface LoginParams {
+interface LoginParams {
   emailOrPhone: string;
   password: string;
 }
