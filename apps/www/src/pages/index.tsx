@@ -1,7 +1,6 @@
 import type { RouterInputs } from "@kafeasist/api";
 import type { NextPage } from "next";
 import { useForm } from "react-hook-form";
-import { stringify } from "superjson";
 import { useSession } from "~/hooks/useSession";
 import { api } from "~/utils/api";
 
@@ -80,20 +79,17 @@ const Home: NextPage = () => {
     } else console.log(response.message);
   };
 
+  if (status === "loading") return <div>Loading...</div>;
   return (
     <main className="flex h-screen w-screen items-center justify-center space-x-8">
-      {status === "loading"
-        ? "Loading..."
-        : session
-        ? "Logged in"
-        : "Logged out"}
+      {session ? "Logged in" : "Logged out"}
       <Form
         inputs={registerInputs}
         buttonName="Register"
         handler={handleRegister}
       />
       <Form inputs={loginInputs} buttonName="Login" handler={handleLogin} />
-      {!!session && stringify(session)}
+      {status}
     </main>
   );
 };
