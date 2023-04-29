@@ -18,14 +18,14 @@ type SessionProviderProps = {
 };
 
 const SessionProvider = ({ session, children }: SessionProviderProps) => {
-  console.log(session);
-
-  const hasInitialSession = session !== null;
+  const hasInitialSession = session ? true : false;
 
   const [loading, setLoading] = React.useState(!hasInitialSession);
   const [currentSession, setCurrentSession] = React.useState<Session | null>(
     hasInitialSession ? session : null,
   );
+
+  const fetchedSession = api.auth.getSession.useQuery();
 
   const setSession = React.useCallback(
     (session: Session) => setCurrentSession(session),
@@ -34,14 +34,11 @@ const SessionProvider = ({ session, children }: SessionProviderProps) => {
 
   React.useEffect(() => {
     if (hasInitialSession) return;
-
     const fetchSession = async () => {
+      setLoading(true);
       try {
-        const session = api.auth.getSession.useQuery();
-
-        if (!session.data) throw new Error("Failed to fetch session");
-
-        setCurrentSession(session.data);
+        if (fetchedSession.data === undefined) return;
+        setCurrentSession(fetchedSession.data);
       } catch (error) {
         if (error instanceof Error) throw new Error(error.message);
       } finally {
@@ -50,7 +47,7 @@ const SessionProvider = ({ session, children }: SessionProviderProps) => {
     };
 
     fetchSession();
-  }, []);
+  }, [fetchedSession]);
 
   return (
     <SessionContext.Provider
