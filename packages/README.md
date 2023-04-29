@@ -6,6 +6,7 @@
 - [@kafeasist:api](#kafeasistapi)
 - [@kafeasist:auth](#kafeasistauth)
 - [@kafeasist:db](#kafeasistdb)
+- [@kafeasist:redis](#kafeasistredis)
 - [@kafeasist:responses](#kafeasistresponses)
 - [@kafeasist:tailwind](#kafeasisttailwind)
 
@@ -24,6 +25,10 @@ This is the authentication package of kafeasist. It is a [TypeScript](https://ww
 ## [@kafeasist:db](@kafeasist:db)
 
 This is the database package of kafeasist that uses [Prisma](https://www.prisma.io/) and [MySQL](https://www.mysql.com/). For more information including the tables and the schema of the database, please see the [README file for the `db` package](@kafeasist:db).
+
+## [@kafeasist:redis](@kafeasist:redis)
+
+This is the caching package of kafeasist. It is used to cache data in [Redis](https://redis.io/). It is used by the API package. It uses [Upstash](https://upstash.com/) as the [Redis](https://redis.io/) provider. For more information about the caching package including the usage, please see the [README file for the `redis` package](@kafeasist:redis).
 
 ## [@kafeasist:responses](@kafeasist:responses)
 

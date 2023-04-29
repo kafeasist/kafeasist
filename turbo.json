@@ -32,6 +32,8 @@
     "EXPO_ROUTER_APP_ROOT",
     "JWT_SECRET",
     "COOKIE_NAME",
-    "URL"
+    "URL",
+    "REDIS_URL",
+    "REDIS_TOKEN"
   ]
 }
