@@ -53,7 +53,7 @@ const Home: NextPage = () => {
   ];
 
   const loginInputs = [
-    { id: "emailOrPhone", label: "E-mail or Phone" },
+    { id: "email", label: "E-mail or Phone" },
     { id: "password", label: "Password" },
   ];
 
