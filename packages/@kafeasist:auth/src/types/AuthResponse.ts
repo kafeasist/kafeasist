@@ -1,6 +1,6 @@
 import { Session } from "./Session";
 
-export type AuthResponse =
+export type AuthResponse<T> =
   | {
       success: true;
       token: string;
@@ -9,5 +9,5 @@ export type AuthResponse =
   | {
       success: false;
       message: string;
-      fields: string | string[];
+      fields: (keyof T)[];
     };

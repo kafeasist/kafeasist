@@ -8,16 +8,24 @@ datasource db {
   relationMode = "prisma"
 }
 
+enum Membership {
+  FREE
+  SMALL
+  MEDIUM
+  BIG
+}
+
 model User {
   id Int @id @default(autoincrement())
 
   firstName  String
   lastName   String
   company    Company?
-  phone      String
-  email      String   @unique
-  isVerified Boolean  @default(false)
-  token      String   @unique
+  phone      String      @unique
+  email      String      @unique
+  isVerified Boolean     @default(false)
+  token      String      @unique
+  membership Membership?
   password   String
 
   createdAt DateTime @default(now())

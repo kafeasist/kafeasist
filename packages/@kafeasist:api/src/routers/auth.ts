@@ -1,12 +1,12 @@
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import {
   AuthResponse,
+  forgotPassword,
   login,
   register,
   removeCookie,
   setCookie,
 } from "@kafeasist/auth";
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 export const authRouter = createTRPCRouter({
@@ -28,15 +28,15 @@ export const authRouter = createTRPCRouter({
   register: publicProcedure
     .input(
       z.object({
-        firstName: z.string().min(2).max(20),
-        lastName: z.string().min(2).max(20),
-        email: z.string().email(),
-        phone: z.string().min(10).max(10),
-        password: z.string().min(8).max(24),
-        confirmPassword: z.string().min(8).max(24),
+        firstName: z.string(),
+        lastName: z.string(),
+        email: z.string(),
+        phone: z.string(),
+        password: z.string(),
+        confirmPassword: z.string(),
       }),
     )
-    .mutation(async ({ ctx, input }): Promise<AuthResponse> => {
+    .mutation(async ({ ctx, input }): Promise<AuthResponse<typeof input>> => {
       const response = await register(input);
 
       if (response.success) {
@@ -45,11 +45,7 @@ export const authRouter = createTRPCRouter({
 
         // Set the cookie with the token returned from the server
         setCookie(ctx.res, response.token);
-      } else
-        throw new TRPCError({
-          message: response.message,
-          code: "BAD_REQUEST",
-        });
+      }
 
       return response;
     }),
@@ -63,11 +59,11 @@ export const authRouter = createTRPCRouter({
   login: publicProcedure
     .input(
       z.object({
-        emailOrPhone: z.string().email() || z.string().min(10).max(10),
-        password: z.string().min(8).max(24),
+        email: z.string(),
+        password: z.string(),
       }),
     )
-    .mutation(async ({ ctx, input }): Promise<AuthResponse> => {
+    .mutation(async ({ ctx, input }): Promise<AuthResponse<typeof input>> => {
       const response = await login(input);
 
       if (response.success) {
@@ -76,11 +72,7 @@ export const authRouter = createTRPCRouter({
 
         // Set the cookie with the token returned from the server
         setCookie(ctx.res, response.token);
-      } else
-        throw new TRPCError({
-          message: response.message,
-          code: "UNAUTHORIZED",
-        });
+      }
 
       return response;
     }),
@@ -97,4 +89,22 @@ export const authRouter = createTRPCRouter({
     // Remove the token cookie
     removeCookie(ctx.res);
   }),
+
+  /**
+   * Forgot password
+   * @param ctx
+   * @param input
+   * @returns void
+   */
+  forgotPassword: publicProcedure
+    .input(
+      z.object({
+        email: z.string(),
+      }),
+    )
+    .mutation(async ({ input }): Promise<AuthResponse<typeof input>> => {
+      const response = await forgotPassword(input);
+
+      return response;
+    }),
 });

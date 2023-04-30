@@ -1,5 +1,6 @@
 export * from "./routes/register";
 export * from "./routes/login";
+export * from "./routes/forgotPassword";
 
 export { getSessionFromCookie } from "./helpers/getSessionFromCookie";
 export { setCookie } from "./helpers/setCookie";

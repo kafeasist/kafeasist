@@ -12,17 +12,10 @@ This is the API of kafeasist. The API is written in [TypeScript](https://typescr
 - [Routers](#routers)
   - [auth](#auth)
     - [`getSession` (Public)](#getsession-public)
-      - [Parameters](#parameters)
-      - [Usage](#usage)
     - [`register` (Public)](#register-public)
-      - [Parameters](#parameters)
-      - [Usage](#usage)
     - [`login` (Public)](#login-public)
-      - [Parameters](#parameters)
-      - [Usage](#usage)
     - [`logout` (Public)](#logout-public)
-      - [Parameters](#parameters)
-      - [Usage](#usage)
+    - [`forgotPassword` (Public)](#forgotpassword-public)
 
 ## About `kafeasist:api`
 
@@ -118,5 +111,13 @@ This procedure is used to logout a user.
 #### Parameters
 
 This procedure does not take any parameters.
+
+### `forgotPassword` (Public)
+
+This procedure is used to send a forgot password e-mail to user.
+
+#### Parameters
+
+Parameters of this procedure are defined in [@kafeasist:auth](../@kafeasist:auth/) package. You can find more information about them in the documentation of the package.
 
 [⬆ Back to top](#table-of-contents)

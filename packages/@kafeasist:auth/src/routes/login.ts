@@ -6,33 +6,31 @@ import { verify } from "argon2";
 import { sign } from "jsonwebtoken";
 
 interface LoginParams {
-  emailOrPhone: string;
+  email: string;
   password: string;
 }
 
-export const login = async (params: LoginParams): Promise<AuthResponse> => {
-  const { emailOrPhone, password } = params;
-
-  let email = true;
-
-  if (!emailOrPhone.includes("@")) email = false;
+export const login = async (
+  params: LoginParams,
+): Promise<AuthResponse<LoginParams>> => {
+  const { email, password } = params;
 
   const user = await prisma.user.findUnique({
-    where: { [email ? "email" : "phone"]: emailOrPhone },
+    where: { email },
   });
 
   if (!user)
     return {
       success: false,
-      message: "E-posta/telefon veya şifre hatalı",
-      fields: ["emailOrPhone", "password"],
+      message: "E-posta veya şifre hatalı",
+      fields: ["email", "password"],
     };
 
   if (!(await verify(user.password, password)))
     return {
       success: false,
-      message: "E-posta/telefon veya şifre hatalı",
-      fields: ["emailOrPhone", "password"],
+      message: "E-posta veya şifre hatalı",
+      fields: ["email", "password"],
     };
 
   const session: Session = {
