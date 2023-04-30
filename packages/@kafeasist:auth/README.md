@@ -11,6 +11,7 @@ This is the authentication package of kafeasist. It is used to manage the authen
 - [Parameters](#parameters)
   - [Login](#login)
   - [Register](#register)
+  - [Forgot Password](#forgot-password)
 - [Response object](#response-object)
   - [success](#success)
   - [token](#token)
@@ -46,25 +47,31 @@ Both procedures `login` and `register` require parameters. Here is the list of t
 
 ### Login
 
-| Parameter      | Description                         | Type     |
-| -------------- | ----------------------------------- | -------- |
-| `emailOrPhone` | E-mail address or phone of the user | `string` |
-| `password`     | Password of the user                | `string` |
+| Parameter  | Description                | Type     |
+| ---------- | -------------------------- | -------- |
+| `email`    | E-mail address of the user | `string` |
+| `password` | Password of the user       | `string` |
 
 ### Register
 
 The parameters for the `register` procedure are validated using custom made validators. Here is the list of the parameters required for the `register` procedure:
 
-| Parameter         | Description                  | Type                                 |
-| ----------------- | ---------------------------- | ------------------------------------ |
-| `firstName`       | First name of the user       | `2 <= string <= 20`                  |
-| `lastName`        | Last name of the user        | `2 <= string <= 20`                  |
-| `phone`           | Phone number of the user     | `("5" + /^\d+$/)=10`                 |
-| `email`           | E-mail address of the user   | `/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/` |
-| `password`        | Password of the user         | `8 <= string <= 24`                  |
-| `confirmPassword` | Confirmation of the password | `typeof password`                    |
+| Parameter         | Description                  | Type     |
+| ----------------- | ---------------------------- | -------- |
+| `firstName`       | First name of the user       | `string` |
+| `lastName`        | Last name of the user        | `string` |
+| `phone`           | Phone number of the user     | `string` |
+| `email`           | E-mail address of the user   | `string` |
+| `password`        | Password of the user         | `string` |
+| `confirmPassword` | Confirmation of the password | `string` |
 
 If these parameters are not provided in the correct type, the procedure will throw an error.
+
+### Forgot Password
+
+| Parameter | Description        | Type     |
+| --------- | ------------------ | -------- |
+| `email`   | E-mail of the user | `string` |
 
 ## Response object
 
@@ -147,7 +154,7 @@ Await the response and do whatever you want with it:
 import { login } from "@kafeasist/auth";
 
 const response = await login({
-  emailOrPhone: "foo@bar.com",
+  email: "foo@bar.com",
   password: "Foobar123",
 });
 

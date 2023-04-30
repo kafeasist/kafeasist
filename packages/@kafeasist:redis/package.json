@@ -7,7 +7,6 @@
     "build": "pnpm with-env tsc --build",
     "watch": "pnpm with-env tsc --watch",
     "type-check": "pnpm with-env tsc --noEmit",
-    "dev": "pnpm with-env prisma studio --port 5556",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
