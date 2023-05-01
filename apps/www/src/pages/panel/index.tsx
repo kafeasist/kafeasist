@@ -5,7 +5,6 @@ import {
   PersonStanding,
   Users,
 } from "lucide-react";
-import { Metadata } from "next";
 import Image from "next/image";
 import { CalendarDateRangePicker } from "~/components/panel/calendarDateRangePicker";
 import { MainNav } from "~/components/panel/mainNav";
@@ -25,16 +24,53 @@ import {
 import { Skeleton } from "~/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { useProtected } from "~/hooks/useProtected";
-import { useSession } from "~/hooks/useSession";
 
-export const metadata: Metadata = {
-  title: "Kontrol paneli",
-};
+const SkeletonPanel = () => (
+  <>
+    <div className="flex-col md:flex">
+      <div className="border-b">
+        <div className="flex h-16 items-center px-4">
+          <Skeleton className="h-8 w-32" />
+          <div className="ml-auto flex items-center space-x-4">
+            <Skeleton className="h-8 w-32" />
+            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-8 w-8 rounded-full" />
+          </div>
+        </div>
+      </div>
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <div className="flex items-center justify-between space-y-2">
+          <Skeleton className="h-8 w-32" />
+          <div className="flex items-center space-x-2">
+            <Skeleton className="h-8 w-32" />
+            <Skeleton className="h-8 w-32" />
+          </div>
+        </div>
+        <Tabs defaultValue="overview" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="overview">
+              <Skeleton className="h-6 w-24" />
+            </TabsTrigger>
+            <TabsTrigger value="analytics" disabled>
+              <Skeleton className="h-6 w-24" />
+            </TabsTrigger>
+            <TabsTrigger value="reports" disabled>
+              <Skeleton className="h-6 w-24" />
+            </TabsTrigger>
+            <TabsTrigger value="notifications" disabled>
+              <Skeleton className="h-6 w-24" />
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
+    </div>
+  </>
+);
 
 const Panel = () => {
-  useProtected();
+  const { session, loading } = useProtected();
 
-  const { session } = useSession();
+  if (!session || loading) return <SkeletonPanel />;
 
   return (
     <>

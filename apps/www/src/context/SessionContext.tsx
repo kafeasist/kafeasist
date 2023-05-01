@@ -41,9 +41,8 @@ const SessionProvider = ({ session, children }: SessionProviderProps) => {
         setCurrentSession(fetchedSession.data);
       } catch (error) {
         if (error instanceof Error) throw new Error(error.message);
-      } finally {
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     fetchSession();
