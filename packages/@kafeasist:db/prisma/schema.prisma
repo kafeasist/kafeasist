@@ -8,11 +8,10 @@ datasource db {
   relationMode = "prisma"
 }
 
-enum Membership {
+enum Plan {
   FREE
-  SMALL
-  MEDIUM
-  BIG
+  PRO
+  ENTERPRISE
 }
 
 model User {
@@ -21,11 +20,10 @@ model User {
   firstName  String
   lastName   String
   company    Company?
-  phone      String      @unique
-  email      String      @unique
-  isVerified Boolean     @default(false)
-  token      String      @unique
-  membership Membership?
+  phone      String   @unique
+  email      String   @unique
+  isVerified Boolean  @default(false)
+  token      String   @unique
   password   String
 
   createdAt DateTime @default(now())
@@ -41,6 +39,7 @@ model Company {
   phone      String
   address    String
   taxCode    String
+  plan       Plan       @default(FREE)
   categories Category[]
   employees  Employee[]
   tables     Table[]
