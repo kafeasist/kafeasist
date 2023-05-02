@@ -1,6 +1,6 @@
 import { RouterInputs } from "@kafeasist/api";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "~/components/ui/Input/input";
@@ -16,7 +16,7 @@ import { api } from "~/utils/api";
 type LoginInputs = RouterInputs["auth"]["login"];
 
 const LoginForm = () => {
-  const router = useRouter();
+  const { push } = useRouter();
   const { toast } = useToast();
   const { setSession } = useSession();
   const {
@@ -34,7 +34,7 @@ const LoginForm = () => {
     const response = await login.mutateAsync(data);
     if (response.success) {
       setSession(response.session);
-      router.push("/panel");
+      push("/panel");
     } else {
       response.fields.forEach((field) => {
         setError(field, { message: response.message });

@@ -106,7 +106,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                         setSelectedTeam(team);
                         setOpen(false);
                       }}
-                      className="text-sm"
+                      className="text-sm hover:cursor-pointer"
                     >
                       <Avatar className="mr-2 h-5 w-5">
                         <AvatarImage
@@ -138,6 +138,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                       setOpen(false);
                       setShowNewTeamDialog(true);
                     }}
+                    className="hover:cursor-pointer"
                   >
                     <PlusCircle className="mr-2 h-5 w-5" />
                     Bir şirket oluştur

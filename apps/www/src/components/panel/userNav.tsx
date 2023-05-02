@@ -28,7 +28,7 @@ export function UserNav({ user }: { user: Session }) {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent className="w-72 p-4" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
@@ -41,24 +41,24 @@ export function UserNav({ user }: { user: Session }) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="hover:cursor-pointer">
             <User className="mr-2 h-4 w-4" />
             <span>Profil</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="hover:cursor-pointer">
             <CreditCard className="mr-2 h-4 w-4" />
             <span>Faturalandırma</span>
             <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="hover:cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
             <span>Seçenekler</span>
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem className="hover:cursor-pointer">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Çıkış yap</span>
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

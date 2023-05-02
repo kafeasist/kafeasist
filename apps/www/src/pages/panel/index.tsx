@@ -1,10 +1,4 @@
-import {
-  CreditCard,
-  DollarSign,
-  Download,
-  PersonStanding,
-  Users,
-} from "lucide-react";
+import { DollarSign, Download } from "lucide-react";
 import Image from "next/image";
 import { CalendarDateRangePicker } from "~/components/panel/calendarDateRangePicker";
 import { MainNav } from "~/components/panel/mainNav";
@@ -67,6 +61,41 @@ const SkeletonPanel = () => (
   </>
 );
 
+const PanelCard = (props: {
+  title: string;
+  icon: React.ReactNode;
+  content: {
+    title: string;
+    description: string;
+  };
+}) => {
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{props.title}</CardTitle>
+        {props.icon}
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{props.content.title}</div>
+        <p className="text-xs text-muted-foreground">
+          {props.content.description}
+        </p>
+      </CardContent>
+    </Card>
+  );
+};
+
+const panelCards = [
+  {
+    title: "Satışlar",
+    icon: <DollarSign className="h-4 w-4 text-muted-foreground" />,
+    content: {
+      title: "₺0.00",
+      description: "Bu ayki toplam satışlar",
+    },
+  },
+];
+
 const Panel = () => {
   const { session, loading } = useProtected();
 
@@ -84,10 +113,12 @@ const Panel = () => {
               alt="kafeasist Logo"
               className="mb-1"
             />
-            <MainNav className="mx-6" />
+            <MainNav className="mx-6 hidden lg:flex" />
             <div className="ml-auto flex items-center space-x-4">
-              <TeamSwitcher />
-              <Search />
+              <div className="hidden md:flex">
+                <TeamSwitcher />
+                <Search />
+              </div>
               {session ? (
                 <UserNav user={session} />
               ) : (
@@ -97,92 +128,38 @@ const Panel = () => {
           </div>
         </div>
         <div className="flex-1 space-y-4 p-8 pt-6">
-          <div className="flex items-center justify-between space-y-2">
+          <div className="flex flex-col items-center justify-between space-y-2 md:flex-row">
             <h2 className="text-3xl font-bold tracking-tight">
               Kontrol paneli
             </h2>
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-col items-center space-x-2 space-y-4 md:flex-row md:space-y-0">
               <CalendarDateRangePicker />
               <Button size="sm">
                 <Download className="mr-2 h-4 w-4" />
-                Verilerini indir
+                Verilerimi indir
               </Button>
             </div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList>
+            <TabsList className="grid h-full grid-cols-1 md:inline-flex">
               <TabsTrigger value="overview">Genel bakış</TabsTrigger>
-              <TabsTrigger value="analytics" disabled>
-                Analitikler
-              </TabsTrigger>
-              <TabsTrigger value="reports" disabled>
-                Raporlar
-              </TabsTrigger>
-              <TabsTrigger value="notifications" disabled>
-                Bildirimler
-              </TabsTrigger>
+              <TabsTrigger value="analytics">Analitikler</TabsTrigger>
+              <TabsTrigger value="reports">Raporlar</TabsTrigger>
+              <TabsTrigger value="notifications">Bildirimler</TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Toplam kazanç
-                    </CardTitle>
-                    <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">₺52,231.89</div>
-                    <p className="text-xs text-muted-foreground">
-                      +%20.1 geçen aydan bu yana
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Satışlar
-                    </CardTitle>
-                    <CreditCard className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">₺612,234.25</div>
-                    <p className="text-xs text-muted-foreground">
-                      +%19 geçen aydan bu yana
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Kişi sayısı
-                    </CardTitle>
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">44</div>
-                    <p className="text-xs text-muted-foreground">
-                      +8 geçen saatten bu yana
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Masa sayısı
-                    </CardTitle>
-                    <PersonStanding className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">11</div>
-                    <p className="text-xs text-muted-foreground">
-                      +2 geçen saatten bu yana
-                    </p>
-                  </CardContent>
-                </Card>
+              <div className="grid grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-4">
+                {panelCards.map((card) => (
+                  <PanelCard
+                    title={card.title}
+                    content={card.content}
+                    icon={card.icon}
+                    key={card.title}
+                  />
+                ))}
               </div>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
+                <Card className="md:col-span-4">
                   <CardHeader>
                     <CardTitle>Genel bakış</CardTitle>
                   </CardHeader>
@@ -190,7 +167,7 @@ const Panel = () => {
                     <Overview />
                   </CardContent>
                 </Card>
-                <Card className="col-span-3">
+                <Card className="md:col-span-3">
                   <CardHeader>
                     <CardTitle>En son satışlar</CardTitle>
                     <CardDescription>
