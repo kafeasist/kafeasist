@@ -35,7 +35,7 @@ export const createContextInner = async (opts: CreateInnerContextOptions) => {
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
 
-  const session = getSessionFromCookie(req);
+  const session = await getSessionFromCookie(req);
 
   const innerContext = await createContextInner({ session });
 

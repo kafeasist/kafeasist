@@ -1,7 +1,7 @@
 import { JWT_SECRET, JWT_SIGNING_OPTIONS } from "../config";
 import {
   validateEmail,
-  validateName,
+  validateNameLastName,
   validatePassword,
   validatePhone,
 } from "../helpers/validators";
@@ -47,7 +47,7 @@ export const register = async (
   const { firstName, lastName } = params;
 
   try {
-    validateName(firstName, lastName);
+    validateNameLastName(firstName, lastName);
   } catch (error: unknown) {
     if (error instanceof Error)
       return {
@@ -122,31 +122,17 @@ export const register = async (
       fields: [],
     };
 
-  if (user instanceof Error) {
-    if (user.message.includes("email"))
-      return {
-        success: false,
-        message: "Bu e-posta adresi zaten kullanımda",
-        fields: ["email"],
-      };
-    if (user.message.includes("phone"))
-      return {
-        success: false,
-        message: "Bu telefon numarası zaten kullanımda",
-        fields: ["phone"],
-      };
-  }
-
   const session: Session = {
     id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
     phone: user.phone,
     email: user.email,
+    imageUrl: user.imageUrl,
     isVerified: false,
   };
 
-  const jwt = sign(session, JWT_SECRET, JWT_SIGNING_OPTIONS);
+  const jwt = sign({ id: user.id }, JWT_SECRET, JWT_SIGNING_OPTIONS);
 
   return {
     success: true,

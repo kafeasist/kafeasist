@@ -36,30 +36,6 @@ export function RecentSales() {
         </div>
         <div className="ml-auto font-medium">+₺0.99</div>
       </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src="/avatars/04.png" alt="Avatar" />
-          <AvatarFallback>DJT</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Donald J. Trump</p>
-          <p className="text-sm text-muted-foreground">
-            donald.john.trump@usa.gov
-          </p>
-        </div>
-        <div className="ml-auto font-medium">+₺17,004.99</div>
-      </div>
-      <div className="flex items-center">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src="/avatars/05.png" alt="Avatar" />
-          <AvatarFallback>KY</AvatarFallback>
-        </Avatar>
-        <div className="ml-4 space-y-1">
-          <p className="text-sm font-medium leading-none">Kaan Yılmaz</p>
-          <p className="text-sm text-muted-foreground">soganyilmaz@gmail.com</p>
-        </div>
-        <div className="ml-auto font-medium">+₺39.99</div>
-      </div>
     </div>
   );
 }
