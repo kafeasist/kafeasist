@@ -1,12 +1,14 @@
 import { Input } from "~/components/ui/Input/input";
 
-export function Search() {
+interface SearchProps extends React.ComponentPropsWithoutRef<typeof Input> {}
+
+export function Search({ className }: SearchProps) {
   return (
-    <div>
+    <div className={className}>
       <Input
         type="search"
         placeholder="Ara..."
-        className="hidden h-9 md:block md:w-[100px] lg:w-[300px]"
+        className="h-9 md:w-[100px] lg:w-[300px]"
       />
     </div>
   );

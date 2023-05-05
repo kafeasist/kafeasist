@@ -102,9 +102,9 @@ const Panel = () => {
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="md:col-span-4">
                   <CardHeader>
-                    <CardTitle>Genel bakış</CardTitle>
+                    <CardTitle>Yıl içindeki satışlar</CardTitle>
                   </CardHeader>
-                  <CardContent className="pl-2">
+                  <CardContent>
                     <Overview />
                   </CardContent>
                 </Card>
@@ -112,7 +112,7 @@ const Panel = () => {
                   <CardHeader>
                     <CardTitle>En son satışlar</CardTitle>
                     <CardDescription>
-                      Bu ay 265 adet satış yaptınız.
+                      Bu ay 3 adet satış yaptınız.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>

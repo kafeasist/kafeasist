@@ -1,8 +1,10 @@
 "use client";
 
 import {
-  Bar,
-  BarChart,
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -63,25 +65,7 @@ const data = [
 export function Overview() {
   return (
     <ResponsiveContainer width="100%" height={350}>
-      <BarChart data={data}>
-        <Tooltip
-          isAnimationActive={false}
-          cursor={{
-            fill: "transparent",
-          }}
-          content={({ active, payload, label }) =>
-            active && (
-              <div className="rounded-md bg-white p-2">
-                <p className="font-semibold text-gray-800">
-                  {label} ayı satışları
-                </p>
-                <p className="text-gray-600">
-                  ₺{payload && payload[0] && payload[0].value?.toLocaleString()}
-                </p>
-              </div>
-            )
-          }
-        />
+      <LineChart data={data}>
         <XAxis
           dataKey="name"
           stroke="#888888"
@@ -96,8 +80,11 @@ export function Overview() {
           axisLine={false}
           tickFormatter={(value) => `₺${value}`}
         />
-        <Bar dataKey="total" fill="#000C7A" radius={[4, 4, 0, 0]} />
-      </BarChart>
+        <CartesianGrid strokeDasharray="3 3" />
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey="total" activeDot={{ r: 8 }} />
+      </LineChart>
     </ResponsiveContainer>
   );
 }

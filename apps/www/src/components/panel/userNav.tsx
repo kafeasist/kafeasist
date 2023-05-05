@@ -1,6 +1,15 @@
+import { Search } from "../search";
 import { CreateCompanyDialog } from "./createCompanyDialog";
 import { Session } from "@kafeasist/auth";
-import { CreditCard, LogOut, PlusCircle, Settings, User } from "lucide-react";
+import {
+  Building2,
+  CreditCard,
+  Keyboard,
+  LogOut,
+  Plus,
+  Settings,
+  User,
+} from "lucide-react";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
@@ -12,7 +21,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdownMenu";
 
@@ -31,7 +39,7 @@ export function UserNav({ user }: { user: Session }) {
             <Avatar className="h-8 w-8">
               <AvatarImage
                 src={user.imageUrl ? user.imageUrl : ""}
-                alt="User avatar"
+                alt="Profil fotoğrafı"
               />
               <AvatarFallback>{getFirstLetter()}</AvatarFallback>
             </Avatar>
@@ -47,41 +55,49 @@ export function UserNav({ user }: { user: Session }) {
                 {user.email}
               </p>
             </div>
+            <div className="mt-4 block w-full md:hidden">
+              <Search />
+            </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem className="hover:cursor-pointer">
               <User className="mr-2 h-4 w-4" />
               <span>Profil</span>
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem className="hover:cursor-pointer">
               <CreditCard className="mr-2 h-4 w-4" />
               <span>Faturalandırma</span>
-              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem className="hover:cursor-pointer">
               <Settings className="mr-2 h-4 w-4" />
-              <span>Seçenekler</span>
-              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+              <span>Ayarlar</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="hover:cursor-pointer">
+              <Keyboard className="mr-2 h-4 w-4" />
+              <span>Kısayollar</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuGroup
-            onClick={() => {
-              setOpen(true);
-            }}
-          >
+          <DropdownMenuGroup>
             <DropdownMenuItem className="hover:cursor-pointer">
-              <PlusCircle className="mr-2 h-5 w-5" />
-              <span>Bir şirket oluştur</span>
+              <Building2 className="mr-2 h-4 w-4" />
+              <span>Şirketlerim</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                setOpen(true);
+              }}
+              className="hover:cursor-pointer"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              <span>Yeni şirket</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="hover:cursor-pointer">
             <LogOut className="mr-2 h-4 w-4" />
             <span>Çıkış yap</span>
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -11,31 +11,31 @@ export function MainNav({
       {...props}
     >
       <Link
-        href="/examples/dashboard"
+        href=""
         className="text-sm font-medium transition-colors hover:text-primary"
       >
         Genel bakış
       </Link>
       <Link
-        href="/examples/dashboard"
+        href=""
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Masalar
       </Link>
       <Link
-        href="/examples/dashboard"
+        href=""
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Ürünler
       </Link>
       <Link
-        href="/examples/dashboard"
+        href=""
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Satışlar
       </Link>
       <Link
-        href="/examples/dashboard"
+        href=""
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Analiz
