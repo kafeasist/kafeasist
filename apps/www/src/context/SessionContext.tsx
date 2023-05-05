@@ -21,32 +21,18 @@ const SessionProvider = ({ session, children }: SessionProviderProps) => {
   const hasInitialSession = session ? true : false;
 
   const [loading, setLoading] = React.useState(!hasInitialSession);
-  const [currentSession, setCurrentSession] = React.useState<Session | null>(
+  const [currentSession, setSession] = React.useState<Session | null>(
     hasInitialSession ? session : null,
   );
 
-  const fetchedSession = api.auth.getSession.useQuery();
-
-  const setSession = React.useCallback(
-    (session: Session) => setCurrentSession(session),
-    [currentSession],
-  );
-
-  React.useEffect(() => {
-    if (hasInitialSession) return;
-    const fetchSession = async () => {
-      setLoading(true);
-      try {
-        if (fetchedSession.data === undefined) return;
-        setCurrentSession(fetchedSession.data);
-      } catch (error) {
-        if (error instanceof Error) throw new Error(error.message);
-      }
+  // TODO: Lower the queries hit on the database
+  api.auth.getSession.useQuery(undefined, {
+    onSuccess: (data) => {
+      if (data) setSession(data);
       setLoading(false);
-    };
-
-    fetchSession();
-  }, [fetchedSession]);
+    },
+    onError: () => setLoading(false),
+  });
 
   return (
     <SessionContext.Provider

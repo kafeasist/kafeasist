@@ -1,7 +1,7 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { KafeasistResponse } from "../types/KafeasistResponse";
 import { validateName, validatePhone } from "@kafeasist/auth";
-import { prisma } from "@kafeasist/db";
+import { Company, prisma } from "@kafeasist/db";
 import { z } from "zod";
 
 export const companyRouter = createTRPCRouter({
@@ -65,7 +65,10 @@ export const companyRouter = createTRPCRouter({
       }),
     )
     .mutation(
-      async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
+      async ({
+        ctx,
+        input,
+      }): Promise<KafeasistResponse<typeof input> & { company?: Company }> => {
         if (!ctx.session)
           return { error: true, message: "Oturum açın", fields: [] };
 
@@ -157,6 +160,7 @@ export const companyRouter = createTRPCRouter({
         return {
           error: false,
           message: "Başarıyla şirketiniz oluşturuldu.",
+          company,
         };
       },
     ),

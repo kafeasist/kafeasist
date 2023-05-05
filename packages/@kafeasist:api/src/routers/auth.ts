@@ -15,7 +15,7 @@ export const authRouter = createTRPCRouter({
    * @param ctx
    * @returns The current session
    */
-  getSession: publicProcedure.query(({ ctx }) => {
+  getSession: publicProcedure.query(async ({ ctx }) => {
     return ctx.session;
   }),
 

@@ -27,16 +27,11 @@ export const Navbar = () => {
         <MainNav className="mx-6 hidden lg:flex" />
         <div className="ml-auto flex items-center space-x-4">
           <div className="md:flex md:space-x-4">
-            {loading ? (
-              <Skeleton className="h-8 w-32 md:w-48" />
-            ) : (
-              companies &&
-              selectedCompany && (
-                <TeamSwitcher
-                  selectedCompany={selectedCompany}
-                  companies={companies}
-                />
-              )
+            {loading ? null : (
+              <TeamSwitcher
+                selectedCompany={selectedCompany}
+                companies={companies}
+              />
             )}
             <Search className="hidden md:block" />
           </div>

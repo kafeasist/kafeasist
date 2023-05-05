@@ -5,6 +5,7 @@ import { useSession } from "~/hooks/useSession";
 type CompanyContextType = {
   companies: Company[] | null;
   setCompanies: (companies: Company[]) => void;
+  addCompany: (company: Company) => void;
   selectedCompany: Company | null;
   setSelectedCompany: (company: Company) => void;
   loading: boolean;
@@ -40,6 +41,16 @@ const CompanyProvider = ({ children }: CompanyProviderProps) => {
     [currentCompanies],
   );
 
+  const addCompany = React.useCallback(
+    (company: Company) => {
+      setCurrentCompanies((currentCompanies) => {
+        if (currentCompanies === null) return [company];
+        return [...currentCompanies, company];
+      });
+    },
+    [currentCompanies],
+  );
+
   const setSelectedCompany = React.useCallback(
     (company: Company) => {
       setSelectedCompanyState(company);
@@ -51,15 +62,23 @@ const CompanyProvider = ({ children }: CompanyProviderProps) => {
   React.useEffect(() => {
     if (!hasInitialCompanies) return;
 
+    setLoading(true);
+
     setCurrentCompanies(session?.companies as Company[] | null);
   }, [hasInitialCompanies]);
 
   React.useEffect(() => {
     const company = localStorage.getItem("company");
-    if (currentCompanies === null) return;
-    if (!currentCompanies[0]) return;
-    if (isNaN(Number(company))) {
-      setSelectedCompanyState(currentCompanies[0]);
+    if (currentCompanies === null) {
+      setLoading(false);
+      return;
+    }
+    if (!currentCompanies[0]) {
+      setLoading(false);
+      return;
+    }
+    if (!isNaN(Number(company))) {
+      setSelectedCompany(currentCompanies[0]);
       setLoading(false);
       return;
     }
@@ -69,12 +88,12 @@ const CompanyProvider = ({ children }: CompanyProviderProps) => {
     );
 
     if (selectedCompany === undefined) {
-      setSelectedCompanyState(currentCompanies[0]);
+      setSelectedCompany(currentCompanies[0]);
       setLoading(false);
       return;
     }
 
-    setSelectedCompanyState(selectedCompany);
+    setSelectedCompany(selectedCompany);
     setLoading(false);
   }, [currentCompanies]);
 
@@ -83,6 +102,7 @@ const CompanyProvider = ({ children }: CompanyProviderProps) => {
       value={{
         companies: currentCompanies,
         setCompanies,
+        addCompany,
         selectedCompany,
         setSelectedCompany,
         loading,
