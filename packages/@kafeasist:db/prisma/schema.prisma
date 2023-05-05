@@ -19,11 +19,12 @@ model User {
 
   firstName  String
   lastName   String
-  company    Company?
-  phone      String   @unique
-  email      String   @unique
-  isVerified Boolean  @default(false)
-  token      String   @unique
+  companies  Company[]
+  phone      String    @unique
+  email      String    @unique
+  imageUrl   String?
+  isVerified Boolean   @default(false)
+  token      String    @unique
   password   String
 
   createdAt DateTime @default(now())
@@ -35,10 +36,11 @@ model Company {
 
   name       String
   user       User       @relation(fields: [userId], references: [id])
-  userId     Int        @unique
-  phone      String
+  userId     Int
+  phone      String     @unique
   address    String
-  taxCode    String
+  taxCode    String     @unique
+  imageUrl   String?
   plan       Plan       @default(FREE)
   categories Category[]
   employees  Employee[]
@@ -47,6 +49,8 @@ model Company {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model Category {
@@ -54,6 +58,7 @@ model Category {
 
   name        String
   description String?
+  imageUrl    String?
   company     Company @relation(fields: [companyId], references: [id])
   companyId   Int
   foods       Food[]
@@ -90,6 +95,7 @@ model Employee {
   username  String
   phone     String
   password  String
+  imageUrl  String?
   company   Company @relation(fields: [companyId], references: [id])
   companyId Int
   role      Role    @relation(fields: [roleId], references: [id])

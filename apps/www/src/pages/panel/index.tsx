@@ -1,12 +1,8 @@
 import { DollarSign, Download } from "lucide-react";
-import Image from "next/image";
 import { CalendarDateRangePicker } from "~/components/panel/calendarDateRangePicker";
-import { MainNav } from "~/components/panel/mainNav";
+import { Navbar } from "~/components/panel/navbar";
 import { Overview } from "~/components/panel/overview";
 import { RecentSales } from "~/components/panel/recentSales";
-import TeamSwitcher from "~/components/panel/teamSwitcher";
-import { UserNav } from "~/components/panel/userNav";
-import { Search } from "~/components/search";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -15,51 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Skeleton } from "~/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { useProtected } from "~/hooks/useProtected";
-
-const SkeletonPanel = () => (
-  <>
-    <div className="flex-col md:flex">
-      <div className="border-b">
-        <div className="flex h-16 items-center px-4">
-          <Skeleton className="h-8 w-32" />
-          <div className="ml-auto flex items-center space-x-4">
-            <Skeleton className="h-8 w-32" />
-            <Skeleton className="h-8 w-64" />
-            <Skeleton className="h-8 w-8 rounded-full" />
-          </div>
-        </div>
-      </div>
-      <div className="flex-1 space-y-4 p-8 pt-6">
-        <div className="flex items-center justify-between space-y-2">
-          <Skeleton className="h-8 w-32" />
-          <div className="flex items-center space-x-2">
-            <Skeleton className="h-8 w-32" />
-            <Skeleton className="h-8 w-32" />
-          </div>
-        </div>
-        <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="overview">
-              <Skeleton className="h-6 w-24" />
-            </TabsTrigger>
-            <TabsTrigger value="analytics" disabled>
-              <Skeleton className="h-6 w-24" />
-            </TabsTrigger>
-            <TabsTrigger value="reports" disabled>
-              <Skeleton className="h-6 w-24" />
-            </TabsTrigger>
-            <TabsTrigger value="notifications" disabled>
-              <Skeleton className="h-6 w-24" />
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
-    </div>
-  </>
-);
+import { useSession } from "~/hooks/useSession";
 
 const PanelCard = (props: {
   title: string;
@@ -97,36 +50,16 @@ const panelCards = [
 ];
 
 const Panel = () => {
-  const { session, loading } = useProtected();
+  const { session } = useSession();
 
-  if (!session || loading) return <SkeletonPanel />;
+  if (!session) {
+    return null;
+  }
 
   return (
     <>
       <div className="flex-col md:flex">
-        <div className="border-b">
-          <div className="flex h-16 items-center px-4">
-            <Image
-              src="/logowithtext.png"
-              width="140"
-              height="30"
-              alt="kafeasist Logo"
-              className="mb-1"
-            />
-            <MainNav className="mx-6 hidden lg:flex" />
-            <div className="ml-auto flex items-center space-x-4">
-              <div className="hidden md:flex">
-                <TeamSwitcher />
-                <Search />
-              </div>
-              {session ? (
-                <UserNav user={session} />
-              ) : (
-                <Skeleton className="h-8 w-8 rounded-full" />
-              )}
-            </div>
-          </div>
-        </div>
+        <Navbar />
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex flex-col items-center justify-between space-y-2 md:flex-row">
             <h2 className="text-3xl font-bold tracking-tight">
@@ -142,10 +75,18 @@ const Panel = () => {
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList className="grid h-full grid-cols-1 md:inline-flex">
-              <TabsTrigger value="overview">Genel bakış</TabsTrigger>
-              <TabsTrigger value="analytics">Analitikler</TabsTrigger>
-              <TabsTrigger value="reports">Raporlar</TabsTrigger>
-              <TabsTrigger value="notifications">Bildirimler</TabsTrigger>
+              <TabsTrigger className="h-12 md:h-8" value="overview">
+                Genel bakış
+              </TabsTrigger>
+              <TabsTrigger className="h-12 md:h-8" value="analytics">
+                Analitikler
+              </TabsTrigger>
+              <TabsTrigger className="h-12 md:h-8" value="reports">
+                Raporlar
+              </TabsTrigger>
+              <TabsTrigger className="h-12 md:h-8" value="notifications">
+                Bildirimler
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
               <div className="grid grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-4">
