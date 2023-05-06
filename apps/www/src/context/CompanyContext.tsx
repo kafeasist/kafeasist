@@ -1,6 +1,6 @@
 import { Company } from "@prisma/client";
 import React from "react";
-import { useSession } from "~/hooks/useSession";
+import { api } from "~/utils/api";
 
 type CompanyContextType = {
   companies: Company[] | null;
@@ -20,19 +20,10 @@ type CompanyProviderProps = {
 };
 
 const CompanyProvider = ({ children }: CompanyProviderProps) => {
-  const { session } = useSession();
-
-  const hasInitialCompanies = React.useMemo(() => {
-    if (!session) return false;
-    if (!session.companies) return false;
-    if (session.companies.length === 0) return false;
-    return true;
-  }, [session]);
-
   const [loading, setLoading] = React.useState<boolean>(true);
   const [currentCompanies, setCurrentCompanies] = React.useState<
     Company[] | null
-  >(hasInitialCompanies ? (session?.companies as Company[] | null) : null);
+  >(null);
   const [selectedCompany, setSelectedCompanyState] =
     React.useState<Company | null>(null);
 
@@ -54,48 +45,42 @@ const CompanyProvider = ({ children }: CompanyProviderProps) => {
   const setSelectedCompany = React.useCallback(
     (company: Company) => {
       setSelectedCompanyState(company);
+      console.log(company.id);
+
       localStorage.setItem("company", JSON.stringify(company.id));
     },
     [selectedCompany],
   );
 
-  React.useEffect(() => {
-    if (!hasInitialCompanies) return;
+  api.company.get.useQuery(undefined, {
+    enabled: !currentCompanies,
+    onSuccess: (data) => {
+      setCurrentCompanies(data);
+      if (!data) return;
 
-    setLoading(true);
+      const company = localStorage.getItem("company");
+      if (!data[0]) {
+        setLoading(false);
+        return;
+      }
 
-    setCurrentCompanies(session?.companies as Company[] | null);
-  }, [hasInitialCompanies]);
+      if (isNaN(Number(company))) {
+        setSelectedCompany(data[0]);
+        setLoading(false);
+        return;
+      }
 
-  React.useEffect(() => {
-    const company = localStorage.getItem("company");
-    if (currentCompanies === null) {
+      const selectedCompany = data.find((c) => c.id === Number(company));
+      if (selectedCompany === undefined) {
+        setSelectedCompany(data[0]);
+        setLoading(false);
+        return;
+      }
+
+      setSelectedCompany(selectedCompany);
       setLoading(false);
-      return;
-    }
-    if (!currentCompanies[0]) {
-      setLoading(false);
-      return;
-    }
-    if (!isNaN(Number(company))) {
-      setSelectedCompany(currentCompanies[0]);
-      setLoading(false);
-      return;
-    }
-
-    const selectedCompany = currentCompanies.find(
-      (c) => c.id === Number(company),
-    );
-
-    if (selectedCompany === undefined) {
-      setSelectedCompany(currentCompanies[0]);
-      setLoading(false);
-      return;
-    }
-
-    setSelectedCompany(selectedCompany);
-    setLoading(false);
-  }, [currentCompanies]);
+    },
+  });
 
   return (
     <CompanyContext.Provider
