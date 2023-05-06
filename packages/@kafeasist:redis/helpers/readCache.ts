@@ -1,17 +1,15 @@
 import { redis } from "..";
-import type { Cache } from "../types/Cache";
 
-export const readCache = async (key: Cache): Promise<Error | string> => {
-  const notFoundError = new Error("Key not found");
+// import type { Cache } from "../types/Cache";
 
+export const readCache = async <T>(key: string): Promise<null | T> => {
   try {
-    const value = await redis.get<string>(key);
-    if (value === null) return notFoundError;
+    const value = await redis.get<T>(key);
     return value;
   } catch (error: unknown) {
     console.error(error);
-    if (error instanceof Error) return error;
+    if (error instanceof Error) return null;
   }
 
-  return notFoundError;
+  return null;
 };

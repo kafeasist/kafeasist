@@ -17,7 +17,7 @@ export const login = async (
 
   const user = await prisma.user.findUnique({
     where: { email },
-    include: { companies: true },
+    // include: { companies: true },
   });
 
   if (!user)
@@ -42,7 +42,7 @@ export const login = async (
     email: user.email,
     imageUrl: user.imageUrl,
     isVerified: user.isVerified,
-    companies: user.companies,
+    // companies: user.companies,
   };
 
   const jwt = sign({ id: user.id }, JWT_SECRET, JWT_SIGNING_OPTIONS);

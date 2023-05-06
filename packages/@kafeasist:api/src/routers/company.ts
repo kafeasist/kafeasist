@@ -2,7 +2,11 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { KafeasistResponse } from "../types/KafeasistResponse";
 import { validateName, validatePhone } from "@kafeasist/auth";
 import { Company, prisma } from "@kafeasist/db";
+import { invalidateCache, readCache, setCache } from "@kafeasist/redis";
 import { z } from "zod";
+
+const REDIS_COMPANIES_PREFIX = "companies";
+const REDIS_TTL = 6 * 60 * 60; // 6 hours
 
 export const companyRouter = createTRPCRouter({
   /**
@@ -10,11 +14,25 @@ export const companyRouter = createTRPCRouter({
    * @param ctx
    * @returns The number of companies
    */
-  count: publicProcedure.query(({ ctx }) => {
+  count: publicProcedure.query(async ({ ctx }) => {
     if (!ctx.session) return 0;
-    if (!ctx.session.companies) return 0;
+    const companies = await readCache<Company[]>(`companies:${ctx.session.id}`);
+    if (!companies) {
+      const fetchedCompanies = await prisma.company.findMany({
+        where: {
+          userId: ctx.session.id,
+        },
+      });
 
-    return ctx.session.companies.length;
+      await setCache(
+        `${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`,
+        fetchedCompanies,
+        REDIS_TTL,
+      );
+      return fetchedCompanies.length;
+    }
+
+    return companies.length;
   }),
 
   /**
@@ -22,11 +40,26 @@ export const companyRouter = createTRPCRouter({
    * @param ctx
    * @returns The companies of the user
    */
-  get: publicProcedure.query(({ ctx }) => {
-    if (!ctx.session) return [];
-    if (!ctx.session.companies) return [];
+  get: publicProcedure.query(async ({ ctx }) => {
+    if (!ctx.session) return null;
+    const companies = await readCache<Company[]>(`companies:${ctx.session.id}`);
 
-    return ctx.session.companies;
+    if (!companies) {
+      const fetchedCompanies = await prisma.company.findMany({
+        where: {
+          userId: ctx.session.id,
+        },
+      });
+
+      await setCache(
+        `${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`,
+        fetchedCompanies,
+        REDIS_TTL,
+      );
+      return fetchedCompanies;
+    }
+
+    return companies;
   }),
 
   /**
@@ -41,11 +74,25 @@ export const companyRouter = createTRPCRouter({
         id: z.number(),
       }),
     )
-    .query(({ ctx, input: { id } }) => {
+    .query(async ({ ctx, input: { id } }) => {
       if (!ctx.session) return null;
-      if (!ctx.session.companies) return null;
 
-      return ctx.session.companies.find((company) => company.id === id) ?? null;
+      const companies = await readCache<Company[]>(
+        `companies:${ctx.session.id}`,
+      );
+
+      if (!companies) {
+        const fetchedCompany = await prisma.company.findFirst({
+          where: {
+            id,
+            userId: ctx.session.id,
+          },
+        });
+
+        return fetchedCompany ?? null;
+      }
+
+      return companies.find((company) => company.id === id) ?? null;
     }),
 
   /**
@@ -157,6 +204,7 @@ export const companyRouter = createTRPCRouter({
             fields: [],
           };
 
+        await invalidateCache(`${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`);
         return {
           error: false,
           message: "Başarıyla şirketiniz oluşturuldu.",
@@ -258,6 +306,7 @@ export const companyRouter = createTRPCRouter({
             };
         }
 
+        await invalidateCache(`${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`);
         return {
           error: false,
           message: "Başarıyla şirketiniz güncellendi.",
@@ -311,6 +360,7 @@ export const companyRouter = createTRPCRouter({
             fields: [],
           };
 
+        await invalidateCache(`${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`);
         return {
           error: false,
           message: "Başarıyla şirketiniz silindi.",

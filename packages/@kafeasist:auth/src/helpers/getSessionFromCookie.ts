@@ -1,8 +1,12 @@
 import type { Session } from "../types/Session";
 import { decodeJwt } from "./decodeJwt";
 import { prisma } from "@kafeasist/db";
+import { readCache, setCache } from "@kafeasist/redis";
 import { verify } from "jsonwebtoken";
 import type { NextApiRequest } from "next";
+
+const REDIS_SESSION_PREFIX = "session";
+const REDIS_TTL = 60 * 60 * 24; // 1 day
 
 export const getSessionFromCookie = async (
   req: NextApiRequest,
@@ -15,14 +19,18 @@ export const getSessionFromCookie = async (
 
   const payload = decodeJwt(token) as { id: number };
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: payload.id,
-    },
-    include: {
-      companies: true,
-    },
-  });
+  const session = await readCache<Session>(`session:${payload.id}`);
+  if (!session) {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: payload.id,
+      },
+    });
 
-  return user;
+    if (!user) return null;
+    await setCache(`${REDIS_SESSION_PREFIX}:${user.id}`, user, REDIS_TTL);
+    return user;
+  }
+
+  return session;
 };

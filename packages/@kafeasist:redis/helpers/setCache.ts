@@ -1,9 +1,10 @@
 import { redis } from "..";
-import type { Cache } from "../types/Cache";
+
+// import type { Cache } from "../types/Cache";
 
 export const setCache = async (
-  key: Cache,
-  value: string,
+  key: string,
+  value: unknown,
   ttl: number,
 ): Promise<Error | boolean> => {
   try {

@@ -1,5 +1,3 @@
-import { Company } from "@kafeasist/db";
-
 export type Session = {
   id: number;
   firstName: string;
@@ -8,5 +6,4 @@ export type Session = {
   email: string;
   imageUrl: string | null;
   isVerified: boolean;
-  companies?: Company[];
 };

@@ -25,8 +25,8 @@ const SessionProvider = ({ session, children }: SessionProviderProps) => {
     hasInitialSession ? session : null,
   );
 
-  // TODO: Lower the queries hit on the database
   api.auth.getSession.useQuery(undefined, {
+    enabled: !currentSession,
     onSuccess: (data) => {
       if (data) setSession(data);
       setLoading(false);
