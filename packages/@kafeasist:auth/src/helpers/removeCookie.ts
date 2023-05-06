@@ -12,5 +12,5 @@ export const removeCookie = (
   res: NextApiResponse,
   name: string = COOKIE_NAME,
 ) => {
-  res.setHeader("Set-Cookie", serialize(name, "", { maxAge: -1 }));
+  res.setHeader("Set-Cookie", serialize(name, "", { maxAge: -1, path: "/" }));
 };
