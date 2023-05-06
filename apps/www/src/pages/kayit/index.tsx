@@ -9,6 +9,7 @@ import { Lead } from "~/components/ui/Typography/lead";
 import { Muted } from "~/components/ui/Typography/muted";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
+import { Spinner } from "~/components/ui/spinner";
 import { useSession } from "~/hooks/useSession";
 import { useToast } from "~/hooks/useToast";
 import { api } from "~/utils/api";
@@ -67,9 +68,13 @@ const RegisterForm = (props: { email: string }) => {
     formState: { errors },
   } = useForm<RegisterInputs>();
 
+  const [loading, setLoading] = useState(false);
+
   const registerApi = api.auth.register.useMutation();
 
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
+    setLoading(true);
+
     const response = await registerApi.mutateAsync(data);
 
     if (response.success) {
@@ -86,6 +91,8 @@ const RegisterForm = (props: { email: string }) => {
         variant: "destructive",
       });
     }
+
+    setLoading(false);
   };
 
   return (
@@ -210,8 +217,8 @@ const RegisterForm = (props: { email: string }) => {
             )}
           </div>
         </div>
-        <Button type="submit" className="min-w-full">
-          Hesabını oluştur
+        <Button type="submit" className="min-w-full" disabled={loading}>
+          {loading ? <Spinner /> : "Hesabını oluştur"}
         </Button>
       </form>
       <div className="m-auto w-full space-y-6 md:w-3/4 lg:w-1/2">

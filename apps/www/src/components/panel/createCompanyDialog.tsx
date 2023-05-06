@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { Label } from "~/components/ui/label";
+import { useCompany } from "~/hooks/useCompany";
 import { useToast } from "~/hooks/useToast";
 import { api } from "~/utils/api";
 
@@ -27,6 +28,7 @@ export const CreateCompanyDialog = ({
     formState: { errors },
     setError,
   } = useForm<CreateCompanyDialogProps>();
+  const { addCompany, setSelectedCompany } = useCompany();
 
   const createCompany = api.company.create.useMutation();
 
@@ -39,6 +41,10 @@ export const CreateCompanyDialog = ({
       });
     } else {
       setDialog(false);
+      if (response.company) {
+        addCompany(response.company);
+        setSelectedCompany(response.company);
+      }
     }
 
     toast({

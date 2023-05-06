@@ -30,8 +30,8 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 >;
 
 interface TeamSwitcherProps extends PopoverTriggerProps {
-  selectedCompany: Company;
-  companies: Company[];
+  selectedCompany: Company | null;
+  companies: Company[] | null;
 }
 
 // TODO: Add default team
@@ -43,7 +43,7 @@ export default function TeamSwitcher({
   const { setSelectedCompany } = useCompany();
   const [open, setOpen] = React.useState(false);
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
-  const [selectedTeam, setSelectedTeam] = React.useState<Company | undefined>(
+  const [selectedTeam, setSelectedTeam] = React.useState<Company | null>(
     selectedCompany,
   );
 
@@ -59,15 +59,19 @@ export default function TeamSwitcher({
             aria-label="Bir şirket seçin"
             className={cn("w-[140px] justify-between md:w-[200px]", className)}
           >
-            <Avatar className="mr-2 h-5 w-5">
-              <AvatarImage
-                // TODO: Change avatar image url
-                src={`https://avatar.vercel.sh/${selectedTeam?.id}.png`}
-                alt={selectedTeam?.name}
-              />
-              <AvatarFallback>{/* TODO: Get fallback */}</AvatarFallback>
-            </Avatar>
-            {selectedTeam && prettifyString(selectedTeam.name, 20)}
+            {selectedTeam && (
+              <Avatar className="mr-2 h-5 w-5">
+                <AvatarImage
+                  // TODO: Change avatar image url
+                  src={`https://avatar.vercel.sh/${selectedTeam.id}.png`}
+                  alt={selectedTeam.name}
+                />
+                <AvatarFallback>{/* TODO: Get fallback */}</AvatarFallback>
+              </Avatar>
+            )}
+            {selectedTeam
+              ? prettifyString(selectedTeam.name, 20)
+              : "Şirket bulunamadı"}
             <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -77,34 +81,38 @@ export default function TeamSwitcher({
               <CommandInput placeholder="Şirket ara..." />
               <CommandEmpty>Şirket bulunamadı.</CommandEmpty>
               <CommandGroup heading="Şirketlerim">
-                {companies.map((company) => (
-                  <CommandItem
-                    key={company.id}
-                    onSelect={() => {
-                      setSelectedTeam(company);
-                      setSelectedCompany(company);
-                      setOpen(false);
-                    }}
-                    className="text-sm hover:cursor-pointer"
-                  >
-                    <Avatar className="mr-2 h-5 w-5">
-                      <AvatarImage
-                        src={`https://avatar.vercel.sh/${company.id}.png`}
-                        alt={company.name}
+                {companies &&
+                  companies.map((company) => (
+                    <CommandItem
+                      key={company.id}
+                      onSelect={() => {
+                        setSelectedTeam(company);
+                        setSelectedCompany(company);
+                        setOpen(false);
+                      }}
+                      className="text-sm hover:cursor-pointer"
+                    >
+                      <Avatar className="mr-2 h-5 w-5">
+                        <AvatarImage
+                          // TODO: Change avatar image url
+                          src={`https://avatar.vercel.sh/${company.id}.png`}
+                          alt={company.name}
+                        />
+                        <AvatarFallback>
+                          {/* TODO: Get fallback */}
+                        </AvatarFallback>
+                      </Avatar>
+                      {company.name}
+                      <Check
+                        className={cn(
+                          "ml-auto h-4 w-4",
+                          selectedTeam?.id === company.id
+                            ? "opacity-100"
+                            : "opacity-0",
+                        )}
                       />
-                      <AvatarFallback>KA</AvatarFallback>
-                    </Avatar>
-                    {company.name}
-                    <Check
-                      className={cn(
-                        "ml-auto h-4 w-4",
-                        selectedTeam?.id === company.id
-                          ? "opacity-100"
-                          : "opacity-0",
-                      )}
-                    />
-                  </CommandItem>
-                ))}
+                    </CommandItem>
+                  ))}
               </CommandGroup>
             </CommandList>
             <CommandSeparator />

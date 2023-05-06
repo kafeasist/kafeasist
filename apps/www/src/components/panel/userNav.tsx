@@ -1,4 +1,5 @@
 import { Search } from "../search";
+import { Spinner } from "../ui/spinner";
 import { CreateCompanyDialog } from "./createCompanyDialog";
 import { Session } from "@kafeasist/auth";
 import {
@@ -10,7 +11,8 @@ import {
   Settings,
   User,
 } from "lucide-react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { MouseEventHandler, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Dialog } from "~/components/ui/dialog";
@@ -23,12 +25,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdownMenu";
+import { api } from "~/utils/api";
 
 export function UserNav({ user }: { user: Session }) {
   const [open, setOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+  const { push } = useRouter();
+
+  const logOut = api.auth.logout.useMutation();
 
   const getFirstLetter = () => {
     return `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
+  };
+
+  const handleLogout: MouseEventHandler<HTMLDivElement> = async (e) => {
+    e.preventDefault();
+    setLoggingOut(true);
+    await logOut.mutateAsync();
+    push("/giris");
+    setLoggingOut(false);
   };
 
   return (
@@ -95,8 +110,16 @@ export function UserNav({ user }: { user: Session }) {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="hover:cursor-pointer">
-            <LogOut className="mr-2 h-4 w-4" />
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onClick={handleLogout}
+            disabled={loggingOut}
+          >
+            {loggingOut ? (
+              <Spinner className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <LogOut className="mr-2 h-4 w-4" />
+            )}
             <span>Çıkış yap</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
