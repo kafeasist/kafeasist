@@ -2,11 +2,11 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { KafeasistResponse } from "../types/KafeasistResponse";
 import { validateName, validatePhone } from "@kafeasist/auth";
 import { Company, prisma } from "@kafeasist/db";
-import { readCache, setCache } from "@kafeasist/redis";
+import { invalidateCache, readCache, setCache } from "@kafeasist/redis";
 import { z } from "zod";
 
 const REDIS_COMPANIES_PREFIX = "companies";
-const REDIS_TTL = 10 * 60; // 10 minutes
+const REDIS_TTL = 6 * 60 * 60; // 6 hours
 
 export const companyRouter = createTRPCRouter({
   /**
@@ -204,6 +204,7 @@ export const companyRouter = createTRPCRouter({
             fields: [],
           };
 
+        await invalidateCache(`${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`);
         return {
           error: false,
           message: "Başarıyla şirketiniz oluşturuldu.",
@@ -305,6 +306,7 @@ export const companyRouter = createTRPCRouter({
             };
         }
 
+        await invalidateCache(`${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`);
         return {
           error: false,
           message: "Başarıyla şirketiniz güncellendi.",
@@ -358,6 +360,7 @@ export const companyRouter = createTRPCRouter({
             fields: [],
           };
 
+        await invalidateCache(`${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`);
         return {
           error: false,
           message: "Başarıyla şirketiniz silindi.",

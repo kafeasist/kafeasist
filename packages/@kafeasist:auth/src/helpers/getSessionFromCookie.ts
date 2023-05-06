@@ -6,7 +6,7 @@ import { verify } from "jsonwebtoken";
 import type { NextApiRequest } from "next";
 
 const REDIS_SESSION_PREFIX = "session";
-const REDIS_TTL = 60 * 60 * 24 * 7;
+const REDIS_TTL = 60 * 60 * 24; // 1 day
 
 export const getSessionFromCookie = async (
   req: NextApiRequest,
