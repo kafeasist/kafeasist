@@ -1,45 +1,52 @@
 import Link from "next/link";
 import { cn } from "~/lib/utils";
 
-export function MainNav({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLElement>) {
+interface MainNavProps extends React.HTMLAttributes<HTMLElement> {
+  activeTab: NavigationSlug;
+}
+
+export type NavigationSlug = "overview" | "tables" | "products" | "analysis";
+
+export function MainNav({ className, activeTab, ...props }: MainNavProps) {
+  const navigation = [
+    {
+      name: "Genel bakış",
+      href: "/",
+      isActive: activeTab === "overview",
+    },
+    {
+      name: "Masalar",
+      href: "/masalar",
+      isActive: activeTab === "tables",
+    },
+    {
+      name: "Ürünler",
+      href: "/urunler",
+      isActive: activeTab === "products",
+    },
+    {
+      name: "Analiz",
+      href: "/analiz",
+      isActive: activeTab === "analysis",
+    },
+  ];
+
   return (
     <nav
       className={cn("flex items-center space-x-4 lg:space-x-6", className)}
       {...props}
     >
-      <Link
-        href=""
-        className="text-sm font-medium transition-colors hover:text-primary"
-      >
-        Genel bakış
-      </Link>
-      <Link
-        href=""
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Masalar
-      </Link>
-      <Link
-        href=""
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Ürünler
-      </Link>
-      <Link
-        href=""
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Satışlar
-      </Link>
-      <Link
-        href=""
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Analiz
-      </Link>
+      {navigation.map((item) => (
+        <Link
+          href={"/panel/" + item.href}
+          key={item.name}
+          className={`${
+            !item.isActive && "text-muted-foreground"
+          } text-sm font-medium transition-colors hover:text-primary`}
+        >
+          {item.name}
+        </Link>
+      ))}
     </nav>
   );
 }
