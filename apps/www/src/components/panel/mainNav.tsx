@@ -38,7 +38,7 @@ export function MainNav({ className, activeTab, ...props }: MainNavProps) {
     >
       {navigation.map((item) => (
         <Link
-          href={"/panel/" + item.href}
+          href={"/panel" + item.href}
           key={item.name}
           className={`${
             !item.isActive && "text-muted-foreground"

@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import { CalendarDateRangePicker } from "~/components/panel/calendarDateRangePicker";
 import { columns } from "~/components/panel/columns";
 import { CompanyNotFound } from "~/components/panel/companyNotFound";
-import { DataTable } from "~/components/panel/dataTable";
 import { Navbar } from "~/components/panel/navbar";
 import { Button } from "~/components/ui/button";
 import {
@@ -13,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import { DataTable } from "~/components/ui/dataTable";
 import { Spinner } from "~/components/ui/spinner";
 import { useCompany } from "~/hooks/useCompany";
 import { useSession } from "~/hooks/useSession";
@@ -135,6 +135,14 @@ const Analiz = () => {
               </Card>
             </div>
             <div className="p-10">
+              <div className="mb-8 space-y-2">
+                <h2 className="text-lg font-semibold leading-none tracking-tight">
+                  Geçmiş analizler
+                </h2>
+                <div className="text-sm text-muted-foreground">
+                  Geçmiş analizlerinizi buradan görüntüleyebilirsiniz.
+                </div>
+              </div>
               <DataTable data={tasks} columns={columns} />
             </div>
           </div>

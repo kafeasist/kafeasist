@@ -45,7 +45,6 @@ const CompanyProvider = ({ children }: CompanyProviderProps) => {
   const setSelectedCompany = React.useCallback(
     (company: Company) => {
       setSelectedCompanyState(company);
-      console.log(company.id);
 
       localStorage.setItem("company", JSON.stringify(company.id));
     },

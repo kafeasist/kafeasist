@@ -1,7 +1,7 @@
 "use client";
 
-import { DataTablePagination } from "./dataTablePagination";
-import { DataTableToolbar } from "./dataTableToolbar";
+import { DataTablePagination } from "../panel/dataTablePagination";
+import { DataTableToolbar } from "../panel/dataTableToolbar";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -16,7 +16,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import * as React from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -69,10 +69,10 @@ export function DataTable<TData, TValue>({
     <div className="space-y-4">
       <DataTableToolbar table={table} />
       <div className="rounded-md border">
-        <Table>
+        <Table className="block md:table">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow className="block md:table-row" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
@@ -94,9 +94,13 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="block md:table-row"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className="inline-block md:table-cell"
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

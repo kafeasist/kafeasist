@@ -60,9 +60,9 @@ export function DataTableRowActions<TData>({
           </>
         ) : (
           <>
-            <MenuItem icon={Archive} name="Arşivle" />
             <MenuItem icon={Download} name="PDF olarak indir" />
             <DropdownMenuSeparator />
+            <MenuItem icon={Archive} name="Arşivle" />
             <MenuItem icon={Trash} name="Sil" />
           </>
         )}

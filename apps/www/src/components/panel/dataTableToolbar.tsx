@@ -20,7 +20,7 @@ export function DataTableToolbar<TData>({
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
+      <div className="flex w-full flex-col items-center space-y-4 md:flex-1 md:flex-row md:space-x-2 md:space-y-0">
         <Input
           placeholder="Verileri filtrele..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
