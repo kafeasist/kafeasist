@@ -1,3 +1,4 @@
+import { Spinner } from "../ui/spinner";
 import { RouterInputs } from "@kafeasist/api";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "~/components/ui/Input/input";
@@ -25,7 +26,7 @@ export const CreateCompanyDialog = ({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setError,
   } = useForm<CreateCompanyDialogProps>();
   const { addCompany, setSelectedCompany } = useCompany();
@@ -74,6 +75,7 @@ export const CreateCompanyDialog = ({
                 className={
                   errors.name ? "border-red-500 focus-visible:ring-red-500" : ""
                 }
+                disabled={isSubmitting}
               />
               {errors.name && (
                 <p className="text-left text-xs text-muted-foreground text-red-500">
@@ -94,6 +96,7 @@ export const CreateCompanyDialog = ({
                     ? "border-red-500 focus-visible:ring-red-500"
                     : ""
                 }
+                disabled={isSubmitting}
               />
               {errors.phone && (
                 <p className="text-left text-xs text-muted-foreground text-red-500">
@@ -114,6 +117,7 @@ export const CreateCompanyDialog = ({
                     ? "border-red-500 focus-visible:ring-red-500"
                     : ""
                 }
+                disabled={isSubmitting}
               />
               {errors.address && (
                 <p className="text-left text-xs text-muted-foreground text-red-500">
@@ -134,6 +138,7 @@ export const CreateCompanyDialog = ({
                     ? "border-red-500 focus-visible:ring-red-500"
                     : ""
                 }
+                disabled={isSubmitting}
               />
               {errors.taxCode && (
                 <p className="text-left text-xs text-muted-foreground text-red-500">
@@ -174,10 +179,16 @@ export const CreateCompanyDialog = ({
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setDialog(false)}>
+          <Button
+            variant="outline"
+            disabled={isSubmitting}
+            onClick={() => setDialog(false)}
+          >
             Vazgeç
           </Button>
-          <Button type="submit">Devam et</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? <Spinner /> : "Devam et"}
+          </Button>
         </DialogFooter>
       </form>
     </DialogContent>

@@ -1,8 +1,8 @@
-import { DollarSign, Download } from "lucide-react";
+import { ConciergeBell, DollarSign, Download, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Loading } from "~/components/loading";
 import { CalendarDateRangePicker } from "~/components/panel/calendarDateRangePicker";
-import { CreateCompanyDialog } from "~/components/panel/createCompanyDialog";
+import { CompanyNotFound } from "~/components/panel/companyNotFound";
 import { Navbar } from "~/components/panel/navbar";
 import { Overview } from "~/components/panel/overview";
 import { RecentSales } from "~/components/panel/recentSales";
@@ -14,8 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Dialog } from "~/components/ui/dialog";
-import { Spinner } from "~/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { useCompany } from "~/hooks/useCompany";
 import { useSession } from "~/hooks/useSession";
@@ -50,7 +48,23 @@ const panelCards = [
     icon: <DollarSign className="h-4 w-4 text-muted-foreground" />,
     content: {
       title: "₺0.00",
-      description: "Bu ayki toplam satışlar",
+      description: "Bugünkü toplam satışlar",
+    },
+  },
+  {
+    title: "Müşteriler",
+    icon: <Users className="h-4 w-4 text-muted-foreground" />,
+    content: {
+      title: "0",
+      description: "Bugün gelen müşteri sayısı",
+    },
+  },
+  {
+    title: "Açık siparişler",
+    icon: <ConciergeBell className="h-4 w-4 text-muted-foreground" />,
+    content: {
+      title: "₺0.00",
+      description: "Şu anki açık sipariş tutarı",
     },
   },
 ];
@@ -59,14 +73,9 @@ const Panel = () => {
   const { push } = useRouter();
   const { session, status } = useSession();
   const { selectedCompany, loading } = useCompany();
-  const [open, setOpen] = useState(false);
 
   if (!session && status === "loading") {
-    return (
-      <div className="flex h-screen flex-col items-center justify-center">
-        <Spinner />
-      </div>
-    );
+    return <Loading />;
   }
 
   if (!session && status !== "loading") {
@@ -77,7 +86,7 @@ const Panel = () => {
   return (
     <>
       <div className="flex-col md:flex">
-        <Navbar />
+        <Navbar activeTab="overview" />
         {selectedCompany ? (
           <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex flex-col items-center justify-between space-y-2 md:flex-row">
@@ -103,9 +112,6 @@ const Panel = () => {
                 <TabsTrigger className="h-12 md:h-8" value="reports">
                   Raporlar
                 </TabsTrigger>
-                <TabsTrigger className="h-12 md:h-8" value="notifications">
-                  Bildirimler
-                </TabsTrigger>
               </TabsList>
               <TabsContent value="overview" className="space-y-4">
                 <div className="grid grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -118,7 +124,7 @@ const Panel = () => {
                     />
                   ))}
                 </div>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-7">
                   <Card className="md:col-span-4">
                     <CardHeader>
                       <CardTitle>Yıl içindeki satışlar</CardTitle>
@@ -143,33 +149,7 @@ const Panel = () => {
             </Tabs>
           </div>
         ) : (
-          <Dialog open={open} onOpenChange={setOpen}>
-            <div className="flex flex-col items-center justify-center space-y-4 p-14">
-              {loading ? (
-                <Spinner />
-              ) : (
-                <>
-                  <div className="text-center">
-                    <h2 className="text-2xl font-bold tracking-tight">
-                      Size ait bir şirket bulunamadı.
-                    </h2>
-                    <p className="text-sm text-muted-foreground">
-                      Hemen bir şirket oluşturun ve satışlarınızı takip edin. 🚀
-                    </p>
-                  </div>
-
-                  <Button
-                    onClick={() => {
-                      setOpen(true);
-                    }}
-                  >
-                    Şirket oluştur
-                  </Button>
-                </>
-              )}
-            </div>
-            <CreateCompanyDialog setDialog={setOpen} />
-          </Dialog>
+          <CompanyNotFound loading={loading} />
         )}
       </div>
     </>

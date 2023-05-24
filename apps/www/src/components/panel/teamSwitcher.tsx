@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "../ui/badge";
 import { CreateCompanyDialog } from "./createCompanyDialog";
 import { Company } from "@prisma/client";
 import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
@@ -60,7 +61,7 @@ export default function TeamSwitcher({
             className={cn("w-[140px] justify-between md:w-[200px]", className)}
           >
             {selectedTeam && (
-              <Avatar className="mr-2 h-5 w-5">
+              <Avatar className="mr-2 h-6 w-6">
                 <AvatarImage
                   // TODO: Change avatar image url
                   src={`https://avatar.vercel.sh/${selectedTeam.id}.png`}
@@ -69,9 +70,16 @@ export default function TeamSwitcher({
                 <AvatarFallback>{/* TODO: Get fallback */}</AvatarFallback>
               </Avatar>
             )}
-            {selectedTeam
-              ? prettifyString(selectedTeam.name, 20)
-              : "Şirket bulunamadı"}
+            {selectedTeam ? (
+              <div className="flex w-full items-center justify-between space-x-1">
+                <span>{prettifyString(selectedTeam.name, 10)}</span>
+                <Badge variant="outline" className="hidden md:flex">
+                  {selectedTeam.plan}
+                </Badge>
+              </div>
+            ) : (
+              "Şirket bulunamadı"
+            )}
             <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
