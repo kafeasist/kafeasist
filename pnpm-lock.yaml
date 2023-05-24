@@ -161,6 +161,9 @@ importers:
       '@radix-ui/react-popover':
         specifier: ^1.0.5
         version: 1.0.5(@types/react@18.0.37)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-progress':
+        specifier: ^1.0.2
+        version: 1.0.2(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-select':
         specifier: ^1.2.1
         version: 1.2.1(@types/react@18.0.37)(react-dom@18.2.0)(react@18.2.0)
@@ -179,6 +182,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^4.29.3
         version: 4.29.3(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-table':
+        specifier: ^8.9.1
+        version: 8.9.1(react-dom@18.2.0)(react@18.2.0)
       '@trpc/client':
         specifier: ^10.21.1
         version: 10.21.1(@trpc/server@10.21.1)
@@ -204,8 +210,8 @@ importers:
         specifier: ^2.30.0
         version: 2.30.0
       lucide-react:
-        specifier: ^0.188.0
-        version: 0.188.0(react@18.2.0)
+        specifier: ^0.221.0
+        version: 0.221.0(react@18.2.0)
       next:
         specifier: 13.3.0
         version: 13.3.0(@babel/core@7.20.12)(react-dom@18.2.0)(react@18.2.0)
@@ -3327,6 +3333,19 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /@radix-ui/react-progress@1.0.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-c16RVM43ct2koRcMmPw4b47JWFNs89qe5p4Um9dwoPs0yi+d7It1MJ35EpsX+93o31Mqdwe4vQyu0SrHrygdCg==}
+    peerDependencies:
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    dependencies:
+      '@babel/runtime': 7.21.5
+      '@radix-ui/react-context': 1.0.0(react@18.2.0)
+      '@radix-ui/react-primitive': 1.0.2(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@radix-ui/react-roving-focus@1.0.3(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-stjCkIoMe6h+1fWtXlA6cRfikdBzCLp3SnVk7c48cv/uy3DTGoXhN76YaOYUJuy3aEDvDIKwKR5KSmvrtPvQPQ==}
     peerDependencies:
@@ -3936,6 +3955,23 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
+  /@tanstack/react-table@8.9.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-yHs2m6lk5J5RNcu2dNtsDGux66wNXZjEgzxos6MRCX8gL+nqxeW3ZglqP6eANN0bGElPnjvqiUHGQvdACOr3Cw==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@tanstack/table-core': 8.9.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@tanstack/table-core@8.9.1:
+    resolution: {integrity: sha512-2+R83n8vMZND0q3W1lSiF7co9nFbeWbjAErFf27xwbeA9E0wtUu5ZDfgj+TZ6JzdAEQAgfxkk/QNFAKiS8E4MA==}
+    engines: {node: '>=12'}
     dev: false
 
   /@trpc/client@10.21.1(@trpc/server@10.21.1):
@@ -8512,8 +8548,8 @@ packages:
       yallist: 4.0.0
     dev: false
 
-  /lucide-react@0.188.0(react@18.2.0):
-    resolution: {integrity: sha512-c27NaQoiGp1Spz2NPcCjV1EFAOWICPq0Wq+uxyXUUAzgSC0jCMJCztcyZ5ABr2RO/ivd9ZEnFEldSX50ZYAKkQ==}
+  /lucide-react@0.221.0(react@18.2.0):
+    resolution: {integrity: sha512-g99pn2/lBaCEAA0cbi4eaCO+3rY4mSfjCaDlo8Z30F0wk8MXoBXhCR1TaUS9cmNdOP9VGxgUpoB4qMg7/vyC8A==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
     dependencies:
