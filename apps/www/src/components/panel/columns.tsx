@@ -91,7 +91,12 @@ export const columns: ColumnDef<Task>[] = [
               </div>
             </HoverCardTrigger>
             <HoverCardContent className="space-y-4">
-              <h1>{row.getValue("id")} analizi için son hızla çalışıyoruz</h1>
+              <h1>
+                {row.getValue("id")} analizi için son hızla{" "}
+                {row.getValue("type") == "ai"
+                  ? "yapay zekamız çalışıyor."
+                  : "çalışıyoruz."}
+              </h1>
               <div className="text-sm text-muted-foreground">
                 Analiziniz üzerinde çalışıyoruz, işlem bittiğinde size haber
                 vereceğiz. Lütfen bekleyiniz.
@@ -101,6 +106,10 @@ export const columns: ColumnDef<Task>[] = [
                   <span>
                     <span className="font-medium">Analiz:</span>{" "}
                     {row.getValue("id")}
+                  </span>
+                  <span>
+                    <span className="font-medium">Tür:</span>{" "}
+                    {row.getValue("type") == "ai" ? "Yapay Zeka" : "Manuel"}
                   </span>
                   <span>
                     <span className="font-medium">Durum:</span> {status.label}

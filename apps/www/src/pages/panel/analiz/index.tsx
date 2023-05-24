@@ -14,11 +14,29 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Spinner } from "~/components/ui/spinner";
-import tasks from "~/data/tasks.json";
 import { useCompany } from "~/hooks/useCompany";
 import { useSession } from "~/hooks/useSession";
 
 const Analiz = () => {
+  const tasks = [
+    {
+      id: "AN-230524",
+      title:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae.",
+      status: "done",
+      label: "documentation",
+      type: "manual",
+    },
+    {
+      id: "AN-230525",
+      title:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae.",
+      status: "waiting",
+      label: "documentation",
+      type: "ai",
+    },
+  ];
+
   const { push } = useRouter();
   const { session, status } = useSession();
   const { selectedCompany, loading } = useCompany();
