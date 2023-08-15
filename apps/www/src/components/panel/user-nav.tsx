@@ -1,16 +1,17 @@
-import { Search } from "../search";
 import { Spinner } from "../ui/spinner";
-import { CreateCompanyDialog } from "./createCompanyDialog";
+import { Switch } from "../ui/switch";
+import { CreateCompanyDialog } from "./create-company-dialog";
 import { Session } from "@kafeasist/auth";
 import {
   Building2,
   CreditCard,
-  Keyboard,
   LogOut,
+  Moon,
   Plus,
   Settings,
   User,
 } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { MouseEventHandler, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -31,6 +32,7 @@ export function UserNav({ user }: { user: Session }) {
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const { push } = useRouter();
+  const { setTheme, theme } = useTheme();
 
   const logOut = api.auth.logout.useMutation();
 
@@ -44,6 +46,14 @@ export function UserNav({ user }: { user: Session }) {
     await logOut.mutateAsync();
     push("/giris");
     setLoggingOut(false);
+  };
+
+  const changeTheme = () => {
+    if (theme === "dark") {
+      setTheme("light");
+    } else {
+      setTheme("dark");
+    }
   };
 
   return (
@@ -70,9 +80,6 @@ export function UserNav({ user }: { user: Session }) {
                 {user.email}
               </p>
             </div>
-            <div className="mt-4 block w-full md:hidden">
-              <Search />
-            </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
@@ -88,9 +95,17 @@ export function UserNav({ user }: { user: Session }) {
               <Settings className="mr-2 h-4 w-4" />
               <span>Ayarlar</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="hover:cursor-pointer">
-              <Keyboard className="mr-2 h-4 w-4" />
-              <span>Kısayollar</span>
+            <DropdownMenuItem onClick={(e) => e.preventDefault()}>
+              <div className="flex w-full justify-between">
+                <div className="flex items-center">
+                  <Moon className="mr-2 h-4 w-4" />
+                  <span>Koyu tema</span>
+                </div>
+                <Switch
+                  checked={theme === "dark"}
+                  onCheckedChange={changeTheme}
+                />
+              </div>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />

@@ -6,8 +6,8 @@ import {
   HoverCardTrigger,
 } from "../ui/hover-card";
 import { Progress } from "../ui/progress";
-import { DataTableColumnHeader } from "./dataTableColumnHeader";
-import { DataTableRowActions } from "./dataTableRowActions";
+import { DataTableColumnHeader } from "./data-table-column-header";
+import { DataTableRowActions } from "./data-table-row-actions";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "~/components/ui/badge";
 import { Checkbox } from "~/components/ui/checkbox";

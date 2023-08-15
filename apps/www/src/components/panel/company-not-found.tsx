@@ -1,8 +1,10 @@
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Spinner } from "../ui/spinner";
-import { CreateCompanyDialog } from "./createCompanyDialog";
+import { CreateCompanyDialog } from "./create-company-dialog";
+import Image from "next/image";
 import { useState } from "react";
+import noCompanyImage from "~/../public/no-company.svg";
 
 export const CompanyNotFound = ({ loading }: { loading: boolean }) => {
   const [open, setOpen] = useState(false);
@@ -14,9 +16,15 @@ export const CompanyNotFound = ({ loading }: { loading: boolean }) => {
           <Spinner />
         ) : (
           <>
+            <Image
+              src={noCompanyImage}
+              alt="Şirket bulunamadı"
+              width={240}
+              className="mb-4"
+            />
             <div className="text-center">
               <h2 className="text-2xl font-bold tracking-tight">
-                Size ait bir şirket bulunamadı.
+                Burası biraz sessiz
               </h2>
               <p className="text-sm text-muted-foreground">
                 Hemen bir şirket oluşturun ve satışlarınızı takip edin. 🚀

@@ -8,7 +8,7 @@ import { Lead } from "~/components/ui/Typography/lead";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { Spinner } from "~/components/ui/spinner";
-import { useToast } from "~/hooks/useToast";
+import { useToast } from "~/hooks/use-toast";
 import { api } from "~/utils/api";
 
 type ForgotPasswordInputs = RouterInputs["auth"]["forgotPassword"];

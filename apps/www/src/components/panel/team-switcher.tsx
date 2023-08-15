@@ -1,7 +1,7 @@
 "use client";
 
 import { Badge } from "../ui/badge";
-import { CreateCompanyDialog } from "./createCompanyDialog";
+import { CreateCompanyDialog } from "./create-company-dialog";
 import { Company } from "@prisma/client";
 import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
 import * as React from "react";
@@ -22,7 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import { useCompany } from "~/hooks/useCompany";
+import { useCompany } from "~/hooks/use-company";
 import { cn } from "~/lib/utils";
 import { prettifyString } from "~/utils/prettify";
 

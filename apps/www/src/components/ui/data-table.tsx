@@ -1,7 +1,7 @@
 "use client";
 
-import { DataTablePagination } from "../panel/dataTablePagination";
-import { DataTableToolbar } from "../panel/dataTableToolbar";
+import { DataTablePagination } from "../panel/data-table-pagination";
+import { DataTableToolbar } from "../panel/data-table-toolbar";
 import {
   ColumnDef,
   ColumnFiltersState,

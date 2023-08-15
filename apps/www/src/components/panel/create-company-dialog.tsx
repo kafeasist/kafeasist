@@ -11,8 +11,8 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import { Label } from "~/components/ui/label";
-import { useCompany } from "~/hooks/useCompany";
-import { useToast } from "~/hooks/useToast";
+import { useCompany } from "~/hooks/use-company";
+import { useToast } from "~/hooks/use-toast";
 import { api } from "~/utils/api";
 
 type CreateCompanyDialogProps = RouterInputs["company"]["create"];

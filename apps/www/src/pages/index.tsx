@@ -1,7 +1,7 @@
 import type { RouterInputs } from "@kafeasist/api";
 import type { NextPage } from "next";
 import { useForm } from "react-hook-form";
-import { useSession } from "~/hooks/useSession";
+import { useSession } from "~/hooks/use-session";
 import { api } from "~/utils/api";
 
 interface FormProps {

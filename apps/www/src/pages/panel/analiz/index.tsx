@@ -1,8 +1,8 @@
 import { BarChart, Brain, Download } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { CalendarDateRangePicker } from "~/components/panel/calendarDateRangePicker";
+import { CalendarDateRangePicker } from "~/components/panel/calendar-date-range-picker";
 import { columns } from "~/components/panel/columns";
-import { CompanyNotFound } from "~/components/panel/companyNotFound";
+import { CompanyNotFound } from "~/components/panel/company-not-found";
 import { Navbar } from "~/components/panel/navbar";
 import { Button } from "~/components/ui/button";
 import {
@@ -12,10 +12,10 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { DataTable } from "~/components/ui/dataTable";
+import { DataTable } from "~/components/ui/data-table";
 import { Spinner } from "~/components/ui/spinner";
-import { useCompany } from "~/hooks/useCompany";
-import { useSession } from "~/hooks/useSession";
+import { useCompany } from "~/hooks/use-company";
+import { useSession } from "~/hooks/use-session";
 
 const Analiz = () => {
   const tasks = [

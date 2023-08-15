@@ -1,11 +1,10 @@
 import { ConciergeBell, DollarSign, Download, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Loading } from "~/components/loading";
-import { CalendarDateRangePicker } from "~/components/panel/calendarDateRangePicker";
-import { CompanyNotFound } from "~/components/panel/companyNotFound";
+import { CalendarDateRangePicker } from "~/components/panel/calendar-date-range-picker";
+import { CompanyNotFound } from "~/components/panel/company-not-found";
 import { Navbar } from "~/components/panel/navbar";
-import { Overview } from "~/components/panel/overview";
-import { RecentSales } from "~/components/panel/recentSales";
+import { RecentSales } from "~/components/panel/recent-sales";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -15,8 +14,8 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { useCompany } from "~/hooks/useCompany";
-import { useSession } from "~/hooks/useSession";
+import { useCompany } from "~/hooks/use-company";
+import { useSession } from "~/hooks/use-session";
 
 const PanelCard = (props: {
   title: string;
@@ -127,11 +126,9 @@ const Panel = () => {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-7">
                   <Card className="md:col-span-4">
                     <CardHeader>
-                      <CardTitle>Yıl içindeki satışlar</CardTitle>
+                      <CardTitle>Günlük satışlar</CardTitle>
                     </CardHeader>
-                    <CardContent>
-                      <Overview />
-                    </CardContent>
+                    <CardContent></CardContent>
                   </Card>
                   <Card className="md:col-span-3">
                     <CardHeader>

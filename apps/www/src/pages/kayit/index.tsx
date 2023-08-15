@@ -10,8 +10,8 @@ import { Muted } from "~/components/ui/Typography/muted";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { Spinner } from "~/components/ui/spinner";
-import { useSession } from "~/hooks/useSession";
-import { useToast } from "~/hooks/useToast";
+import { useSession } from "~/hooks/use-session";
+import { useToast } from "~/hooks/use-toast";
 import { api } from "~/utils/api";
 
 const FirstEmailInput = (props: {
