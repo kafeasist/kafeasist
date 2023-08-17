@@ -5,8 +5,12 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "~/components/ui/Input/input";
 import { H1 } from "~/components/ui/Typography/h1";
+import { H3 } from "~/components/ui/Typography/h3";
 import { Lead } from "~/components/ui/Typography/lead";
+import { Muted } from "~/components/ui/Typography/muted";
+import { BackButton } from "~/components/ui/back-button";
 import { Button } from "~/components/ui/button";
+import { Logo } from "~/components/ui/logo";
 import { Separator } from "~/components/ui/separator";
 import { Spinner } from "~/components/ui/spinner";
 import { useSession } from "~/hooks/use-session";
@@ -50,10 +54,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="m-auto w-full space-y-4 md:w-3/4 lg:w-1/2"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="m-auto w-full space-y-4">
       <div className="space-y-2">
         <Input
           type="email"
@@ -101,29 +102,43 @@ const LoginForm = () => {
 
 const Login = () => {
   return (
-    <main className="flex">
-      <div className="h-screen bg-gradient-to-l from-yellow-200 via-green-200 to-green-500 lg:w-1/2"></div>
-      <div className="flex h-screen w-screen flex-col items-center justify-center text-center lg:w-1/2">
+    <>
+      <div className="absolute flex w-screen justify-between p-8">
+        <BackButton href="/" />
+      </div>
+      <div className="absolute top-[120px] flex w-full items-center justify-center">
+        <Link href="/">
+          <Logo width={200} />
+        </Link>
+      </div>
+      <main className="m-auto flex h-screen max-w-screen-lg items-center text-center">
         <div className="container space-y-6">
           <H1>Giriş yapın</H1>
-          <Lead>
-            Mevcut kullanıcı bilgilerinizle kafeasist hesabınıza giriş yapın
-          </Lead>
+          <Lead>Mevcut bilgilerinizle kafeasist hesabınıza giriş yapın</Lead>
           <LoginForm />
           <div className="m-auto flex w-full items-center md:w-3/4 lg:w-1/2">
             <Separator className="w-auto grow" />
             <span className="mx-4">veya</span>
             <Separator className="w-auto grow" />
           </div>
-          <Link href="/kayit">
+          <Link href="/kayit?ref=giris">
             <Button variant="link">Ücretsiz kaydolun</Button>
           </Link>
-          <Link href="/sifremi-unuttum">
+          <Link href="/sifremi-unuttum?ref=giris">
             <Button variant="link">Şifremi unuttum</Button>
           </Link>
         </div>
-      </div>
-    </main>
+        <Separator orientation="vertical" className="hidden h-1/2 md:block" />
+        <div className="container hidden flex-col items-center space-y-4 md:flex">
+          <img src="foo" alt="Giriş QR kod" />
+          <H3>QR kod ile giriş yap</H3>
+          <Muted>
+            Telefonunuzda kafeasist uygulamanızı açarak bu QR kodu okutup giriş
+            yapabilirsiniz
+          </Muted>
+        </div>
+      </main>
+    </>
   );
 };
 

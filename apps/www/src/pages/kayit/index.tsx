@@ -45,10 +45,10 @@ const FirstEmailInput = (props: {
         <span className="mx-4">veya</span>
         <Separator className="w-auto grow" />
       </div>
-      <Link href="/giris">
+      <Link href="/giris?ref=kayit">
         <Button variant="link">Hesabınızla giriş yapın</Button>
       </Link>
-      <Link href="/sifremi-unuttum">
+      <Link href="/sifremi-unuttum?ref=kayit">
         <Button variant="link">Şifremi unuttum</Button>
       </Link>
     </>

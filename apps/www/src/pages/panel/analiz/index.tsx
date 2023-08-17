@@ -1,7 +1,6 @@
-import { BarChart, Brain, Download } from "lucide-react";
+import { BarChart, Brain } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { CalendarDateRangePicker } from "~/components/panel/calendar-date-range-picker";
-import { columns } from "~/components/panel/columns";
+import { columns } from "~/components/panel/analiz-columns";
 import { CompanyNotFound } from "~/components/panel/company-not-found";
 import { Navbar } from "~/components/panel/navbar";
 import { Button } from "~/components/ui/button";
@@ -63,13 +62,6 @@ const Analiz = () => {
             <div className="flex-1 space-y-4 p-8 pt-6">
               <div className="flex flex-col items-center justify-between space-y-2 md:flex-row">
                 <h2 className="text-3xl font-bold tracking-tight">Analiz</h2>
-                <div className="flex flex-col items-center space-x-2 space-y-4 md:flex-row md:space-y-0">
-                  <CalendarDateRangePicker />
-                  <Button size="sm">
-                    <Download className="mr-2 h-4 w-4" />
-                    Verilerimi indir
-                  </Button>
-                </div>
               </div>
             </div>
             <div className="mb-8 ml-10 mr-8 flex flex-col space-y-2">

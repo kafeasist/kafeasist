@@ -87,7 +87,7 @@ const ForgotPassword = () => {
             <span className="mx-4">veya</span>
             <Separator className="w-auto grow" />
           </div>
-          <Link href="/giris">
+          <Link href="/giris?ref=sifremi-unuttum">
             <Button variant="link">Hesabınızla giriş yapın</Button>
           </Link>
           <Link href="mailto:destek@kafeasist.com">

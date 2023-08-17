@@ -14,8 +14,8 @@ const Logo = React.forwardRef<HTMLImageElement, Partial<ImageProps>>(
         src={theme === "dark" ? darkLogo : logo}
         className={className}
         ref={ref}
-        width="140"
-        height="30"
+        width={props.width || 140}
+        height={props.height || 30}
         alt="kafeasist Logo"
       />
     );

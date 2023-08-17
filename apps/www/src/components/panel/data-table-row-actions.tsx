@@ -18,7 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "~/components/ui/dropdownMenu";
+} from "~/components/ui/dropdown-menu";
 import { taskSchema } from "~/data/schema";
 
 interface DataTableRowActionsProps<TData> {

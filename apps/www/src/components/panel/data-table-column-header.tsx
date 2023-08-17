@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdownMenu";
+} from "~/components/ui/dropdown-menu";
 import { cn } from "~/lib/utils";
 
 interface DataTableColumnHeaderProps<TData, TValue>
