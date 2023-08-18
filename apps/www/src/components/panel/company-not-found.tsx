@@ -13,7 +13,7 @@ export const CompanyNotFound = ({ loading }: { loading: boolean }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <div className="flex flex-col items-center justify-center space-y-4 p-14">
         {loading ? (
-          <Spinner />
+          <Spinner variant="long" />
         ) : (
           <>
             <Image

@@ -43,7 +43,7 @@ const Analiz = () => {
   if (!session && status === "loading") {
     return (
       <div className="flex h-screen flex-col items-center justify-center">
-        <Spinner />
+        <Spinner variant="long" />
       </div>
     );
   }
