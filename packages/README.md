@@ -6,9 +6,12 @@
 - [@kafeasist:api](#kafeasistapi)
 - [@kafeasist:auth](#kafeasistauth)
 - [@kafeasist:db](#kafeasistdb)
+- [@kafeasist:eslint](#kafeasisteslint)
+- [@kafeasist:prettier](#kafeasistprettier)
 - [@kafeasist:redis](#kafeasistredis)
 - [@kafeasist:responses](#kafeasistresponses)
 - [@kafeasist:tailwind](#kafeasisttailwind)
+- [@kafeasist:typescript](#kafeasisttypescript)
 
 ## About `packages`
 
@@ -26,16 +29,30 @@ This is the authentication package of kafeasist. It is a [TypeScript](https://ww
 
 This is the database package of kafeasist that uses [Prisma](https://www.prisma.io/) and [MySQL](https://www.mysql.com/). For more information including the tables and the schema of the database, please see the [README file for the `db` package](@kafeasist:db).
 
+## [@kafeasist:eslint](@kafeasist:eslint)
+
+This is the [ESLint](https://eslint.org/) configuration package of kafeasist.
+
+## [@kafeasist:prettier](@kafeasist:prettier)
+
+This is the [Prettier](https://prettier.io/) configuration package of kafeasist.
+
 ## [@kafeasist:redis](@kafeasist:redis)
 
 This is the caching package of kafeasist. It is used to cache data in [Redis](https://redis.io/). It is used by the API package. It uses [Upstash](https://upstash.com/) as the [Redis](https://redis.io/) provider. For more information about the caching package including the usage, please see the [README file for the `redis` package](@kafeasist:redis).
 
 ## [@kafeasist:responses](@kafeasist:responses)
 
+**OUTDATED!** This package is outdated. It is not used anymore.
+
 This is the responses package of kafeasist. It is a [TypeScript](https://www.typescriptlang.org/) application. It contains the responses of the API.
 
 ## [@kafeasist:tailwind](@kafeasist:tailwind)
 
 This is the [Tailwind CSS](https://tailwindcss.com/) configuration package of kafeasist.
+
+## [@kafeasist:typescript](@kafeasist:typescript)
+
+This is the [TypeScript](https://www.typescriptlang.org/) configuration package of kafeasist.
 
 [⬆ Back to top](#table-of-contents)

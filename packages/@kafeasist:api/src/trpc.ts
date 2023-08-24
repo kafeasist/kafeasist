@@ -1,15 +1,16 @@
-import { Session, getSessionFromCookie } from "@kafeasist/auth";
-import { prisma } from "@kafeasist/db";
-import { TRPCError, inferAsyncReturnType, initTRPC } from "@trpc/server";
-import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+
+import { getSessionFromCookie, Session } from "@kafeasist/auth";
+import { prisma } from "@kafeasist/db";
 
 /**
  * Defines the inner context shape.
  * @see https://trpc.io/docs/server/context#inner-and-outer-context
  */
-interface CreateInnerContextOptions extends Partial<CreateNextContextOptions> {
+interface CreateInnerContextOptions {
   session: Session | null;
 }
 
@@ -32,7 +33,11 @@ export const createContextInner = async (opts: CreateInnerContextOptions) => {
  * @see https://trpc.io/docs/context
  * @see https://trpc.io/docs/nextjs
  */
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+export const createTRPCContext = async (opts: {
+  req: NextApiRequest;
+  res: NextApiResponse;
+  session?: Session;
+}) => {
   const { req, res } = opts;
 
   const session = await getSessionFromCookie(req);

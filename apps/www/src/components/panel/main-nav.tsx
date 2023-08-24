@@ -2,7 +2,7 @@ import Link from "next/link";
 import { cn } from "~/lib/utils";
 
 interface MainNavProps extends React.HTMLAttributes<HTMLElement> {
-  activeTab: NavigationSlug;
+  activeTab?: NavigationSlug;
 }
 
 export type NavigationSlug = "overview" | "tables" | "products" | "analysis";

@@ -1,5 +1,3 @@
-"use client";
-
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { Table } from "@tanstack/react-table";
 import { X } from "lucide-react";

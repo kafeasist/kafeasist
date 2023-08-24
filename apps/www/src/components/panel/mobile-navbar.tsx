@@ -4,7 +4,7 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { MainNav, NavigationSlug } from "./main-nav";
 import { Menu } from "lucide-react";
 
-export const MobileNavbar = ({ activeTab }: { activeTab: NavigationSlug }) => {
+export const MobileNavbar = ({ activeTab }: { activeTab?: NavigationSlug }) => {
   return (
     <Sheet>
       <SheetTrigger asChild>

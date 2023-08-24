@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useCompany } from "~/hooks/use-company";
 import { useSession } from "~/hooks/use-session";
 
-export const Navbar = ({ activeTab }: { activeTab: NavigationSlug }) => {
+export const Navbar = ({ activeTab }: { activeTab?: NavigationSlug }) => {
   const { session } = useSession();
   const { loading, companies, selectedCompany } = useCompany();
 

@@ -40,7 +40,7 @@ const LoginForm = () => {
       setSession(response.session);
       push("/panel");
     } else {
-      response.fields.forEach((field) => {
+      response.fields.forEach((field: keyof LoginInputs) => {
         setError(field, { message: response.message });
       });
 

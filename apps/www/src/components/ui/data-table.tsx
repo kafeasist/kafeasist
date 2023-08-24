@@ -1,5 +1,3 @@
-"use client";
-
 import { DataTablePagination } from "../panel/data-table-pagination";
 import { DataTableToolbar } from "../panel/data-table-toolbar";
 import {

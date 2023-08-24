@@ -1,5 +1,3 @@
-"use client";
-
 import { addDays, format } from "date-fns";
 import { tr } from "date-fns/locale";
 import { Calendar as CalendarIcon } from "lucide-react";

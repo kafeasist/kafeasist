@@ -1,0 +1,24 @@
+name: Feature request
+description: Suggest an idea for this project
+title: "[FEATURE] "
+labels: ["✨ enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an idea to make kafeasist better! Please fill in the template below to help us understand your suggestion better.
+  - type: textarea
+    attributes:
+      label: Describe the feature you'd like to request
+      description: A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe the solution you'd like to see
+      description: A clear and concise description of what you want to happen. Add any considered drawbacks. Ex. I would like to see [...]
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: |
+        Add any other context or screenshots about the feature request here. If applicable, add screenshots to help explain your problem.

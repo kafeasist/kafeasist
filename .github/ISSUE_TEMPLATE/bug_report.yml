@@ -1,0 +1,48 @@
+name: Bug Report
+description: Create a report to help us improve
+title: "[BUG] "
+labels: ["🐞 bug"]
+body:
+  - type: textarea
+    attributes:
+      label: Version
+      description: |
+        Please provide the version of the package you are using.
+        You can find this information in your `package.json` file.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Provide environment information
+      description: |
+        Run this command in your project root and paste the results in a code block:
+        ```bash
+        npx envinfo --system --binaries
+        ```
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of the bug, as well as what you expected to happen when encountering it.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: To reproduce
+      description: Describe how to reproduce your bug. Steps, code snippets, reproduction repos etc.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: |
+        Add any other context about the problem here.
+        If applicable, add screenshots to help explain your problem.
+  - type: textarea
+    attributes:
+      label: Checklist
+      description: |
+        - [ ] I have searched the [issues](https://github.com/kafeasist/kafeasist/issues) of this repository and believe that this is not a duplicate.
+        - [ ] I have checked the documentation and found no answer.
+        - [ ] I have written a descriptive issue title.

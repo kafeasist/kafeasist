@@ -1,9 +1,10 @@
 // https://trpc.io/docs/nextjs/setup#4-create-trpc-hooks
 
-import type { AppRouter } from "@kafeasist/api";
 import { httpBatchLink, loggerLink } from "@trpc/client";
-import { createTRPCNext } from "@trpc/next";
+import { createTRPCReact } from "@trpc/react-query";
 import superjson from "superjson";
+
+import type { AppRouter } from "@kafeasist/api";
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return "";
@@ -12,7 +13,7 @@ const getBaseUrl = () => {
   return `http://localhost:3000`;
 };
 
-export const api = createTRPCNext<AppRouter>({
+export const api = createTRPCReact<AppRouter>({
   config() {
     return {
       transformer: superjson,
