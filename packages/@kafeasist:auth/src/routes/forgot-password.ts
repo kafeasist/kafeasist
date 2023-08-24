@@ -1,7 +1,8 @@
+import { prisma } from "@kafeasist/db";
+
 import { validateEmail } from "../helpers/validators";
 import { AuthResponse } from "../types/AuthResponse";
 import { Session } from "../types/Session";
-import { prisma } from "@kafeasist/db";
 
 interface ForgotPasswordParams {
   email: string;
