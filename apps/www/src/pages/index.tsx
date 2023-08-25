@@ -1,97 +1,37 @@
-import type { RouterInputs } from "@kafeasist/api";
-import type { NextPage } from "next";
-import { useForm } from "react-hook-form";
-import { useSession } from "~/hooks/useSession";
-import { api } from "~/utils/api";
+import { Metadata } from "next";
 
-interface FormProps {
-  inputs: {
-    id: string;
-    label: string;
-  }[];
-  buttonName: string;
-  handler: (data: unknown) => unknown;
-}
-
-const Form = ({ inputs, buttonName, handler }: FormProps) => {
-  const { handleSubmit, register } = useForm();
-
-  const onSubmit = (data: unknown) => handler(data);
-
-  return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col space-y-6 rounded-lg bg-gray-200 p-16"
-    >
-      <p className="mb-6 text-center text-xl uppercase">{buttonName}</p>
-      {inputs.map(({ id, label }) => (
-        <div key={id} className="flex flex-col space-y-2">
-          <label htmlFor={id}>{label}</label>
-          <input type="text" id={id} className="p-2" {...register(id)} />
-        </div>
-      ))}
-      <button className="rounded-lg bg-gray-700 p-3 text-white" type="submit">
-        {buttonName}
-      </button>
-    </form>
-  );
+export const metadata: Metadata = {
+  title: "kafeasist",
+  description: "kafeasist is a restaurant management SaaS for the modern age",
+  openGraph: {
+    title: "kafeasist",
+    description: "kafeasist is a restaurant management SaaS for the modern age",
+    url: "https://kafeasist.com",
+    siteName: "kafeasist",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@kafeasist",
+    creator: "@kafeasist",
+  },
 };
 
-const Home: NextPage = () => {
-  const { session, setSession, status } = useSession();
-
-  const register = api.auth.register.useMutation();
-  const login = api.auth.login.useMutation();
-
-  const registerInputs = [
-    { id: "firstName", label: "First Name" },
-    { id: "lastName", label: "Last Name" },
-    { id: "email", label: "E-mail" },
-    { id: "phone", label: "Phone" },
-    { id: "password", label: "Password" },
-    { id: "confirmPassword", label: "Confirm Password" },
-  ];
-
-  const loginInputs = [
-    { id: "email", label: "E-mail or Phone" },
-    { id: "password", label: "Password" },
-  ];
-
-  const handleRegister = async (data: unknown) => {
-    type RegisterInputs = RouterInputs["auth"]["register"];
-
-    const response = await register.mutateAsync(data as RegisterInputs);
-
-    if (response.success) {
-      console.log(response);
-      setSession(response.session);
-    } else console.log(response.message);
-  };
-
-  const handleLogin = async (data: unknown) => {
-    type LoginInputs = RouterInputs["auth"]["login"];
-
-    const response = await login.mutateAsync(data as LoginInputs);
-
-    if (response.success) {
-      console.log(response);
-      setSession(response.session);
-    } else console.log(response.message);
-  };
-
-  if (status === "loading") return <div>Loading...</div>;
+export default function HomePage() {
   return (
-    <main className="flex h-screen w-screen items-center justify-center space-x-8">
-      {session ? "Logged in" : "Logged out"}
-      <Form
-        inputs={registerInputs}
-        buttonName="Register"
-        handler={handleRegister}
-      />
-      <Form inputs={loginInputs} buttonName="Login" handler={handleLogin} />
-      {status}
+    <main className="flex h-screen flex-col items-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
+      <div className="flex flex-1 flex-col items-center justify-center">
+        <h1 className="text-6xl font-bold">kafeasist</h1>
+        <p className="text-2xl">
+          kafeasist is a restaurant management SaaS for the modern age
+        </p>
+      </div>
+      <div className="flex flex-1 flex-col items-center justify-center">
+        <h2 className="text-4xl font-bold">Get Started</h2>
+        <p className="text-2xl">
+          kafeasist is currently in private beta. If you would like to join,
+          please email <a href="mailto:destek@kafeasist.com">here.</a>
+        </p>
+      </div>
     </main>
   );
-};
-
-export default Home;
+}

@@ -8,7 +8,13 @@
 
 const config = {
   reactStrictMode: true,
-  transpilePackages: ["@kafeasist/api", "@kafeasist/auth"],
+  transpilePackages: [
+    "@kafeasist/api",
+    "@kafeasist/auth",
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-hover-card",
+    "@radix-ui/react-popover",
+  ],
   eslint: { ignoreDuringBuilds: !!process.env.CI },
   typescript: { ignoreBuildErrors: !!process.env.CI },
 };

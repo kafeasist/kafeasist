@@ -1,0 +1,9 @@
+{
+  "name": "@kafeasist/typescript",
+  "private": true,
+  "version": "0.1.0",
+  "files": [
+    "base.json"
+  ],
+  "prettier": "@kafeasist/prettier"
+}

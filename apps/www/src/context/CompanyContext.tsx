@@ -1,5 +1,6 @@
-import { Company } from "@prisma/client";
 import React from "react";
+import { Company } from "@prisma/client";
+
 import { api } from "~/utils/api";
 
 type CompanyContextType = {

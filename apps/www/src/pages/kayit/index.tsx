@@ -10,8 +10,8 @@ import { Muted } from "~/components/ui/Typography/muted";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { Spinner } from "~/components/ui/spinner";
-import { useSession } from "~/hooks/useSession";
-import { useToast } from "~/hooks/useToast";
+import { useSession } from "~/hooks/use-session";
+import { useToast } from "~/hooks/use-toast";
 import { api } from "~/utils/api";
 
 const FirstEmailInput = (props: {
@@ -45,10 +45,10 @@ const FirstEmailInput = (props: {
         <span className="mx-4">veya</span>
         <Separator className="w-auto grow" />
       </div>
-      <Link href="/giris">
+      <Link href="/giris?ref=kayit">
         <Button variant="link">Hesabınızla giriş yapın</Button>
       </Link>
-      <Link href="/sifremi-unuttum">
+      <Link href="/sifremi-unuttum?ref=kayit">
         <Button variant="link">Şifremi unuttum</Button>
       </Link>
     </>

@@ -15,10 +15,12 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@kafeasist/typescript": "^0.1.0",
     "@types/uuid": "^9.0.1",
     "dotenv-cli": "^7.2.1",
     "prisma": "^4.12.0",
     "typescript": "^4.9.5"
   },
-  "private": true
+  "private": true,
+  "prettier": "@kafeasist/prettier"
 }
