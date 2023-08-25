@@ -11,8 +11,6 @@ import SessionProvider from "~/context/SessionContext";
 import { ThemeProvider } from "~/lib/theme-provider";
 import { api } from "~/utils/api";
 
-// import "@tremor/react/dist/esm/tremor.css";
-
 export const App: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },

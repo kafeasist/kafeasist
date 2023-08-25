@@ -1,8 +1,7 @@
-import { Badge } from "../ui/badge";
-import { CreateCompanyDialog } from "./create-company-dialog";
+import * as React from "react";
 import { Company } from "@prisma/client";
 import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
-import * as React from "react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import {
@@ -20,9 +19,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import { useCompany } from "~/hooks/use-company";
 import { cn } from "~/lib/utils";
 import { prettifyString } from "~/utils/prettify";
+import { Badge } from "../ui/badge";
+import { CreateCompanyDialog } from "./create-company-dialog";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -31,20 +31,17 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 interface TeamSwitcherProps extends PopoverTriggerProps {
   selectedCompany: Company | null;
   companies: Company[] | null;
+  setSelectedCompany: (company: Company) => void;
 }
 
-// TODO: Add default team
 export default function TeamSwitcher({
   className,
   selectedCompany,
+  setSelectedCompany,
   companies,
 }: TeamSwitcherProps) {
-  const { setSelectedCompany } = useCompany();
   const [open, setOpen] = React.useState(false);
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
-  const [selectedTeam, setSelectedTeam] = React.useState<Company | null>(
-    selectedCompany,
-  );
 
   return (
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
@@ -58,21 +55,21 @@ export default function TeamSwitcher({
             aria-label="Bir şirket seçin"
             className={cn("w-[140px] justify-between md:w-[200px]", className)}
           >
-            {selectedTeam && (
+            {selectedCompany && (
               <Avatar className="mr-2 h-6 w-6">
                 <AvatarImage
                   // TODO: Change avatar image url
-                  src={`https://avatar.vercel.sh/${selectedTeam.id}.png`}
-                  alt={selectedTeam.name}
+                  src={`https://avatar.vercel.sh/${selectedCompany.id}.png`}
+                  alt={selectedCompany.name}
                 />
                 <AvatarFallback>{/* TODO: Get fallback */}</AvatarFallback>
               </Avatar>
             )}
-            {selectedTeam ? (
+            {selectedCompany ? (
               <div className="flex w-full items-center justify-between space-x-1">
-                <span>{prettifyString(selectedTeam.name, 10)}</span>
+                <span>{prettifyString(selectedCompany.name, 10)}</span>
                 <Badge variant="outline" className="hidden md:flex">
-                  {selectedTeam.plan}
+                  {selectedCompany.plan}
                 </Badge>
               </div>
             ) : (
@@ -92,7 +89,6 @@ export default function TeamSwitcher({
                     <CommandItem
                       key={company.id}
                       onSelect={() => {
-                        setSelectedTeam(company);
                         setSelectedCompany(company);
                         setOpen(false);
                       }}
@@ -112,7 +108,7 @@ export default function TeamSwitcher({
                       <Check
                         className={cn(
                           "ml-auto h-4 w-4",
-                          selectedTeam?.id === company.id
+                          selectedCompany?.id === company.id
                             ? "opacity-100"
                             : "opacity-0",
                         )}

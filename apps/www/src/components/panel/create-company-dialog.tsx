@@ -1,7 +1,7 @@
-import { Spinner } from "../ui/spinner";
-import { RouterInputs } from "@kafeasist/api";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Input } from "~/components/ui/Input/input";
+
+import { RouterInputs } from "@kafeasist/api";
+
 import { Button } from "~/components/ui/button";
 import {
   DialogContent,
@@ -10,10 +10,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
+import { Input } from "~/components/ui/Input/input";
 import { Label } from "~/components/ui/label";
+import { plans } from "~/data/plans";
 import { useCompany } from "~/hooks/use-company";
 import { useToast } from "~/hooks/use-toast";
 import { api } from "~/utils/api";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Spinner } from "../ui/spinner";
 
 type CreateCompanyDialogProps = RouterInputs["company"]["create"];
 
@@ -148,34 +158,27 @@ export const CreateCompanyDialog = ({
                 </p>
               )}
             </div>
-            {/* <div className="space-y-2">
+            <div className="space-y-2">
               <Label htmlFor="plan">Üyelik planı</Label>
               <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Bir plan seçin" />
+                <SelectTrigger className="" disabled={isSubmitting}>
+                  <SelectValue
+                    placeholder="Bir plan seçin"
+                    {...register("plan", { required: true })}
+                  />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="free">
-                    <span className="font-medium">Bedava</span> -{" "}
-                    <span className="text-muted-foreground">
-                      İki haftalık deneme süresi
-                    </span>
-                  </SelectItem>
-                  <SelectItem value="pro">
-                    <span className="font-medium">Pro</span> -{" "}
-                    <span className="text-muted-foreground">
-                      ₺150 aylık her şirket için
-                    </span>
-                  </SelectItem>
-                  <SelectItem value="enterprise">
-                    <span className="font-medium">Kurumsal</span> -{" "}
-                    <span className="text-muted-foreground">
-                      ₺500 aylık her şirket için
-                    </span>
-                  </SelectItem>
+                  {plans.map((plan) => (
+                    <SelectItem value={plan.id} key={plan.id}>
+                      <span className="font-medium">{plan.name}</span> -{" "}
+                      <span className="text-muted-foreground">
+                        {plan.description}
+                      </span>
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-            </div> */}
+            </div>
           </div>
         </div>
         <DialogFooter>

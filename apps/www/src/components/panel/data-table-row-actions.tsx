@@ -9,15 +9,16 @@ import {
   View,
   X,
 } from "lucide-react";
+
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { taskSchema } from "~/data/schema";
+import { analizSchema } from "~/data/schema";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -35,7 +36,7 @@ const MenuItem = (props: { icon: LucideIcon; name: string }) => {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const task = taskSchema.parse(row.original);
+  const task = analizSchema.parse(row.original);
 
   return (
     <DropdownMenu>

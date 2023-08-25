@@ -1,31 +1,41 @@
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
+import { valueFormatter } from "~/utils/value-formatter";
 import { Button } from "../ui/button";
 import { HelpTooltip } from "../ui/help-tooltip";
-import {
-  ProgressBar,
-  type ProgressBarProps,
-  CategoryBar,
-  Callout,
-} from "@tremor/react";
-import { AlertCircle, ArrowRight, Info, XCircle } from "lucide-react";
-import Link from "next/link";
-import { valueFormatter } from "~/utils/value-formatter";
+import { InfoCard, Severity } from "../ui/info-card";
+import { Progress as ProgressUI } from "../ui/progress";
 
 export const Progress = () => {
   const goal = 20000;
-  const current = 17250.2;
-  const percentage = (current / goal) * 100;
+  const current = 27253.42;
+  let actualPercentage = (current / goal) * 100;
 
-  let color: ProgressBarProps["color"] = "teal";
+  const [percentage, setPercentage] = useState<number>(actualPercentage / 8);
 
-  if (percentage < 25) {
-    color = "red";
-  } else if (percentage < 50) {
-    color = "orange";
-  } else if (percentage < 75) {
-    color = "yellow";
-  } else if (percentage < 100) {
-    color = "emerald";
+  useEffect(() => {
+    const timer = setTimeout(
+      () => setPercentage(actualPercentage > 100 ? 100 : actualPercentage),
+      300,
+    );
+    return () => clearTimeout(timer);
+  }, []);
+
+  let color = "bg-lime-500";
+
+  if (actualPercentage < 25) {
+    color = "bg-red-700 dark:bg-red-500";
+  } else if (actualPercentage < 50) {
+    color = "bg-orange-500";
+  } else if (actualPercentage < 75) {
+    color = "bg-yellow-500";
+  } else if (actualPercentage >= 100) {
+    color = "bg-emerald-500";
   }
+
+  const goalLeft = goal - current;
 
   return (
     <>
@@ -37,20 +47,29 @@ export const Progress = () => {
       </div>
       <div className="mt-2 flex justify-between text-muted-foreground">
         <span>
-          {valueFormatter(current)} &bull; %{percentage.toFixed(2)}
+          {valueFormatter(current)} &bull; %{actualPercentage.toFixed(2)}
         </span>
         <span>{valueFormatter(goal)}</span>
       </div>
-      <ProgressBar value={percentage} color={color} className="mt-3" />
+      <ProgressUI color={color} value={percentage} className="mt-3" />
       <span className="text-xs text-muted-foreground">
-        Hedefinize ulaşmanıza {valueFormatter(goal - current)} kaldı.
+        {goalLeft <= 0
+          ? "Hedefinize ulaştınız 🎉"
+          : `Hedefinize ulaşmanıza ${valueFormatter(goalLeft)} kaldı.`}
       </span>
     </>
   );
 };
 
 export const GeneralScore = () => {
-  const score = 98;
+  const actualScore = 56;
+
+  const [score, setScore] = useState<number>(actualScore / 8);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setScore(actualScore), 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   let comment = "İşletmenizin durumu çok iyi 🎉";
 
@@ -65,6 +84,18 @@ export const GeneralScore = () => {
       "İşletmenizin durumu ortalamadan iyi. Geliştirmek istiyorsanız analiz yapmayı unutmayın.";
   }
 
+  let color = "bg-lime-500";
+
+  if (actualScore < 25) {
+    color = "bg-red-700 dark:bg-red-500";
+  } else if (actualScore < 50) {
+    color = "bg-orange-500";
+  } else if (actualScore < 75) {
+    color = "bg-yellow-500";
+  } else if (actualScore >= 100) {
+    color = "bg-emerald-500";
+  }
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -73,31 +104,30 @@ export const GeneralScore = () => {
           <HelpTooltip text="Bu skor yapay zeka tarafından işletmenize verilen genel skordur." />
         </div>
       </div>
-      <CategoryBar
-        values={[25, 25, 25, 25]}
-        colors={["red", "orange", "yellow", "emerald"]}
-        markerValue={score}
-        tooltip={score.toFixed(0) + " / 100"}
-        className="mt-3"
-      />
+      <div className="mt-2 flex justify-between text-muted-foreground">
+        <span>{actualScore} / 100</span>
+      </div>
+      <ProgressUI color={color} value={score} className="mt-3" />
       <span className="text-xs text-muted-foreground">{comment}</span>
     </>
   );
 };
 
 export const Suggestions = () => {
-  type Severity = "warning" | "error" | "info";
-
   const suggestions: {
     title: string;
     severity: Severity;
     description: string;
+    action?: string;
+    href?: string;
   }[] = [
     {
       title: "Bazı ürünlerinizin fiyatları çok yüksek",
       severity: "warning",
       description:
-        "İşletmenizdeki bazı ürünlerin fiyatları çok yüksek. Bu durum müşterilerinizi kaçırmanıza neden olabilir. Fiyatlarınızı düzenlemek için ürünler sayfasına gidin.",
+        "İşletmenizdeki bazı ürünlerin fiyatları çok yüksek. Bu durum müşterilerinizi kaçırmanıza neden olabilir.",
+      action: "Düzenle",
+      href: "/panel/urunler/1/detay",
     },
   ];
 
@@ -116,26 +146,13 @@ export const Suggestions = () => {
       </div>
       <div className="space-y-4">
         {suggestions.map((suggestion) => (
-          <Callout
+          <InfoCard
             key={suggestion.title}
             title={suggestion.title}
-            icon={
-              suggestion.severity === "warning"
-                ? AlertCircle
-                : suggestion.severity === "error"
-                ? XCircle
-                : Info
-            }
-            color={
-              suggestion.severity === "warning"
-                ? "orange"
-                : suggestion.severity === "error"
-                ? "rose"
-                : "blue"
-            }
+            severity={suggestion.severity}
           >
             {suggestion.description}
-          </Callout>
+          </InfoCard>
         ))}
       </div>
     </>

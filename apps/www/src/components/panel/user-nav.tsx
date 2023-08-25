@@ -1,6 +1,6 @@
-import { Spinner } from "../ui/spinner";
-import { Switch } from "../ui/switch";
-import { Session } from "@kafeasist/auth";
+import { MouseEventHandler, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Building2,
   CreditCard,
@@ -11,9 +11,9 @@ import {
   User,
 } from "lucide-react";
 import { useTheme } from "next-themes";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { MouseEventHandler, useState } from "react";
+
+import { Session } from "@kafeasist/auth";
+
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import {
@@ -27,6 +27,8 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { api } from "~/utils/api";
 import { getFirstLetter } from "~/utils/get-first-letter";
+import { Spinner } from "../ui/spinner";
+import { Switch } from "../ui/switch";
 
 export function UserNav({ user }: { user: Session }) {
   const [loggingOut, setLoggingOut] = useState(false);
@@ -67,7 +69,16 @@ export function UserNav({ user }: { user: Session }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-72 p-4" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
+        <DropdownMenuLabel className="flex items-center font-normal">
+          <Avatar className="mr-4 h-8 w-8">
+            <AvatarImage
+              src={user.imageUrl ? user.imageUrl : ""}
+              alt="Profil fotoğrafı"
+            />
+            <AvatarFallback>
+              {getFirstLetter(user.firstName + " " + user.lastName)}
+            </AvatarFallback>
+          </Avatar>
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
               {user.firstName} {user.lastName}

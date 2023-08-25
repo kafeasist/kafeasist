@@ -1,9 +1,11 @@
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { KafeasistResponse } from "../types/KafeasistResponse";
+import { z } from "zod";
+
 import { validateName, validatePhone } from "@kafeasist/auth";
 import { Company, prisma } from "@kafeasist/db";
 import { invalidateCache, readCache, setCache } from "@kafeasist/redis";
-import { z } from "zod";
+
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { KafeasistResponse } from "../types/KafeasistResponse";
 
 const REDIS_COMPANIES_PREFIX = "companies";
 const REDIS_TTL = 6 * 60 * 60; // 6 hours
@@ -108,7 +110,7 @@ export const companyRouter = createTRPCRouter({
         phone: z.string(),
         address: z.string(),
         taxCode: z.string(),
-        // TODO: Add plan enum
+        plan: z.enum(["FREE", "PRO", "ENTERPRISE"]),
       }),
     )
     .mutation(
@@ -189,6 +191,7 @@ export const companyRouter = createTRPCRouter({
             phone: input.phone,
             address: input.address,
             taxCode: input.taxCode,
+            plan: input.plan,
             user: {
               connect: {
                 id: ctx.session.id,

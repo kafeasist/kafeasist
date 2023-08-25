@@ -1,47 +1,41 @@
-// import { zodResolver } from "@hookform/resolvers/zod";
-import { Session } from "@kafeasist/auth";
-import { Callout } from "@tremor/react";
-import { Info, Trash, Upload } from "lucide-react";
+import { Pencil, Trash, Upload } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Input } from "~/components/ui/Input/input";
+
+import { Session } from "@kafeasist/auth";
+
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
+import { InfoCard } from "~/components/ui/info-card";
+import { Input } from "~/components/ui/Input/input";
 import { Label } from "~/components/ui/label";
 import { getFirstLetter } from "~/utils/get-first-letter";
+import { maskEmail } from "~/utils/mask-email";
 
 const AccountForm = ({ user }: { user: Session }) => {
   const formSchema = z.object({
     firstName: z.string(),
     lastName: z.string(),
-    email: z.string().email(),
   });
 
-  // const formResolver = zodResolver(formSchema);
-
   const form = useForm<z.infer<typeof formSchema>>({
-    // resolver: formResolver,
     defaultValues: {
       firstName: user.firstName,
       lastName: user.lastName,
-      email: user.email,
     },
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    // TODO: Change user info
     console.log(values);
   };
 
   return (
-    <div className="space-y-8">
-      <Callout
-        title="Profil ayarları"
-        icon={() => <Info className="mr-2 h-5 w-5" />}
-        color="neutral"
-      >
+    <div className="mb-8 space-y-8">
+      <InfoCard title="Profil ayarları" severity="info">
         Profilinizde yapılan değişiklikler, tüm şirketlerinize uygulanır. Şirket
         ayarlarınızı değiştirmek için şirketlerim sayfasına gidin.
-      </Callout>
+      </InfoCard>
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         <h2 className="mb-4 text-3xl font-bold tracking-tight">Profil</h2>
@@ -93,16 +87,40 @@ const AccountForm = ({ user }: { user: Session }) => {
             />
           </div>
         </div>
-        <Label htmlFor="email">E-posta</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="E-posta"
-          {...form.register("email")}
-          disabled
-        />
-        <Button type="submit">Kaydet</Button>
+        <Button className="mt-4" type="submit">
+          Kaydet
+        </Button>
       </form>
+      <div className="mt-4 space-y-2">
+        <Label htmlFor="email">E-posta</Label>
+        <div className="flex items-center justify-center space-x-2">
+          <Input
+            id="email"
+            type="email"
+            placeholder="E-posta"
+            defaultValue={maskEmail(user.email)}
+            disabled
+          />
+          <Button variant="outline">
+            <Pencil className="mr-2 h-4 w-4" /> Değiştir
+          </Button>
+        </div>
+      </div>
+      <div className="mt-4 space-y-2">
+        <Label htmlFor="email">Şifre</Label>
+        <div className="flex items-center justify-center space-x-2">
+          <Input
+            id="password"
+            type="password"
+            placeholder="Şifre"
+            defaultValue={"****************"}
+            disabled
+          />
+          <Button variant="outline">
+            <Pencil className="mr-2 h-4 w-4" /> Değiştir
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

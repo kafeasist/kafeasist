@@ -1,9 +1,10 @@
-import { DataTableColumnHeader } from "./data-table-column-header";
 import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "~/components/ui/checkbox";
-import { Task } from "~/data/schema";
 
-export const columns: ColumnDef<Task>[] = [
+import { Checkbox } from "~/components/ui/checkbox";
+import { Analiz } from "~/data/schema";
+import { DataTableColumnHeader } from "./data-table-column-header";
+
+export const columns: ColumnDef<Analiz>[] = [
   {
     id: "select",
     header: ({ table }) => (

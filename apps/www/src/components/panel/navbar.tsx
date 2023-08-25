@@ -1,16 +1,19 @@
+import Link from "next/link";
+
+import { useCompany } from "~/hooks/use-company";
+import { useSession } from "~/hooks/use-session";
 import { Logo } from "../ui/logo";
 import { Skeleton } from "../ui/skeleton";
 import { MainNav, NavigationSlug } from "./main-nav";
 import { MobileNavbar } from "./mobile-navbar";
+import { Notifications } from "./notifications";
 import TeamSwitcher from "./team-switcher";
 import { UserNav } from "./user-nav";
-import Link from "next/link";
-import { useCompany } from "~/hooks/use-company";
-import { useSession } from "~/hooks/use-session";
 
 export const Navbar = ({ activeTab }: { activeTab?: NavigationSlug }) => {
   const { session } = useSession();
-  const { loading, companies, selectedCompany } = useCompany();
+  const { loading, companies, selectedCompany, setSelectedCompany } =
+    useCompany();
 
   return (
     <div className="border-b">
@@ -21,16 +24,18 @@ export const Navbar = ({ activeTab }: { activeTab?: NavigationSlug }) => {
         <Link href="/panel" className="hidden md:block">
           <Logo />
         </Link>
-        <MainNav activeTab={activeTab} className="mx-6 hidden lg:flex" />
+        <MainNav activeTab={activeTab} className="mx-6 hidden md:flex" />
         <div className="ml-auto flex items-center space-x-4">
           <div className="md:flex md:space-x-4">
             {loading ? null : (
               <TeamSwitcher
                 selectedCompany={selectedCompany}
+                setSelectedCompany={setSelectedCompany}
                 companies={companies}
               />
             )}
           </div>
+          <Notifications />
           {session ? (
             <UserNav user={session} />
           ) : (
