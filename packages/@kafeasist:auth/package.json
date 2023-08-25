@@ -17,11 +17,11 @@
     "superjson": "^1.12.3"
   },
   "devDependencies": {
+    "@kafeasist/typescript": "^0.1.0",
     "@types/cookie": "^0.5.1",
     "@types/jsonwebtoken": "latest",
     "@types/node": "^17.0.35",
-    "typescript": "^4.9.5",
-    "@kafeasist/typescript": "^0.1.0"
+    "typescript": "^4.9.5"
   },
   "private": true,
   "prettier": "@kafeasist/prettier"
