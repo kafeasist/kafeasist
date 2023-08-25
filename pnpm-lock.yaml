@@ -340,7 +340,7 @@ importers:
         version: 0.5.0
       jsonwebtoken:
         specifier: latest
-        version: 9.0.0
+        version: 9.0.1
       superjson:
         specifier: ^1.12.3
         version: 1.12.3
@@ -14685,7 +14685,7 @@ packages:
   /wonka@4.0.15:
     resolution: {integrity: sha512-U0IUQHKXXn6PFo9nqsHphVCE5m3IntqZNB9Jjn7EB1lrR7YTDY3YWgFvEvwniTzXSvOH/XMzAZaIfJF/LvHYXg==}
     dev: false
-
+    
   /workerpool@6.2.1:
     resolution: {integrity: sha512-ILEIE97kDZvF9Wb9f6h5aXK4swSlKGUcOEGiIYb2OOu/IrDU9iwj0fD//SsA6E5ibwJxpEvhullJY4Sl4GcpAw==}
     dev: false
