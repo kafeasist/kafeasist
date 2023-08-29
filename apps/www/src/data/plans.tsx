@@ -1,5 +1,6 @@
-import { Plan } from "@prisma/client";
 import { Building2, Castle, Home } from "lucide-react";
+
+import { Plan } from "@kafeasist/api";
 
 export const plans: {
   id: Plan;

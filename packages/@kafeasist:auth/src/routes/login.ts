@@ -1,9 +1,11 @@
+import { verify } from "argon2";
+import { sign } from "jsonwebtoken";
+
+import { prisma } from "@kafeasist/db";
+
 import { JWT_SECRET, JWT_SIGNING_OPTIONS } from "../config";
 import { AuthResponse } from "../types/AuthResponse";
 import { Session } from "../types/Session";
-import { prisma } from "@kafeasist/db";
-import { verify } from "argon2";
-import { sign } from "jsonwebtoken";
 
 interface LoginParams {
   email: string;
@@ -42,6 +44,7 @@ export const login = async (
     email: user.email,
     imageUrl: user.imageUrl,
     isVerified: user.isVerified,
+    twoFA: user.twoFA,
     // companies: user.companies,
   };
 

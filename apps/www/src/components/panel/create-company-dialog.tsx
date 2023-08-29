@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { RouterInputs } from "@kafeasist/api";
+import { Plan, RouterInputs } from "@kafeasist/api";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -39,11 +40,14 @@ export const CreateCompanyDialog = ({
     formState: { errors, isSubmitting },
     setError,
   } = useForm<CreateCompanyDialogProps>();
+  const [plan, setPlan] = useState<Plan | undefined>(undefined);
   const { addCompany, setSelectedCompany } = useCompany();
 
   const createCompany = api.company.create.useMutation();
 
   const onSubmit: SubmitHandler<CreateCompanyDialogProps> = async (data) => {
+    if (plan) data = { ...data, plan: plan };
+
     const response = await createCompany.mutateAsync(data);
 
     if (response.error) {
@@ -81,7 +85,7 @@ export const CreateCompanyDialog = ({
               <Input
                 id="name"
                 placeholder="kafeasist"
-                {...register("name", { required: true })}
+                {...register("name")}
                 className={
                   errors.name ? "border-red-500 focus-visible:ring-red-500" : ""
                 }
@@ -89,9 +93,7 @@ export const CreateCompanyDialog = ({
               />
               {errors.name && (
                 <p className="text-left text-xs text-muted-foreground text-red-500">
-                  {errors.name.type === "required"
-                    ? "Lütfen şirket ismini giriniz"
-                    : errors.name.message}
+                  {errors.name.message}
                 </p>
               )}
             </div>
@@ -100,7 +102,7 @@ export const CreateCompanyDialog = ({
               <Input
                 id="phone"
                 placeholder="2XX XXX XX XX"
-                {...register("phone", { required: true })}
+                {...register("phone")}
                 className={
                   errors.phone
                     ? "border-red-500 focus-visible:ring-red-500"
@@ -110,9 +112,7 @@ export const CreateCompanyDialog = ({
               />
               {errors.phone && (
                 <p className="text-left text-xs text-muted-foreground text-red-500">
-                  {errors.phone.type === "required"
-                    ? "Lütfen şirket telefonunu giriniz"
-                    : errors.phone.message}
+                  {errors.phone.message}
                 </p>
               )}
             </div>
@@ -121,7 +121,7 @@ export const CreateCompanyDialog = ({
               <Input
                 id="address"
                 placeholder="Örnek Mah. Örnek Sok. No: 1/1"
-                {...register("address", { required: true })}
+                {...register("address")}
                 className={
                   errors.address
                     ? "border-red-500 focus-visible:ring-red-500"
@@ -131,9 +131,7 @@ export const CreateCompanyDialog = ({
               />
               {errors.address && (
                 <p className="text-left text-xs text-muted-foreground text-red-500">
-                  {errors.address.type === "required"
-                    ? "Lütfen şirket adresini giriniz"
-                    : errors.address.message}
+                  {errors.address.message}
                 </p>
               )}
             </div>
@@ -142,7 +140,7 @@ export const CreateCompanyDialog = ({
               <Input
                 id="taxCode"
                 placeholder="1234567890"
-                {...register("taxCode", { required: true })}
+                {...register("taxCode")}
                 className={
                   errors.taxCode
                     ? "border-red-500 focus-visible:ring-red-500"
@@ -152,20 +150,25 @@ export const CreateCompanyDialog = ({
               />
               {errors.taxCode && (
                 <p className="text-left text-xs text-muted-foreground text-red-500">
-                  {errors.taxCode.type === "required"
-                    ? "Lütfen vergi levhanızı giriniz"
-                    : errors.taxCode.message}
+                  {errors.taxCode.message}
                 </p>
               )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="plan">Üyelik planı</Label>
-              <Select>
-                <SelectTrigger className="" disabled={isSubmitting}>
-                  <SelectValue
-                    placeholder="Bir plan seçin"
-                    {...register("plan", { required: true })}
-                  />
+              <Select
+                disabled={isSubmitting}
+                onValueChange={(value) => setPlan(value as Plan)}
+              >
+                <SelectTrigger
+                  className={
+                    errors.plan
+                      ? "border-red-500 focus-visible:ring-red-500"
+                      : ""
+                  }
+                  {...register("plan")}
+                >
+                  <SelectValue placeholder="Bir plan seçin" />
                 </SelectTrigger>
                 <SelectContent>
                   {plans.map((plan) => (
@@ -178,6 +181,11 @@ export const CreateCompanyDialog = ({
                   ))}
                 </SelectContent>
               </Select>
+              {errors.plan && (
+                <p className="text-left text-xs text-muted-foreground text-red-500">
+                  {errors.plan.message}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -186,6 +194,7 @@ export const CreateCompanyDialog = ({
             variant="outline"
             disabled={isSubmitting}
             onClick={() => setDialog(false)}
+            type="reset"
           >
             Vazgeç
           </Button>

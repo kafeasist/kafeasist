@@ -6,4 +6,5 @@ export type Session = {
   email: string;
   imageUrl: string | null;
   isVerified: boolean;
+  twoFA: boolean;
 };

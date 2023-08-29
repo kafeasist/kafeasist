@@ -24,6 +24,7 @@ model User {
   email      String    @unique
   imageUrl   String?
   isVerified Boolean   @default(false)
+  twoFA      Boolean   @default(false)
   token      String    @unique
   password   String
 

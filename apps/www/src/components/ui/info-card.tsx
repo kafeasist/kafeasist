@@ -19,7 +19,7 @@ export function InfoCard({
   let color = "bg-orange-100 dark:bg-orange-800";
 
   if (severity === "info") {
-    color = "bg-blue-100 dark:bg-blue-800";
+    color = "bg-blue-100 dark:bg-blue-950";
   } else if (severity === "error") {
     color = "bg-rose-100 dark:bg-rose-800";
   }

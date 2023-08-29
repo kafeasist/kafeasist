@@ -33,85 +33,91 @@ const Companies = ({
   const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <div className="mb-8">
-        <h2 className="mb-4 text-3xl font-bold tracking-tight">Şirketlerim</h2>
-        {companies && selectedCompany ? (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {companies.map((company) => (
-              <Card
-                key={company.id}
-                className={`${
-                  company.id === selectedCompany.id
-                    ? "border-2 border-solid border-violet-400"
-                    : "hover:cursor-pointer hover:shadow-lg"
-                }`}
+    <div className="mb-8">
+      <h2 className="mb-4 text-3xl font-bold tracking-tight">Şirketlerim</h2>
+      {companies && selectedCompany ? (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {companies.map((company) => (
+            <Card
+              key={company.id}
+              className={`${
+                company.id === selectedCompany.id
+                  ? "border-2 border-solid border-violet-400"
+                  : "hover:cursor-pointer hover:shadow-lg"
+              }`}
+            >
+              <CardHeader
                 onClick={() =>
                   company.id !== selectedCompany.id &&
                   setSelectedCompany(company)
                 }
               >
-                <CardHeader>
-                  <CardTitle>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <Avatar className="mr-2 h-6 w-6">
-                          <AvatarImage
-                            // TODO: Change avatar image url
-                            src={`https://avatar.vercel.sh/${company.id}.png`}
-                            alt={company.name}
-                          />
-                          <AvatarFallback>
-                            {/* TODO: Get fallback */}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span>{company.name}</span>
-                      </div>
-                      <span>
-                        {company.id === selectedCompany.id && (
-                          <Badge variant="outline">Seçili</Badge>
-                        )}
-                      </span>
+                <CardTitle>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <Avatar className="mr-2 h-6 w-6">
+                        <AvatarImage
+                          // TODO: Change avatar image url
+                          src={`https://avatar.vercel.sh/${company.id}.png`}
+                          alt={company.name}
+                        />
+                        <AvatarFallback>
+                          {/* TODO: Get fallback */}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span>{company.name}</span>
                     </div>
-                  </CardTitle>
-                  <CardDescription>
-                    {plans.find((plan) => plan.id === company.plan)?.name}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul>
-                    <li className="flex items-center">
-                      <CheckCircle2 className="mr-2 h-4 w-4" />
-                      <span className="text-sm">
-                        <strong>Adres:</strong> {company.address}
-                      </span>
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle2 className="mr-2 h-4 w-4" />
-                      <span className="text-sm">
-                        <strong>Telefon:</strong> {prettifyPhone(company.phone)}
-                      </span>
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle2 className="mr-2 h-4 w-4" />
-                      <span className="text-sm">
-                        <strong>Vergi kodu:</strong> {company.taxCode}
-                      </span>
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter className="space-x-2">
-                  <Button variant="outline">
-                    <Pencil className="mr-2 h-4 w-4" />
-                    Düzenle
-                  </Button>
-                  <Button variant="destructive">
-                    <Trash className="mr-2 h-4 w-4" />
-                    Sil
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
+                    <span>
+                      {company.id === selectedCompany.id && (
+                        <Badge variant="outline">Seçili</Badge>
+                      )}
+                    </span>
+                  </div>
+                </CardTitle>
+                <CardDescription>
+                  {plans.find((plan) => plan.id === company.plan)?.name}
+                </CardDescription>
+              </CardHeader>
+              <CardContent
+                onClick={() =>
+                  company.id !== selectedCompany.id &&
+                  setSelectedCompany(company)
+                }
+              >
+                <ul>
+                  <li className="flex items-center">
+                    <CheckCircle2 className="mr-2 h-4 w-4" />
+                    <span className="text-sm">
+                      <strong>Adres:</strong> {company.address}
+                    </span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle2 className="mr-2 h-4 w-4" />
+                    <span className="text-sm">
+                      <strong>Telefon:</strong> {prettifyPhone(company.phone)}
+                    </span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle2 className="mr-2 h-4 w-4" />
+                    <span className="text-sm">
+                      <strong>Vergi kodu:</strong> {company.taxCode}
+                    </span>
+                  </li>
+                </ul>
+              </CardContent>
+              <CardFooter className="space-x-2">
+                <Button variant="outline">
+                  <Pencil className="mr-2 h-4 w-4" />
+                  Düzenle
+                </Button>
+                <Button variant="destructive">
+                  <Trash className="mr-2 h-4 w-4" />
+                  Sil
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+          <Dialog open={open} onOpenChange={setOpen}>
             <Card
               className="duration-150 hover:cursor-pointer hover:shadow-lg"
               onClick={() => setOpen(true)}
@@ -123,13 +129,13 @@ const Companies = ({
                 </div>
               </CardContent>
             </Card>
-          </div>
-        ) : (
-          <CompanyNotFound loading={loading} />
-        )}
-      </div>
-      <CreateCompanyDialog setDialog={setOpen} />
-    </Dialog>
+            <CreateCompanyDialog setDialog={setOpen} />
+          </Dialog>
+        </div>
+      ) : (
+        <CompanyNotFound loading={loading} />
+      )}
+    </div>
   );
 };
 
