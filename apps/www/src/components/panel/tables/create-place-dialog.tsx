@@ -47,7 +47,7 @@ export const CreatePlaceDialog = ({
       });
     } else {
       setDialog(false);
-      addCategory(response.category!);
+      addCategory(response.place!);
     }
 
     toast({

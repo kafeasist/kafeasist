@@ -44,23 +44,6 @@ const Urunler = () => {
       </div>
       <div className="mb-8 ml-10 mr-8 flex flex-col space-y-2">
         <h2 className="text-lg font-semibold leading-none tracking-tight">
-          Kayıtlı ürünler
-        </h2>
-        <div className="text-sm text-muted-foreground">
-          Kayıtlı ürünlerinizi buradan görüntüleyebilirsiniz.
-        </div>
-        {isProductsLoading ? (
-          <Spinner />
-        ) : (
-          <DataTable
-            DataTableToolbar={ToolbarProducts}
-            data={products}
-            columns={productColumns}
-          />
-        )}
-      </div>
-      <div className="mb-8 ml-10 mr-8 flex flex-col space-y-2">
-        <h2 className="text-lg font-semibold leading-none tracking-tight">
           Kategoriler
         </h2>
         <div className="text-sm text-muted-foreground">
@@ -73,6 +56,23 @@ const Urunler = () => {
             DataTableToolbar={ToolbarCategories}
             data={categories}
             columns={categoryColumns}
+          />
+        )}
+      </div>
+      <div className="mb-8 ml-10 mr-8 flex flex-col space-y-2">
+        <h2 className="text-lg font-semibold leading-none tracking-tight">
+          Kayıtlı ürünler
+        </h2>
+        <div className="text-sm text-muted-foreground">
+          Kayıtlı ürünlerinizi buradan görüntüleyebilirsiniz.
+        </div>
+        {isProductsLoading ? (
+          <Spinner />
+        ) : (
+          <DataTable
+            DataTableToolbar={ToolbarProducts}
+            data={products}
+            columns={productColumns}
           />
         )}
       </div>
