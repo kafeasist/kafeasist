@@ -72,7 +72,6 @@ export const ChangePlanDialog = ({
           <DialogDescription>Şirket planınızı değiştirin</DialogDescription>
         </DialogHeader>
         <div className="mt-4 space-y-4 py-2 pb-4">
-          <input type="text" hidden value={company.id} {...register("id")} />
           <div className="space-y-2">
             <Label htmlFor="plan">Üyelik planı</Label>
             <Select

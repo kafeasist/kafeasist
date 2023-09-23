@@ -1,9 +1,10 @@
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { Table } from "@tanstack/react-table";
 import { X } from "lucide-react";
-import { Input } from "~/components/ui/Input/input";
+
 import { Button } from "~/components/ui/button";
-import { types, statuses } from "~/data/analiz";
+import { Input } from "~/components/ui/Input/input";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { statuses } from "./schema";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -21,9 +22,9 @@ export function DataTableToolbar<TData>({
       <div className="flex w-full flex-col items-center space-y-4 md:flex-1 md:flex-row md:space-x-2 md:space-y-0">
         <Input
           placeholder="Verileri filtrele..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn("id")?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
@@ -32,13 +33,6 @@ export function DataTableToolbar<TData>({
             column={table.getColumn("status")}
             title="Durum"
             options={statuses}
-          />
-        )}
-        {table.getColumn("type") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("type")}
-            title="Tür"
-            options={types}
           />
         )}
         {isFiltered && (

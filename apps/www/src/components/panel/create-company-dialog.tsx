@@ -78,115 +78,109 @@ export const CreateCompanyDialog = ({
           <DialogTitle>Şirket oluştur</DialogTitle>
           <DialogDescription>Yeni bir şirket oluşturun</DialogDescription>
         </DialogHeader>
-        <div>
-          <div className="space-y-4 py-2 pb-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Şirket ismi</Label>
-              <Input
-                id="name"
-                placeholder="kafeasist"
-                {...register("name")}
+        <div className="space-y-4 py-2 pb-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Şirket ismi</Label>
+            <Input
+              id="name"
+              placeholder="kafeasist"
+              {...register("name")}
+              className={
+                errors.name ? "border-red-500 focus-visible:ring-red-500" : ""
+              }
+              disabled={isSubmitting}
+            />
+            {errors.name && (
+              <p className="text-left text-xs text-muted-foreground text-red-500">
+                {errors.name.message}
+              </p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="phone">Şirket telefonu</Label>
+            <Input
+              id="phone"
+              placeholder="2XX XXX XX XX"
+              {...register("phone")}
+              className={
+                errors.phone ? "border-red-500 focus-visible:ring-red-500" : ""
+              }
+              disabled={isSubmitting}
+            />
+            {errors.phone && (
+              <p className="text-left text-xs text-muted-foreground text-red-500">
+                {errors.phone.message}
+              </p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="address">Şirket adresi</Label>
+            <Input
+              id="address"
+              placeholder="Örnek Mah. Örnek Sok. No: 1/1"
+              {...register("address")}
+              className={
+                errors.address
+                  ? "border-red-500 focus-visible:ring-red-500"
+                  : ""
+              }
+              disabled={isSubmitting}
+            />
+            {errors.address && (
+              <p className="text-left text-xs text-muted-foreground text-red-500">
+                {errors.address.message}
+              </p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="taxCode">Vergi levhası</Label>
+            <Input
+              id="taxCode"
+              placeholder="1234567890"
+              {...register("taxCode")}
+              className={
+                errors.taxCode
+                  ? "border-red-500 focus-visible:ring-red-500"
+                  : ""
+              }
+              disabled={isSubmitting}
+            />
+            {errors.taxCode && (
+              <p className="text-left text-xs text-muted-foreground text-red-500">
+                {errors.taxCode.message}
+              </p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="plan">Üyelik planı</Label>
+            <Select
+              disabled={isSubmitting}
+              onValueChange={(value) => setPlan(value as Plan)}
+            >
+              <SelectTrigger
                 className={
-                  errors.name ? "border-red-500 focus-visible:ring-red-500" : ""
+                  errors.plan ? "border-red-500 focus-visible:ring-red-500" : ""
                 }
-                disabled={isSubmitting}
-              />
-              {errors.name && (
-                <p className="text-left text-xs text-muted-foreground text-red-500">
-                  {errors.name.message}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="phone">Şirket telefonu</Label>
-              <Input
-                id="phone"
-                placeholder="2XX XXX XX XX"
-                {...register("phone")}
-                className={
-                  errors.phone
-                    ? "border-red-500 focus-visible:ring-red-500"
-                    : ""
-                }
-                disabled={isSubmitting}
-              />
-              {errors.phone && (
-                <p className="text-left text-xs text-muted-foreground text-red-500">
-                  {errors.phone.message}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="address">Şirket adresi</Label>
-              <Input
-                id="address"
-                placeholder="Örnek Mah. Örnek Sok. No: 1/1"
-                {...register("address")}
-                className={
-                  errors.address
-                    ? "border-red-500 focus-visible:ring-red-500"
-                    : ""
-                }
-                disabled={isSubmitting}
-              />
-              {errors.address && (
-                <p className="text-left text-xs text-muted-foreground text-red-500">
-                  {errors.address.message}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="taxCode">Vergi levhası</Label>
-              <Input
-                id="taxCode"
-                placeholder="1234567890"
-                {...register("taxCode")}
-                className={
-                  errors.taxCode
-                    ? "border-red-500 focus-visible:ring-red-500"
-                    : ""
-                }
-                disabled={isSubmitting}
-              />
-              {errors.taxCode && (
-                <p className="text-left text-xs text-muted-foreground text-red-500">
-                  {errors.taxCode.message}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="plan">Üyelik planı</Label>
-              <Select
-                disabled={isSubmitting}
-                onValueChange={(value) => setPlan(value as Plan)}
+                {...register("plan")}
               >
-                <SelectTrigger
-                  className={
-                    errors.plan
-                      ? "border-red-500 focus-visible:ring-red-500"
-                      : ""
-                  }
-                  {...register("plan")}
-                >
-                  <SelectValue placeholder="Bir plan seçin" />
-                </SelectTrigger>
-                <SelectContent>
-                  {plans.map((plan) => (
-                    <SelectItem value={plan.id} key={plan.id}>
-                      <span className="font-medium">{plan.name}</span> -{" "}
-                      <span className="text-muted-foreground">
-                        {plan.description}
-                      </span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {errors.plan && (
-                <p className="text-left text-xs text-muted-foreground text-red-500">
-                  {errors.plan.message}
-                </p>
-              )}
-            </div>
+                <SelectValue placeholder="Bir plan seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {plans.map((plan) => (
+                  <SelectItem value={plan.id} key={plan.id}>
+                    <span className="font-medium">{plan.name}</span> -{" "}
+                    <span className="text-muted-foreground">
+                      {plan.description}
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.plan && (
+              <p className="text-left text-xs text-muted-foreground text-red-500">
+                {errors.plan.message}
+              </p>
+            )}
           </div>
         </div>
         <DialogFooter>

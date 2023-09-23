@@ -4,7 +4,7 @@ import { z } from "zod";
 import { validateNameLastName } from "@kafeasist/auth";
 import { validatePassword } from "@kafeasist/auth/src/helpers/validators";
 import { prisma } from "@kafeasist/db";
-import { invalidateCache } from "@kafeasist/redis";
+import { Cache, invalidateCache } from "@kafeasist/redis";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { KafeasistResponse } from "../types/KafeasistResponse";
@@ -49,8 +49,7 @@ export const userRouter = createTRPCRouter({
           },
         });
 
-        // TODO: Move to env
-        const response = await invalidateCache("session:" + ctx.session.id);
+        const response = await invalidateCache(Cache.SESSION + ctx.session.id);
 
         if (response instanceof Error) {
           return {

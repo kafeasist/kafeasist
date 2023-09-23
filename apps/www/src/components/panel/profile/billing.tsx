@@ -20,11 +20,12 @@ import { Dialog } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/Input/input";
 import { Textarea } from "~/components/ui/textarea";
 import { plans } from "~/data/plans";
-import { BillingStatus } from "~/data/schema";
 import { maskEmail } from "~/utils/mask-email";
 import { ChangePlanDialog } from "../change-plan-dialog";
 import { CompanyNotFound } from "../company-not-found";
-import { columns } from "./billing-columns";
+import { columns } from "./billing/columns";
+import { DataTableToolbar } from "./billing/data-table-toolbar";
+import { BillingStatus } from "./billing/schema";
 
 const Billing = ({
   user,
@@ -303,7 +304,11 @@ const Billing = ({
           <h3 className="mb-4 text-xl font-bold tracking-tight">
             Önceki faturalar
           </h3>
-          <DataTable data={previousBills} columns={columns} />
+          <DataTable
+            DataTableToolbar={DataTableToolbar}
+            data={previousBills}
+            columns={columns}
+          />
         </>
       ) : (
         <CompanyNotFound loading={loading} />

@@ -1,15 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table";
 
+import { labels, statuses, types } from "~/components/panel/analiz/analiz";
+import { Analiz } from "~/components/panel/analiz/schema";
 import { Badge } from "~/components/ui/badge";
 import { Checkbox } from "~/components/ui/checkbox";
-import { labels, statuses, types } from "~/data/analiz";
-import { Analiz } from "~/data/schema";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "../ui/hover-card";
-import { Progress } from "../ui/progress";
+} from "../../ui/hover-card";
+import { Progress } from "../../ui/progress";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 

@@ -30,7 +30,8 @@ const Companies = ({
   setSelectedCompany: (company: Company) => void;
   loading: boolean;
 }) => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [createCompanyDialog, setCreateCompanyDialog] =
+    useState<boolean>(false);
 
   return (
     <div className="mb-8">
@@ -117,10 +118,13 @@ const Companies = ({
               </CardFooter>
             </Card>
           ))}
-          <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog
+            open={createCompanyDialog}
+            onOpenChange={setCreateCompanyDialog}
+          >
             <Card
               className="duration-150 hover:cursor-pointer hover:shadow-lg"
-              onClick={() => setOpen(true)}
+              onClick={() => setCreateCompanyDialog(true)}
             >
               <CardContent className="flex h-full w-full items-center justify-center p-4">
                 <div className="flex flex-col items-center justify-center text-center">
@@ -129,7 +133,7 @@ const Companies = ({
                 </div>
               </CardContent>
             </Card>
-            <CreateCompanyDialog setDialog={setOpen} />
+            <CreateCompanyDialog setDialog={setCreateCompanyDialog} />
           </Dialog>
         </div>
       ) : (

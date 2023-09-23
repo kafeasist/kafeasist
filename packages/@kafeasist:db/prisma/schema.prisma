@@ -46,6 +46,7 @@ model Company {
   categories Category[]
   employees  Employee[]
   tables     Table[]
+  places     Place[]
   bills      Bill[]
 
   createdAt DateTime @default(now())
@@ -60,9 +61,9 @@ model Category {
   name        String
   description String?
   imageUrl    String?
-  company     Company @relation(fields: [companyId], references: [id])
+  company     Company   @relation(fields: [companyId], references: [id])
   companyId   Int
-  foods       Food[]
+  products    Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -70,13 +71,13 @@ model Category {
   @@index([companyId])
 }
 
-model Food {
+model Product {
   id Int @id @default(autoincrement())
 
   name        String
   description String?
   price       Float
-  category    Category @relation(fields: [categoryId], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId  Int
   imageUrl    String?
   orders      Order[]
@@ -117,10 +118,26 @@ model Table {
   isAvailable Boolean @default(true)
   isReserved  Boolean @default(false)
   orders      Order[]
-  company     Company @relation(fields: [companyId], references: [id])
+  company     Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   companyId   Int
-  bill        Bill?
-  billId      Int?
+  bills       Bill[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  place     Place    @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  placeId   Int
+
+  @@index([companyId])
+  @@index([placeId])
+}
+
+model Place {
+  id Int @id @default(autoincrement())
+
+  name      String
+  tables    Table[]
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -131,9 +148,9 @@ model Table {
 model Order {
   id Int @id @default(autoincrement())
 
-  orderItems Food[]
+  orderItems Product[]
   total      Float
-  table      Table  @relation(fields: [tableId], references: [id])
+  table      Table     @relation(fields: [tableId], references: [id], onDelete: Cascade)
   tableId    Int
 
   createdAt DateTime @default(now())
@@ -146,16 +163,17 @@ model Bill {
   id Int @id @default(autoincrement())
 
   total     Float
-  items     Food[]
-  table     Table   @relation(fields: [tableId], references: [id])
-  tableId   Int     @unique
-  company   Company @relation(fields: [companyId], references: [id])
+  items     Product[]
+  table     Table     @relation(fields: [tableId], references: [id])
+  tableId   Int
+  company   Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
   companyId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([companyId])
+  @@index([tableId])
 }
 
 model Role {
