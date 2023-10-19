@@ -188,7 +188,7 @@ importers:
         version: 1.0.5(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
       '@t3-oss/env-nextjs':
         specifier: ^0.6.1
-        version: 0.6.1(typescript@4.9.5)(zod@3.22.2)
+        version: 0.6.1(typescript@4.9.5)(zod@3.22.3)
       '@tanstack/react-query':
         specifier: ^4.29.3
         version: 4.29.3(react-dom@18.2.0)(react@18.2.0)
@@ -311,8 +311,8 @@ importers:
         specifier: ^1.12.3
         version: 1.12.3
       zod:
-        specifier: ^3.21.4
-        version: 3.21.4
+        specifier: ^3.22.3
+        version: 3.22.3
     devDependencies:
       '@kafeasist/typescript':
         specifier: ^0.1.0
@@ -353,7 +353,7 @@ importers:
         version: 0.5.1
       '@types/jsonwebtoken':
         specifier: latest
-        version: 9.0.3
+        version: 9.0.4
       '@types/node':
         specifier: ^17.0.35
         version: 17.0.35
@@ -5151,25 +5151,25 @@ packages:
       defer-to-connect: 1.1.3
     dev: false
 
-  /@t3-oss/env-core@0.6.1(typescript@4.9.5)(zod@3.22.2):
+  /@t3-oss/env-core@0.6.1(typescript@4.9.5)(zod@3.22.3):
     resolution: {integrity: sha512-KQD7qEDJtkWIWWmTVjNvk0wnHpkvAQ6CRbUxbWMFNG/fiosBQDQvtRpBNu6USxBscJCoC4z6y7P9MN52/mLOzw==}
     peerDependencies:
       typescript: '>=4.7.2'
       zod: ^3.0.0
     dependencies:
       typescript: 4.9.5
-      zod: 3.22.2
+      zod: 3.22.3
     dev: false
 
-  /@t3-oss/env-nextjs@0.6.1(typescript@4.9.5)(zod@3.22.2):
+  /@t3-oss/env-nextjs@0.6.1(typescript@4.9.5)(zod@3.22.3):
     resolution: {integrity: sha512-z1dIC++Vxj9kmzX5nSPfcrCSkszy3dTEPC4Ssx7Ap5AqR3c2Qa7S0xf8axn6coy7D/vCXDAAnHYnCMDhtcY3SQ==}
     peerDependencies:
       typescript: '>=4.7.2'
       zod: ^3.0.0
     dependencies:
-      '@t3-oss/env-core': 0.6.1(typescript@4.9.5)(zod@3.22.2)
+      '@t3-oss/env-core': 0.6.1(typescript@4.9.5)(zod@3.22.3)
       typescript: 4.9.5
-      zod: 3.22.2
+      zod: 3.22.3
     dev: false
 
   /@tanstack/query-core@4.29.1:
@@ -5421,8 +5421,8 @@ packages:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: false
 
-  /@types/jsonwebtoken@9.0.3:
-    resolution: {integrity: sha512-b0jGiOgHtZ2jqdPgPnP6WLCXZk1T8p06A/vPGzUvxpFGgKMbjXJDjC5m52ErqBnIuWZFgGoIJyRdeG5AyreJjA==}
+  /@types/jsonwebtoken@9.0.4:
+    resolution: {integrity: sha512-8UYapdmR0QlxgvJmyE8lP7guxD0UGVMfknsdtCFZh4ovShdBl3iOI4zdvqBHrB/IS+xUj3PSx73Qkey1fhWz+g==}
     dependencies:
       '@types/node': 17.0.35
     dev: true
@@ -14684,6 +14684,6 @@ packages:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
     dev: false
 
-  /zod@3.22.2:
-    resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
+  /zod@3.22.3:
+    resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
     dev: false
