@@ -15,7 +15,7 @@
     "@trpc/server": "^10.21.1",
     "argon2": "^0.30.3",
     "superjson": "^1.12.3",
-    "zod": "^3.21.4"
+    "zod": "^3.22.3"
   },
   "devDependencies": {
     "@kafeasist/typescript": "^0.1.0",
