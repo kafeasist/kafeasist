@@ -1,8 +1,10 @@
-import { Session } from "@kafeasist/auth";
 import React from "react";
+
+import { Session } from "@kafeasist/auth";
+
 import { api } from "~/utils/api";
 
-type SessionContextType = {
+export type SessionContextType = {
   session: Session | null;
   setSession: (session: Session) => void;
   status: "loading" | "authenticated" | "unauthenticated";

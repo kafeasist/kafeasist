@@ -1,3 +1,9 @@
+import { hash } from "argon2";
+import { sign } from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";
+
+import { prisma } from "@kafeasist/db";
+
 import { JWT_SECRET, JWT_SIGNING_OPTIONS } from "../config";
 import {
   validateEmail,
@@ -7,10 +13,6 @@ import {
 } from "../helpers/validators";
 import { AuthResponse } from "../types/AuthResponse";
 import { Session } from "../types/Session";
-import { prisma } from "@kafeasist/db";
-import { hash } from "argon2";
-import { sign } from "jsonwebtoken";
-import { v4 as uuidv4 } from "uuid";
 
 interface RegisterParams {
   firstName: string;
@@ -130,6 +132,7 @@ export const register = async (
     email: user.email,
     imageUrl: user.imageUrl,
     isVerified: false,
+    twoFA: false,
   };
 
   const jwt = sign({ id: user.id }, JWT_SECRET, JWT_SIGNING_OPTIONS);

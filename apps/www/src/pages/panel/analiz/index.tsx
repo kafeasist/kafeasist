@@ -1,6 +1,8 @@
-import { BarChart, Brain } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { columns } from "~/components/panel/analiz-columns";
+import { BarChart, Brain } from "lucide-react";
+
+import { columns } from "~/components/panel/analiz/columns";
+import { DataTableToolbar } from "~/components/panel/analiz/data-table-toolbar";
 import { CompanyNotFound } from "~/components/panel/company-not-found";
 import { Navbar } from "~/components/panel/navbar";
 import { Button } from "~/components/ui/button";
@@ -139,7 +141,11 @@ const Analiz = () => {
                 Geçmiş analizlerinizi buradan görüntüleyebilirsiniz.
               </div>
             </div>
-            <DataTable data={tasks} columns={columns} />
+            <DataTable
+              DataTableToolbar={DataTableToolbar}
+              data={tasks}
+              columns={columns}
+            />
           </div>
         </div>
       ) : (

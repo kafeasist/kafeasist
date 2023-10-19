@@ -1,10 +1,13 @@
 import { ColumnDef } from "@tanstack/react-table";
 
+import { Badge } from "~/components/ui/badge";
 import { Checkbox } from "~/components/ui/checkbox";
-import { Analiz } from "~/data/schema";
+import { prettifyId } from "~/utils/prettify-ids";
 import { DataTableColumnHeader } from "./data-table-column-header";
+import { DataTableRowActions } from "./data-table-row-actions";
+import { Category } from "./schema";
 
-export const columns: ColumnDef<Analiz>[] = [
+export const columns: ColumnDef<Category>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -29,23 +32,23 @@ export const columns: ColumnDef<Analiz>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Ürün numarası" />
+      <DataTableColumnHeader column={column} title="Kategori numarası" />
     ),
     cell: ({ row }) => (
-      <div className="max-w-[120px]">{row.getValue("id")}</div>
+      <div className="max-w-[120px]">KAT-{prettifyId(row.getValue("id"))}</div>
     ),
     enableSorting: true,
     enableHiding: true,
   },
   {
-    accessorKey: "title",
+    accessorKey: "name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Ad" />
     ),
     cell: ({ row }) => {
       return (
         <span className="max-w-[500px] truncate font-medium">
-          {row.getValue("title")}
+          <Badge variant="outline">{row.getValue("name")}</Badge>
         </span>
       );
     },
@@ -59,7 +62,7 @@ export const columns: ColumnDef<Analiz>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <span className="max-w-[500px] truncate font-medium">
+        <span className="max-w-[1000px] truncate font-medium">
           {row.getValue("description")}
         </span>
       );
@@ -71,40 +74,15 @@ export const columns: ColumnDef<Analiz>[] = [
     enableHiding: true,
   },
   {
-    accessorKey: "category",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Kategori" />
+    id: "actions",
+    cell: ({ row }) => (
+      <DataTableRowActions
+        category={{
+          id: row.getValue("id"),
+          name: row.getValue("name"),
+          description: row.getValue("description"),
+        }}
+      />
     ),
-    cell: ({ row }) => {
-      return (
-        <span className="max-w-[500px] truncate font-medium">
-          {row.getValue("category")}
-        </span>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-    enableSorting: true,
-    enableHiding: true,
-    enableResizing: true,
-  },
-  {
-    accessorKey: "price",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Fiyat" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <span className="max-w-[500px] truncate font-medium">
-          {row.getValue("price")} ₺
-        </span>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-    enableSorting: true,
-    enableHiding: true,
   },
 ];

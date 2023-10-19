@@ -36,7 +36,7 @@ interface SettingsLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const SettingsLayout = ({ defaultTab }: SettingsLayoutProps) => {
-  const { session } = useSession();
+  const { session, setSession } = useSession();
   const { selectedCompany, companies, setSelectedCompany, loading } =
     useCompany();
   const searchParams = useSearchParams();
@@ -54,7 +54,11 @@ export const SettingsLayout = ({ defaultTab }: SettingsLayoutProps) => {
       name: "Profil",
       slug: "profil",
       isActive: activeTab === "profil",
-      content: session ? <AccountForm user={session} /> : <Spinner />,
+      content: session ? (
+        <AccountForm user={session} setSession={setSession} />
+      ) : (
+        <Spinner />
+      ),
       icon: <User className="mr-2 h-4 w-4" />,
     },
     {

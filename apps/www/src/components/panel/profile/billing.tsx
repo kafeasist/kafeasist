@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Image from "next/image";
 import { Company } from "@prisma/client";
 import { ArrowRight, CheckCircle2, Pencil } from "lucide-react";
@@ -15,13 +16,16 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { DataTable } from "~/components/ui/data-table";
+import { Dialog } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/Input/input";
 import { Textarea } from "~/components/ui/textarea";
 import { plans } from "~/data/plans";
-import { BillingStatus } from "~/data/schema";
 import { maskEmail } from "~/utils/mask-email";
+import { ChangePlanDialog } from "../change-plan-dialog";
 import { CompanyNotFound } from "../company-not-found";
-import { columns } from "./billing-columns";
+import { columns } from "./billing/columns";
+import { DataTableToolbar } from "./billing/data-table-toolbar";
+import { BillingStatus } from "./billing/schema";
 
 const Billing = ({
   user,
@@ -32,6 +36,8 @@ const Billing = ({
   company: Company | null;
   loading: boolean;
 }) => {
+  const [planDialog, setPlanDialog] = useState<boolean>(false);
+
   const previousBills: {
     id: string;
     price: number;
@@ -105,43 +111,57 @@ const Billing = ({
               .filter((plan) => plan.id === company.plan)
               .map(
                 (plan) => (
-                  <Card className="col-span-1" key={plan.id}>
-                    <CardHeader>
-                      <CardTitle>
-                        <div className="flex justify-between">
-                          <span>{plan.name}</span>
-                          {plan.icon}
-                        </div>
-                      </CardTitle>
-                      <CardDescription>{plan.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <ul>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="mr-2 h-4 w-4" />
-                          <span className="text-sm">
-                            Hesapta toplam <strong>{plan.companies}</strong>{" "}
-                            şirket
+                  <Dialog
+                    open={planDialog}
+                    onOpenChange={setPlanDialog}
+                    key={plan.id}
+                  >
+                    <Card className="col-span-1">
+                      <CardHeader>
+                        <CardTitle>
+                          <div className="flex justify-between">
+                            <span>{plan.name}</span>
+                            {plan.icon}
+                          </div>
+                        </CardTitle>
+                        <CardDescription>{plan.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <ul>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="mr-2 h-4 w-4" />
+                            <span className="text-sm">
+                              Hesapta toplam <strong>{plan.companies}</strong>{" "}
+                              şirket
+                            </span>
+                          </li>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="mr-2 h-4 w-4" />
+                            <span className="text-sm">
+                              Şirket başına <strong>{plan.users}</strong>{" "}
+                              kullanıcı
+                            </span>
+                          </li>
+                        </ul>
+                      </CardContent>
+                      <CardFooter>
+                        <Button
+                          variant="link"
+                          className="p-0"
+                          onClick={() => setPlanDialog(true)}
+                        >
+                          <span className="text-xs text-blue-700 dark:text-blue-400">
+                            Planı değiştir
                           </span>
-                        </li>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="mr-2 h-4 w-4" />
-                          <span className="text-sm">
-                            Şirket başına <strong>{plan.users}</strong>{" "}
-                            kullanıcı
-                          </span>
-                        </li>
-                      </ul>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="link" className="p-0">
-                        <span className="text-xs text-blue-700 dark:text-blue-400">
-                          Planı değiştir
-                        </span>
-                        <ArrowRight className="ml-1 h-4 w-4 text-blue-700 dark:text-blue-400" />
-                      </Button>
-                    </CardFooter>
-                  </Card>
+                          <ArrowRight className="ml-1 h-4 w-4 text-blue-700 dark:text-blue-400" />
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                    <ChangePlanDialog
+                      setDialog={setPlanDialog}
+                      company={company}
+                    />
+                  </Dialog>
                 ),
                 [],
               )}
@@ -284,7 +304,11 @@ const Billing = ({
           <h3 className="mb-4 text-xl font-bold tracking-tight">
             Önceki faturalar
           </h3>
-          <DataTable data={previousBills} columns={columns} />
+          <DataTable
+            DataTableToolbar={DataTableToolbar}
+            data={previousBills}
+            columns={columns}
+          />
         </>
       ) : (
         <CompanyNotFound loading={loading} />

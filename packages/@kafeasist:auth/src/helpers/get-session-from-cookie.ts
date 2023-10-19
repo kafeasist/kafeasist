@@ -7,6 +7,7 @@ import { readCache, setCache } from "@kafeasist/redis";
 import type { Session } from "../types/Session";
 import { decodeJwt } from "./decode-jwt";
 
+// TODO: Move to env
 const REDIS_SESSION_PREFIX = "session";
 const REDIS_TTL = 60 * 60 * 24; // 1 day
 

@@ -1,6 +1,6 @@
 export const validateName = (name: string) => {
-  if (name.length < 2)
-    throw new Error("İsim bölümü en az 2 karakter olmalıdır");
+  if (name.length < 1)
+    throw new Error("İsim bölümü en az 1 karakter olmalıdır");
 
   if (name.length > 32)
     throw new Error("İsim bölümü en fazla 64 karakter olmalıdır");

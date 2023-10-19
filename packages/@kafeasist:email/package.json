@@ -1,0 +1,35 @@
+{
+  "name": "@kafeasist/email",
+  "version": "0.1.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "dev": "pnpm with-env email dev -p 1337",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@react-email/body": "^0.0.3",
+    "@react-email/button": "0.0.10",
+    "@react-email/column": "^0.0.7",
+    "@react-email/container": "^0.0.8",
+    "@react-email/head": "^0.0.5",
+    "@react-email/hr": "^0.0.5",
+    "@react-email/html": "0.0.4",
+    "@react-email/img": "^0.0.5",
+    "@react-email/link": "^0.0.5",
+    "@react-email/preview": "^0.0.6",
+    "@react-email/row": "^0.0.5",
+    "@react-email/section": "^0.0.9",
+    "@react-email/text": "^0.0.5",
+    "dotenv-cli": "^7.2.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-email": "1.9.4"
+  },
+  "devDependencies": {
+    "@kafeasist/typescript": "^0.1.0",
+    "typescript": "^4.9.5"
+  },
+  "private": true,
+  "prettier": "@kafeasist/prettier"
+}

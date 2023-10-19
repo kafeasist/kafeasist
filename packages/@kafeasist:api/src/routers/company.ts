@@ -1,14 +1,18 @@
 import { z } from "zod";
 
 import { validateName, validatePhone } from "@kafeasist/auth";
-import { Company, prisma } from "@kafeasist/db";
-import { invalidateCache, readCache, setCache } from "@kafeasist/redis";
+import { Company, Plan, prisma } from "@kafeasist/db";
+import {
+  Cache,
+  invalidateCache,
+  readCache,
+  REDIS_TTL,
+  setCache,
+} from "@kafeasist/redis";
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { KafeasistResponse } from "../types/KafeasistResponse";
-
-const REDIS_COMPANIES_PREFIX = "companies";
-const REDIS_TTL = 6 * 60 * 60; // 6 hours
+import { plans } from "../types/Plans";
 
 export const companyRouter = createTRPCRouter({
   /**
@@ -18,7 +22,9 @@ export const companyRouter = createTRPCRouter({
    */
   count: publicProcedure.query(async ({ ctx }) => {
     if (!ctx.session) return 0;
-    const companies = await readCache<Company[]>(`companies:${ctx.session.id}`);
+    const companies = await readCache<Company[]>(
+      Cache.COMPANY + ctx.session.id,
+    );
     if (!companies) {
       const fetchedCompanies = await prisma.company.findMany({
         where: {
@@ -27,7 +33,7 @@ export const companyRouter = createTRPCRouter({
       });
 
       await setCache(
-        `${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`,
+        Cache.COMPANY + ctx.session.id,
         fetchedCompanies,
         REDIS_TTL,
       );
@@ -44,7 +50,9 @@ export const companyRouter = createTRPCRouter({
    */
   get: publicProcedure.query(async ({ ctx }) => {
     if (!ctx.session) return null;
-    const companies = await readCache<Company[]>(`companies:${ctx.session.id}`);
+    const companies = await readCache<Company[]>(
+      Cache.COMPANY + ctx.session.id,
+    );
 
     if (!companies) {
       const fetchedCompanies = await prisma.company.findMany({
@@ -54,7 +62,7 @@ export const companyRouter = createTRPCRouter({
       });
 
       await setCache(
-        `${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`,
+        Cache.COMPANY + ctx.session.id,
         fetchedCompanies,
         REDIS_TTL,
       );
@@ -80,7 +88,7 @@ export const companyRouter = createTRPCRouter({
       if (!ctx.session) return null;
 
       const companies = await readCache<Company[]>(
-        `companies:${ctx.session.id}`,
+        Cache.COMPANY + ctx.session.id,
       );
 
       if (!companies) {
@@ -110,7 +118,7 @@ export const companyRouter = createTRPCRouter({
         phone: z.string(),
         address: z.string(),
         taxCode: z.string(),
-        plan: z.enum(["FREE", "PRO", "ENTERPRISE"]),
+        plan: z.string(),
       }),
     )
     .mutation(
@@ -120,6 +128,13 @@ export const companyRouter = createTRPCRouter({
       }): Promise<KafeasistResponse<typeof input> & { company?: Company }> => {
         if (!ctx.session)
           return { error: true, message: "Oturum açın", fields: [] };
+
+        if (!plans.includes(input.plan as any))
+          return {
+            error: true,
+            message: "Lütfen bir plan seçiniz.",
+            fields: ["plan"],
+          };
 
         try {
           validatePhone(input.phone);
@@ -191,7 +206,7 @@ export const companyRouter = createTRPCRouter({
             phone: input.phone,
             address: input.address,
             taxCode: input.taxCode,
-            plan: input.plan,
+            plan: input.plan as Plan,
             user: {
               connect: {
                 id: ctx.session.id,
@@ -207,7 +222,7 @@ export const companyRouter = createTRPCRouter({
             fields: [],
           };
 
-        await invalidateCache(`${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`);
+        await invalidateCache(Cache.COMPANY + ctx.session.id);
         return {
           error: false,
           message: "Başarıyla şirketiniz oluşturuldu.",
@@ -309,7 +324,7 @@ export const companyRouter = createTRPCRouter({
             };
         }
 
-        await invalidateCache(`${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`);
+        await invalidateCache(Cache.COMPANY + ctx.session.id);
         return {
           error: false,
           message: "Başarıyla şirketiniz güncellendi.",
@@ -363,10 +378,83 @@ export const companyRouter = createTRPCRouter({
             fields: [],
           };
 
-        await invalidateCache(`${REDIS_COMPANIES_PREFIX}:${ctx.session.id}`);
+        await invalidateCache(Cache.COMPANY + ctx.session.id);
         return {
           error: false,
           message: "Başarıyla şirketiniz silindi.",
+        };
+      },
+    ),
+
+  /**
+   * Change the plan of the company
+   * @param ctx
+   * @param input
+   * @returns Promise<KafeasistResponse>
+   */
+  changePlan: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        plan: z.string().optional(),
+      }),
+    )
+    .mutation(
+      async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
+        if (!ctx.session)
+          return { error: true, message: "Oturum açın", fields: [] };
+
+        if (!input.plan || !plans.includes(input.plan as any))
+          return {
+            error: true,
+            message: "Lütfen bir plan seçiniz.",
+            fields: ["plan"],
+          };
+
+        const companyExists = await prisma.company.findFirst({
+          where: {
+            id: input.id,
+            user: {
+              id: ctx.session.id,
+            },
+          },
+        });
+
+        if (!companyExists)
+          return {
+            error: true,
+            message: "Bu şirket size ait değil.",
+            fields: [],
+          };
+
+        if (companyExists.plan === input.plan) {
+          return {
+            error: true,
+            message: "Bu plan zaten şirketinizin planı.",
+            fields: ["plan"],
+          };
+        }
+
+        const company = await prisma.company.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            plan: input.plan as Plan,
+          },
+        });
+
+        if (!company)
+          return {
+            error: true,
+            message: "Plan değiştirilirken bir hata oluştu.",
+            fields: [],
+          };
+
+        await invalidateCache(Cache.COMPANY + ctx.session.id);
+        return {
+          error: false,
+          message: "Başarıyla planınız değiştirildi.",
         };
       },
     ),

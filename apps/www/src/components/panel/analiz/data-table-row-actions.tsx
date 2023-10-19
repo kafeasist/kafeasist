@@ -10,6 +10,7 @@ import {
   X,
 } from "lucide-react";
 
+import { analizSchema } from "~/components/panel/analiz/schema";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -18,7 +19,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { analizSchema } from "~/data/schema";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;

@@ -2,17 +2,11 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Badge } from "~/components/ui/badge";
 import { Checkbox } from "~/components/ui/checkbox";
-import { Billing, BillingStatus } from "~/data/schema";
-import { cn } from "~/lib/utils";
 import { prettifyDate } from "~/utils/prettify-date";
 import { valueFormatter } from "~/utils/value-formatter";
-import { DataTableColumnHeader } from "../data-table-column-header";
-
-const statuses: { label: string; value: BillingStatus; color: string }[] = [
-  { label: "Ödendi", value: "paid", color: "" },
-  { label: "Ödeniyor", value: "ongoing", color: "" },
-  { label: "Ödenmedi", value: "unpaid", color: "" },
-];
+import { DataTableColumnHeader } from "./data-table-column-header";
+import { DataTableRowActions } from "./data-table-row-actions";
+import { Billing, statuses } from "./schema";
 
 export const columns: ColumnDef<Billing>[] = [
   {
@@ -75,16 +69,7 @@ export const columns: ColumnDef<Billing>[] = [
       return (
         <div className="flex w-[100px] items-center hover:cursor-pointer">
           {status && (
-            <Badge
-              variant="outline"
-              className={cn(
-                status.value === "unpaid"
-                  ? "bg-rose-200 dark:bg-rose-800"
-                  : status.value === "paid"
-                  ? "bg-lime-200 dark:bg-lime-800"
-                  : "bg-yellow-100 dark:bg-yellow-700",
-              )}
-            >
+            <Badge variant="outline" className={status.color}>
               {status.label}
             </Badge>
           )}
@@ -113,5 +98,9 @@ export const columns: ColumnDef<Billing>[] = [
     },
     enableSorting: true,
     enableHiding: true,
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];

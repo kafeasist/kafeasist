@@ -14,6 +14,8 @@ export const ratelimit = new Ratelimit({
   prefix: "ratelimit",
 });
 
+export const REDIS_TTL = 6 * 60 * 60; // 6 hours
+
 export * from "./helpers/setCache";
 export * from "./helpers/readCache";
 export * from "./helpers/invalidateCache";

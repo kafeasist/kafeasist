@@ -6,8 +6,12 @@ import type { AppType } from "next/app";
 import { Session } from "@kafeasist/auth";
 
 import { Toaster } from "~/components/ui/Toast/toaster";
-import CompanyContext from "~/context/CompanyContext";
+import CategoryProvider from "~/context/CategoryContext";
+import CompanyProvider from "~/context/CompanyContext";
+import PlaceProvider from "~/context/PlaceContext";
+import ProductProvider from "~/context/ProductContext";
 import SessionProvider from "~/context/SessionContext";
+import TableProvider from "~/context/TableContext";
 import { ThemeProvider } from "~/lib/theme-provider";
 import { api } from "~/utils/api";
 
@@ -17,16 +21,24 @@ export const App: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <CompanyContext>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-        >
-          <Component {...pageProps} />
-          <Toaster />
-        </ThemeProvider>
-      </CompanyContext>
+      <CompanyProvider>
+        <ProductProvider>
+          <CategoryProvider>
+            <PlaceProvider>
+              <TableProvider>
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="light"
+                  enableSystem={false}
+                >
+                  <Component {...pageProps} />
+                  <Toaster />
+                </ThemeProvider>
+              </TableProvider>
+            </PlaceProvider>
+          </CategoryProvider>
+        </ProductProvider>
+      </CompanyProvider>
     </SessionProvider>
   );
 };

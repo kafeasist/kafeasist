@@ -6,6 +6,7 @@
 - [@kafeasist:api](#kafeasistapi)
 - [@kafeasist:auth](#kafeasistauth)
 - [@kafeasist:db](#kafeasistdb)
+- [@kafeasist:email](#kafeasistemail)
 - [@kafeasist:eslint](#kafeasisteslint)
 - [@kafeasist:prettier](#kafeasistprettier)
 - [@kafeasist:redis](#kafeasistredis)
@@ -28,6 +29,10 @@ This is the authentication package of kafeasist. It is a [TypeScript](https://ww
 ## [@kafeasist:db](@kafeasist:db)
 
 This is the database package of kafeasist that uses [Prisma](https://www.prisma.io/) and [MySQL](https://www.mysql.com/). For more information including the tables and the schema of the database, please see the [README file for the `db` package](@kafeasist:db).
+
+## [@kafeasist:email](@kafeasist:email)
+
+This is the email package of kafeasist. It is under construction.
 
 ## [@kafeasist:eslint](@kafeasist:eslint)
 
