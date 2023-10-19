@@ -8,8 +8,10 @@ import { Session } from "@kafeasist/auth";
 import { Toaster } from "~/components/ui/Toast/toaster";
 import CategoryProvider from "~/context/CategoryContext";
 import CompanyProvider from "~/context/CompanyContext";
+import PlaceProvider from "~/context/PlaceContext";
 import ProductProvider from "~/context/ProductContext";
 import SessionProvider from "~/context/SessionContext";
+import TableProvider from "~/context/TableContext";
 import { ThemeProvider } from "~/lib/theme-provider";
 import { api } from "~/utils/api";
 
@@ -22,14 +24,18 @@ export const App: AppType<{ session: Session | null }> = ({
       <CompanyProvider>
         <ProductProvider>
           <CategoryProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="light"
-              enableSystem={false}
-            >
-              <Component {...pageProps} />
-              <Toaster />
-            </ThemeProvider>
+            <PlaceProvider>
+              <TableProvider>
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="light"
+                  enableSystem={false}
+                >
+                  <Component {...pageProps} />
+                  <Toaster />
+                </ThemeProvider>
+              </TableProvider>
+            </PlaceProvider>
           </CategoryProvider>
         </ProductProvider>
       </CompanyProvider>

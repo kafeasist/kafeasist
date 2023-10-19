@@ -143,8 +143,8 @@ export const categoryRouter = createTRPCRouter({
     .input(
       z.object({
         companyId: z.number(),
-        name: z.string(),
         description: z.string().optional(),
+        name: z.string(),
       }),
     )
     .mutation(

@@ -13,10 +13,15 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
   const task = billingSchema.parse(row.original);
 
-  if (task.status === "paid")
-    return (
-      <Button variant="ghost" size="sm">
-        <Download className="mr-2 h-4 w-4" /> PDF
-      </Button>
-    );
+  return (
+    <>
+      {task.status === "paid" ? (
+        <Button variant="ghost" size="sm">
+          <Download className="mr-2 h-4 w-4" /> PDF
+        </Button>
+      ) : (
+        <></>
+      )}
+    </>
+  );
 }

@@ -72,6 +72,53 @@ export const tableRouter = createTRPCRouter({
     ),
 
   /**
+   * Get tables by place id
+   * @access protected
+   * @param {number} placeId - The place id
+   * @returns {Table[]} - The tables
+   */
+  getByPlaceId: protectedProcedure
+    .input(
+      z.object({
+        placeId: z.number(),
+      }),
+    )
+    .query(
+      async ({
+        ctx,
+        input,
+      }): Promise<KafeasistResponse<typeof input> & { tables?: Table[] }> => {
+        if (!ctx.session)
+          return { error: true, message: "Oturum açın", fields: [] };
+
+        const place = await ctx.prisma.place.findFirst({
+          where: {
+            id: input.placeId,
+            company: {
+              user: {
+                id: ctx.session.id,
+              },
+            },
+          },
+        });
+
+        if (!place)
+          return { error: true, message: "Mekan bulunamadı", fields: [] };
+
+        const tables = await ctx.prisma.table.findMany({
+          where: {
+            placeId: input.placeId,
+          },
+        });
+
+        if (!tables)
+          return { error: false, message: "Masalar bulunamadı.", tables: [] };
+
+        return { error: false, message: "Masalar getirildi.", tables };
+      },
+    ),
+
+  /**
    * Create a table
    * @access protected
    * @param {number} companyId - The company id
@@ -82,6 +129,7 @@ export const tableRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
+        placeId: z.number(),
         companyId: z.number(),
         name: z.string(),
         description: z.string(),
@@ -103,6 +151,20 @@ export const tableRouter = createTRPCRouter({
           }
         }
 
+        const place = await ctx.prisma.place.findFirst({
+          where: {
+            id: input.placeId,
+            company: {
+              user: {
+                id: ctx.session.id,
+              },
+            },
+          },
+        });
+
+        if (!place)
+          return { error: true, message: "Mekan bulunamadı", fields: [] };
+
         const company = await ctx.prisma.company.findFirst({
           where: {
             id: input.companyId,
@@ -117,9 +179,18 @@ export const tableRouter = createTRPCRouter({
 
         const table = await ctx.prisma.table.create({
           data: {
-            companyId: input.companyId,
             name: input.name,
             description: input.description,
+            place: {
+              connect: {
+                id: input.placeId,
+              },
+            },
+            company: {
+              connect: {
+                id: input.companyId,
+              },
+            },
           },
         });
 

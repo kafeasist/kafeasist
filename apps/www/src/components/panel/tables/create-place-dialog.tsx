@@ -12,8 +12,8 @@ import {
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/Input/input";
 import { Label } from "~/components/ui/label";
-import { useCategory } from "~/hooks/use-category";
 import { useCompany } from "~/hooks/use-company";
+import { usePlace } from "~/hooks/use-place";
 import { useToast } from "~/hooks/use-toast";
 import { api } from "~/utils/api";
 import { Spinner } from "../../ui/spinner";
@@ -26,7 +26,7 @@ export const CreatePlaceDialog = ({
   setDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { selectedCompany } = useCompany();
-  const { addCategory } = useCategory();
+  const { addPlace } = usePlace();
   const { toast } = useToast();
   const {
     register,
@@ -47,7 +47,7 @@ export const CreatePlaceDialog = ({
       });
     } else {
       setDialog(false);
-      addCategory(response.place!);
+      addPlace(response.place!);
     }
 
     toast({
@@ -62,17 +62,17 @@ export const CreatePlaceDialog = ({
       {selectedCompany ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Kategori oluştur</DialogTitle>
+            <DialogTitle>Mekan oluştur</DialogTitle>
             <DialogDescription>
-              {selectedCompany.name} şirketi için yeni bir kategori oluşturun
+              {selectedCompany.name} şirketi için yeni bir mekan oluşturun
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2 pb-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Kategori ismi</Label>
+              <Label htmlFor="name">Mekan ismi</Label>
               <Input
                 id="name"
-                placeholder="Kategori ismi"
+                placeholder="Mekan ismi"
                 {...register("name")}
                 className={
                   errors.name ? "border-red-500 focus-visible:ring-red-500" : ""
@@ -82,25 +82,6 @@ export const CreatePlaceDialog = ({
               {errors.name && (
                 <p className="text-left text-xs text-muted-foreground text-red-500">
                   {errors.name.message}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="description">Kategori açıklaması</Label>
-              <Input
-                id="description"
-                placeholder="Kategori açıklaması (opsiyonel)"
-                {...register("description")}
-                className={
-                  errors.description
-                    ? "border-red-500 focus-visible:ring-red-500"
-                    : ""
-                }
-                disabled={isSubmitting}
-              />
-              {errors.description && (
-                <p className="text-left text-xs text-muted-foreground text-red-500">
-                  {errors.description.message}
                 </p>
               )}
             </div>

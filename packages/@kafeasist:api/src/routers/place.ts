@@ -1,7 +1,13 @@
 import { Place } from "@prisma/client";
 import { z } from "zod";
 
-import { Cache, readCache, REDIS_TTL, setCache } from "@kafeasist/redis";
+import {
+  Cache,
+  invalidateCache,
+  readCache,
+  REDIS_TTL,
+  setCache,
+} from "@kafeasist/redis";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { KafeasistResponse } from "../types/KafeasistResponse";
@@ -102,6 +108,20 @@ export const placeRouter = createTRPCRouter({
         if (!company)
           return { error: true, message: "Şirket bulunamadı", fields: [] };
 
+        const placeExists = await ctx.prisma.place.findFirst({
+          where: {
+            name: input.name,
+            companyId: input.companyId,
+          },
+        });
+
+        if (placeExists)
+          return {
+            error: true,
+            message: "Mekan zaten var",
+            fields: ["name"],
+          };
+
         const place = await ctx.prisma.place.create({
           data: {
             name: input.name,
@@ -113,7 +133,7 @@ export const placeRouter = createTRPCRouter({
           },
         });
 
-        await setCache(Cache.PLACE + input.companyId, null, 0);
+        await invalidateCache(Cache.PLACE + input.companyId);
 
         return { error: false, message: "Mekan oluşturuldu.", place };
       },
