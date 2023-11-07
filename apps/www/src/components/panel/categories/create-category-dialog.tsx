@@ -33,6 +33,7 @@ export const CreateCategoryDialog = ({
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
+    reset,
   } = useForm<CreateCategoryDialogProps>();
   const createCategory = api.category.create.useMutation();
 
@@ -48,6 +49,7 @@ export const CreateCategoryDialog = ({
     } else {
       setDialog(false);
       addCategory(response.category!);
+      reset();
     }
 
     toast({

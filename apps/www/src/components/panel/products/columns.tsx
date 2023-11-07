@@ -76,15 +76,19 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: "categoryId",
+    header: () => <></>,
+    cell: () => <></>,
+    filterFn: (row, id, value) => {
+      return value.includes(String(row.getValue(id)));
+    },
+  },
+  {
+    accessorKey: "categoryName",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Kategori" />
     ),
     cell: ({ row }) => {
-      // TODO: Change this to category name
-      return <Badge variant="outline">{row.getValue("categoryId")}</Badge>;
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return <Badge variant="outline">{row.getValue("categoryName")}</Badge>;
     },
     enableSorting: true,
     enableHiding: true,
@@ -101,9 +105,6 @@ export const columns: ColumnDef<Product>[] = [
         </span>
       );
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
     enableSorting: true,
     enableHiding: true,
   },
@@ -117,6 +118,7 @@ export const columns: ColumnDef<Product>[] = [
           description: row.getValue("description"),
           price: row.getValue("price"),
           categoryId: row.getValue("categoryId"),
+          categoryName: row.getValue("categoryName"),
         }}
       />
     ),

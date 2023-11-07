@@ -25,6 +25,7 @@ import { useCompany } from "~/hooks/use-company";
 import { useProduct } from "~/hooks/use-product";
 import { useToast } from "~/hooks/use-toast";
 import { api } from "~/utils/api";
+import { prettifyString } from "~/utils/prettify";
 import { Spinner } from "../../ui/spinner";
 
 type CreateProductDialogProps = RouterInputs["product"]["create"];
@@ -45,6 +46,7 @@ export const CreateProductDialog = ({
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
+    reset,
   } = useForm<CreateProductDialogProps>();
   const createProduct = api.product.create.useMutation();
 
@@ -65,6 +67,7 @@ export const CreateProductDialog = ({
     } else {
       setDialog(false);
       addProduct(response.product!);
+      reset();
     }
 
     toast({
@@ -186,7 +189,7 @@ export const CreateProductDialog = ({
                       {category.description && (
                         <span className="text-muted-foreground">
                           {" "}
-                          - {category.description}
+                          - {prettifyString(category.description, 30)}
                         </span>
                       )}
                     </SelectItem>

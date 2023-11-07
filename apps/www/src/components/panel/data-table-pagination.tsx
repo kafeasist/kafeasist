@@ -5,6 +5,7 @@ import {
   ChevronsLeft,
   ChevronsRight,
 } from "lucide-react";
+
 import { Button } from "~/components/ui/button";
 import {
   Select,
@@ -48,10 +49,14 @@ export function DataTablePagination<TData>({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Sayfa {table.getState().pagination.pageIndex + 1} /{" "}
-          {table.getPageCount()}
-        </div>
+        {table.getPageCount() ? (
+          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+            Sayfa {table.getState().pagination.pageIndex + 1} /{" "}
+            {table.getPageCount()}
+          </div>
+        ) : (
+          <></>
+        )}
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"

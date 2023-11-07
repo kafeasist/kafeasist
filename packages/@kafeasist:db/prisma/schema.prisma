@@ -17,16 +17,17 @@ enum Plan {
 model User {
   id Int @id @default(autoincrement())
 
-  firstName  String
-  lastName   String
-  companies  Company[]
-  phone      String    @unique
-  email      String    @unique
-  imageUrl   String?
-  isVerified Boolean   @default(false)
-  twoFA      Boolean   @default(false)
-  token      String    @unique
-  password   String
+  firstName    String
+  lastName     String
+  companies    Company[]
+  Notification Notification[]
+  phone        String         @unique
+  email        String         @unique
+  imageUrl     String?
+  isVerified   Boolean        @default(false)
+  twoFA        Boolean        @default(false)
+  token        String         @unique
+  password     String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -74,14 +75,15 @@ model Category {
 model Product {
   id Int @id @default(autoincrement())
 
-  name        String
-  description String?
-  price       Float
-  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId  Int
-  imageUrl    String?
-  orders      Order[]
-  bills       Bill[]
+  name         String
+  description  String?
+  price        Float
+  category     Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryName String
+  categoryId   Int
+  imageUrl     String?
+  orders       Order[]
+  bills        Bill[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -185,4 +187,20 @@ model Role {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id Int @id @default(autoincrement())
+
+  title   String
+  content String
+  read    Boolean @default(false)
+  link    String
+  user    User    @relation(fields: [userId], references: [id])
+  userId  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }

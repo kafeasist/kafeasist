@@ -5,6 +5,7 @@ export const productSchema = z.object({
   name: z.string(),
   description: z.string().nullable(),
   categoryId: z.number(),
+  categoryName: z.string(),
   price: z.number(),
 });
 

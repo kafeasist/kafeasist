@@ -11,9 +11,13 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/Input/input";
+import { useCompany } from "~/hooks/use-company";
 import { cn } from "~/lib/utils";
+import { CompanyNotFound } from "../company-not-found";
 
 const Integrations = () => {
+  const { selectedCompany, loading } = useCompany();
+
   const integrations: {
     title: string;
     description: string;
@@ -61,49 +65,60 @@ const Integrations = () => {
       <h3 className="text-md mb-4 text-muted-foreground">
         Entegrasyonlarınızı buradan yönetebilirsiniz.
       </h3>
-      <Input className="mb-4" type="search" id="search" placeholder="Ara..." />
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {integrations.map((integration) => (
-          <Card key={integration.title}>
-            <CardHeader>
-              <CardTitle>
-                <div className="flex items-center justify-between">
-                  <span>{integration.title}</span>
-                  <Badge
-                    variant="outline"
-                    className={cn(!integration.isActive && "invisible")}
+      {selectedCompany ? (
+        <>
+          <Input
+            className="mb-4"
+            type="search"
+            id="search"
+            placeholder="Ara..."
+          />
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {integrations.map((integration) => (
+              <Card key={integration.title}>
+                <CardHeader>
+                  <CardTitle>
+                    <div className="flex items-center justify-between">
+                      <span>{integration.title}</span>
+                      <Badge
+                        variant="outline"
+                        className={cn(!integration.isActive && "invisible")}
+                      >
+                        Aktif
+                      </Badge>
+                    </div>
+                  </CardTitle>
+                  <CardDescription>{integration.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex items-center justify-center">
+                  {/* TODO: Do it with "next/image" */}
+                  <img src={integration.image} alt={integration.title} />
+                </CardContent>
+                <CardFooter className="flex items-center justify-between">
+                  <Button variant="link" className="p-0">
+                    <span className="text-xs text-blue-700 dark:text-blue-400">
+                      Detaylı bilgi
+                    </span>
+                    <ArrowRight className="ml-1 h-4 w-4 text-blue-700 dark:text-blue-400" />
+                  </Button>
+                  <Button
+                    variant={integration.isActive ? "destructive" : "outline"}
                   >
-                    Aktif
-                  </Badge>
-                </div>
-              </CardTitle>
-              <CardDescription>{integration.description}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex items-center justify-center">
-              {/* TODO: Do it with "next/image" */}
-              <img src={integration.image} alt={integration.title} />
-            </CardContent>
-            <CardFooter className="flex items-center justify-between">
-              <Button variant="link" className="p-0">
-                <span className="text-xs text-blue-700 dark:text-blue-400">
-                  Detaylı bilgi
-                </span>
-                <ArrowRight className="ml-1 h-4 w-4 text-blue-700 dark:text-blue-400" />
-              </Button>
-              <Button
-                variant={integration.isActive ? "destructive" : "outline"}
-              >
-                {integration.isActive ? (
-                  <X className="mr-2 h-4 w-4" />
-                ) : (
-                  <Plus className="mr-2 h-4 w-4" />
-                )}
-                {integration.isActive ? "Kaldır" : "Ekle"}
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
+                    {integration.isActive ? (
+                      <X className="mr-2 h-4 w-4" />
+                    ) : (
+                      <Plus className="mr-2 h-4 w-4" />
+                    )}
+                    {integration.isActive ? "Kaldır" : "Ekle"}
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        </>
+      ) : (
+        <CompanyNotFound loading={loading} />
+      )}
     </div>
   );
 };

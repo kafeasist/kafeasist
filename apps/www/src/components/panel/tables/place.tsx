@@ -8,14 +8,20 @@ const Place = ({ id }: { id: number }) => {
 
   const { isLoading } = fetchTablesByPlaceId(id);
 
+  console.log(tablesByPlaceId);
+
   return (
     <Card className="mt-4 h-[36rem] bg-muted">
       {!!isLoading ? (
         <Spinner />
       ) : (
-        <CardContent>
+        <CardContent className="flex space-x-2">
           {tablesByPlaceId.map((table) => (
-            <TableElement key={table.id}></TableElement>
+            <TableElement
+              key={table.id}
+              available={table.isAvailable}
+              name={table.name}
+            ></TableElement>
           ))}
         </CardContent>
       )}

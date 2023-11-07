@@ -35,7 +35,10 @@ const Companies = ({
 
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-3xl font-bold tracking-tight">Şirketlerim</h2>
+      <h2 className="text-3xl font-bold tracking-tight">Şirketlerim</h2>
+      <h3 className="text-md mb-4 text-muted-foreground">
+        Şirketlerinizi buradan yönetebilirsiniz.
+      </h3>
       {companies && selectedCompany ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {companies.map((company) => (

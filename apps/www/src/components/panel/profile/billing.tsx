@@ -102,7 +102,12 @@ const Billing = ({
 
   return (
     <div className="mb-8 space-y-8">
-      <h2 className="mb-4 text-3xl font-bold tracking-tight">Faturalandırma</h2>
+      <div>
+        <h2 className="text-3xl font-bold tracking-tight">Faturalandırma</h2>
+        <h3 className="text-md mb-4 text-muted-foreground">
+          Faturalandırma bilgilerinizi buradan yönetebilirsiniz.
+        </h3>
+      </div>
       {company ? (
         <>
           <h3 className="mb-4 text-xl font-bold tracking-tight">Plan</h3>

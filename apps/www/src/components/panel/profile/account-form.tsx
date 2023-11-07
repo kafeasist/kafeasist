@@ -83,7 +83,12 @@ const AccountForm = ({
       </InfoCard>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-        <h2 className="mb-4 text-3xl font-bold tracking-tight">Profil</h2>
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Profil</h2>
+          <h3 className="text-md mb-4 text-muted-foreground">
+            Profilinizi buradan yönetebilirsiniz.
+          </h3>
+        </div>
         <Label htmlFor="picture">Profil fotoğrafı</Label>
         <div className="flex flex-col items-center lg:flex-row">
           <Avatar className="h-24 w-24">

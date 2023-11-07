@@ -37,6 +37,7 @@ const PlaceProvider = ({ children }: PlaceProviderProps) => {
         if (currentPlaces === null) return [place];
         return [...currentPlaces, place];
       });
+      if (currentPlaces.length === 0) setFirstPlace(place);
     },
     [currentPlaces],
   );

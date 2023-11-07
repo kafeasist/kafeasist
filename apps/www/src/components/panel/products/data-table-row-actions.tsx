@@ -36,6 +36,7 @@ export function DataTableRowActions({
   product: {
     id: number;
     categoryId: number;
+    categoryName: string;
     name: string;
     description: string;
     price: number;

@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import {
   Building2,
   CreditCard,
-  Download,
   LogOut,
   Moon,
   Settings,
@@ -114,23 +113,16 @@ export function UserNav({ user }: { user: Session }) {
               <span>Şirketlerim</span>
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem onClick={(e) => e.preventDefault()}>
-            <div className="flex w-full justify-between">
-              <div className="flex items-center">
-                <Moon className="mr-2 h-4 w-4" />
-                <span>Koyu tema</span>
-              </div>
-              <Switch
-                checked={theme === "dark"}
-                onCheckedChange={changeTheme}
-              />
-            </div>
-          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="hover:cursor-pointer">
-          <Download className="mr-2 h-4 w-4" />
-          <span>Verilerimi indir</span>
+        <DropdownMenuItem onClick={(e) => e.preventDefault()}>
+          <div className="flex w-full justify-between">
+            <div className="flex items-center">
+              <Moon className="mr-2 h-4 w-4" />
+              <span>Koyu tema</span>
+            </div>
+            <Switch checked={theme === "dark"} onCheckedChange={changeTheme} />
+          </div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem

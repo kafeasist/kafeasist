@@ -1,19 +1,4 @@
-import { CheckCircle2, Loader, Brain, BarChart } from "lucide-react";
-
-export const labels = [
-  {
-    value: "bug",
-    label: "Hatalı",
-  },
-  {
-    value: "feature",
-    label: "Özellik",
-  },
-  {
-    value: "documentation",
-    label: "Dokümantasyon",
-  },
-];
+import { BarChart, Brain, CheckCircle2, Loader } from "lucide-react";
 
 export const statuses = [
   {

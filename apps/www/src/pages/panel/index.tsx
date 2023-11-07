@@ -1,5 +1,6 @@
-import { BadgeDelta, type BadgeDeltaProps } from "@tremor/react";
 import { useRouter } from "next/navigation";
+import { BadgeDelta, type BadgeDeltaProps } from "@tremor/react";
+
 import { Loading } from "~/components/loading";
 import { CompanyNotFound } from "~/components/panel/company-not-found";
 import { HourlySales } from "~/components/panel/hourly-sales";
@@ -109,78 +110,81 @@ const Panel = () => {
     <>
       <div className="flex-col md:flex">
         <Navbar activeTab="overview" />
-        {selectedCompany ? (
-          <div className="flex-1 space-y-4 p-8 pt-6">
-            <div className="flex flex-col items-center justify-between space-y-2 md:flex-row">
-              <h2 className="text-3xl font-bold tracking-tight">
-                Kontrol paneli
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {panelCards.map((card) => (
-                <PanelCard
-                  title={card.title}
-                  content={card.content}
-                  deltaType={card.deltaType}
-                  number={card.number}
-                  isIncreasePositive={card.isIncreasePositive}
-                  key={card.title}
-                />
-              ))}
-            </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-7">
-              <Card className="md:col-span-4">
-                <CardHeader>
-                  <CardTitle>Saatlik satışlar</CardTitle>
-                  <CardDescription>
-                    Saatlere göre satışlarınızın dağılımı
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <HourlySales />
-                </CardContent>
-              </Card>
-              <Card className="md:col-span-3">
-                <CardHeader>
-                  <CardTitle>İşletme durumu</CardTitle>
-                  <CardDescription>
-                    Son analizde yapay zeka tarafından işletmenize verilen
-                    skorlar
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Status />
-                </CardContent>
-              </Card>
-            </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-8">
-              <Card className="md:col-span-2">
-                <CardHeader>
-                  <CardTitle>Ödeme yöntemleri</CardTitle>
-                  <CardDescription>
-                    Bugün yapılan ödemelerin dağılımı
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <PaymentMethods />
-                </CardContent>
-              </Card>
-              <Card className="md:col-span-6">
-                <CardHeader>
-                  <CardTitle>En çok satanlar</CardTitle>
-                  <CardDescription>
-                    Bugün en çok satılan ürünlerin dağılımı
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <MostSold />
-                </CardContent>
-              </Card>
-            </div>
+
+        <div className="flex-1 space-y-4 p-8 pt-6">
+          <div className="flex flex-col items-center justify-between space-y-2 md:flex-row">
+            <h2 className="text-3xl font-bold tracking-tight">
+              Kontrol paneli
+            </h2>
           </div>
-        ) : (
-          <CompanyNotFound loading={loading} />
-        )}
+          {selectedCompany ? (
+            <>
+              <div className="grid grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-4">
+                {panelCards.map((card) => (
+                  <PanelCard
+                    title={card.title}
+                    content={card.content}
+                    deltaType={card.deltaType}
+                    number={card.number}
+                    isIncreasePositive={card.isIncreasePositive}
+                    key={card.title}
+                  />
+                ))}
+              </div>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-7">
+                <Card className="md:col-span-4">
+                  <CardHeader>
+                    <CardTitle>Saatlik satışlar</CardTitle>
+                    <CardDescription>
+                      Saatlere göre satışlarınızın dağılımı
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <HourlySales />
+                  </CardContent>
+                </Card>
+                <Card className="md:col-span-3">
+                  <CardHeader>
+                    <CardTitle>İşletme durumu</CardTitle>
+                    <CardDescription>
+                      Son analizde yapay zeka tarafından işletmenize verilen
+                      skorlar
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Status />
+                  </CardContent>
+                </Card>
+              </div>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-8">
+                <Card className="md:col-span-2">
+                  <CardHeader>
+                    <CardTitle>Ödeme yöntemleri</CardTitle>
+                    <CardDescription>
+                      Bugün yapılan ödemelerin dağılımı
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <PaymentMethods />
+                  </CardContent>
+                </Card>
+                <Card className="md:col-span-6">
+                  <CardHeader>
+                    <CardTitle>En çok satanlar</CardTitle>
+                    <CardDescription>
+                      Bugün en çok satılan ürünlerin dağılımı
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <MostSold />
+                  </CardContent>
+                </Card>
+              </div>
+            </>
+          ) : (
+            <CompanyNotFound loading={loading} />
+          )}
+        </div>
       </div>
     </>
   );

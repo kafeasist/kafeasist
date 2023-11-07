@@ -6,7 +6,6 @@ import { Logo } from "../ui/logo";
 import { Skeleton } from "../ui/skeleton";
 import { MainNav, NavigationSlug } from "./main-nav";
 import { MobileNavbar } from "./mobile-navbar";
-import { Notifications } from "./notifications";
 import TeamSwitcher from "./team-switcher";
 import { UserNav } from "./user-nav";
 
@@ -14,6 +13,10 @@ export const Navbar = ({ activeTab }: { activeTab?: NavigationSlug }) => {
   const { session } = useSession();
   const { loading, companies, selectedCompany, setSelectedCompany } =
     useCompany();
+
+  // TODO: cache notifications
+  // const { data: notifications, isFetching } =
+  //   api.notification.getAll.useQuery();
 
   return (
     <div className="border-b">
@@ -35,7 +38,13 @@ export const Navbar = ({ activeTab }: { activeTab?: NavigationSlug }) => {
               />
             )}
           </div>
-          <Notifications />
+          {/* {!notifications || isFetching ? (
+            <Skeleton className="h-8 w-8 rounded-full" />
+          ) : notifications.error ? (
+            <p className="text-red-500">{notifications.error}</p>
+          ) : (
+            <Notifications notifications={notifications.data} />
+          )} */}
           {session ? (
             <UserNav user={session} />
           ) : (

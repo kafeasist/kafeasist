@@ -24,6 +24,7 @@ import {
 import { useProduct } from "~/hooks/use-product";
 import { useToast } from "~/hooks/use-toast";
 import { api } from "~/utils/api";
+import { prettifyString } from "~/utils/prettify";
 import { Spinner } from "../../ui/spinner";
 
 type EditProductDialogProps = RouterInputs["product"]["update"];
@@ -198,7 +199,7 @@ export const EditProductDialog = ({
                     {category.description && (
                       <span className="text-muted-foreground">
                         {" "}
-                        - {category.description}
+                        - {prettifyString(category.description, 30)}
                       </span>
                     )}
                   </SelectItem>

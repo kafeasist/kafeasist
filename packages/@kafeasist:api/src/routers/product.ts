@@ -218,6 +218,7 @@ export const productRouter = createTRPCRouter({
             description: input.description,
             imageUrl: input.imageUrl,
             price: totalPrice,
+            categoryName: category.name,
             category: {
               connect: {
                 id: input.categoryId,
@@ -323,9 +324,10 @@ export const productRouter = createTRPCRouter({
             description: input.description,
             imageUrl: input.imageUrl,
             price: totalPrice,
+            categoryName: category.name,
             category: {
               connect: {
-                id: input.categoryId,
+                id: category.id,
               },
             },
           },
