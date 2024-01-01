@@ -71,69 +71,76 @@ const Urunler = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 space-y-4 md:grid-cols-3 md:space-y-0">
-            <Card className="mx-8 md:ml-10 md:mr-2">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <FileText className="mr-2 h-4 w-4" />
-                  PDF formatında menü oluştur
-                </CardTitle>
-                <CardDescription>
-                  PDF formatında menü oluşturmak için aşağıdaki butona tıklayın.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4 text-sm">
-                  Menü oluşturduktan sonra menünüzü müşterilerinizle
-                  paylaşabilirsiniz. Ayrıca menünüzü PDF formatında
-                  indirebilirsiniz.
-                </p>
-              </CardContent>
+            <Card className="mx-8 flex flex-col justify-between md:ml-10 md:mr-2">
+              <div>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <FileText className="mr-2 h-4 w-4" />
+                    PDF formatında menü oluştur
+                  </CardTitle>
+                  <CardDescription>
+                    PDF formatında menü oluşturmak için aşağıdaki butona
+                    tıklayın.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="mb-4 text-sm">
+                    Menü oluşturduktan sonra menünüzü müşterilerinizle
+                    paylaşabilirsiniz. Ayrıca menünüzü PDF formatında
+                    indirebilirsiniz.
+                  </p>
+                </CardContent>
+              </div>
               <CardFooter className="flex flex-col space-y-2 md:flex-row md:space-x-4 md:space-y-0">
                 <Button>Menü oluştur</Button>
                 <Button variant="link">Detaylı bilgi</Button>
               </CardFooter>
             </Card>
-            <Card className="mx-8">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <QrCode className="mr-2 h-4 w-4" />
-                  QR kodlu menü oluştur
-                </CardTitle>
-                <CardDescription>
-                  QR kodlu menü oluşturmak için aşağıdaki butona tıklayın.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4 text-sm">
-                  QR menü oluşturulduktan sonra size verilen QR kodu
-                  müşterilerinizle paylaşabilirsiniz. Ayrıca menünüzü QR kodunu
-                  okutarak görüntüleyebilirsiniz.
-                </p>
-              </CardContent>
+            <Card className="mx-8 flex flex-col justify-between">
+              <div>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <QrCode className="mr-2 h-4 w-4" />
+                    QR kodlu menü oluştur
+                  </CardTitle>
+                  <CardDescription>
+                    QR kodlu menü oluşturmak için aşağıdaki butona tıklayın.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="mb-4 text-sm">
+                    QR menü oluşturulduktan sonra size verilen QR kodu
+                    müşterilerinizle paylaşabilirsiniz. Ayrıca menünüzü QR
+                    kodunu okutarak görüntüleyebilirsiniz.
+                  </p>
+                </CardContent>
+              </div>
               <CardFooter className="flex flex-col space-y-2 md:flex-row md:space-x-4 md:space-y-0">
                 <Button>Menü oluştur</Button>
                 <Button variant="link">Detaylı bilgi</Button>
               </CardFooter>
             </Card>
-            <Card className="mx-8 md:ml-2 md:mr-10">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <FileCog className="mr-2 h-4 w-4" />
-                  Masaya özel menü oluştur
-                </CardTitle>
-                <CardDescription>
-                  Masaya özel menü oluşturmak için aşağıdaki butona tıklayın.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4 text-sm">
-                  Her masaya özel QR kodlu menü oluşturup müşterilerinizin
-                  siparişlerini kendi telefonlarından verebilmesini
-                  sağlayabilirsiniz. Bu sayede müşterilerinizin siparişlerini
-                  daha hızlı alabilir ve müşteri memnuniyetini
-                  arttırabilirsiniz.
-                </p>
-              </CardContent>
+            <Card className="mx-8 flex flex-col justify-between md:ml-2 md:mr-10">
+              <div>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <FileCog className="mr-2 h-4 w-4" />
+                    Masaya özel menü oluştur
+                  </CardTitle>
+                  <CardDescription>
+                    Masaya özel menü oluşturmak için aşağıdaki butona tıklayın.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="mb-4 text-sm">
+                    Her masaya özel QR kodlu menü oluşturup müşterilerinizin
+                    siparişlerini kendi telefonlarından verebilmesini
+                    sağlayabilirsiniz. Bu sayede müşterilerinizin siparişlerini
+                    daha hızlı alabilir ve müşteri memnuniyetini
+                    arttırabilirsiniz.
+                  </p>
+                </CardContent>
+              </div>
               <CardFooter className="flex flex-col space-y-2 md:flex-row md:space-x-4 md:space-y-0">
                 <Button>Menü oluştur</Button>
                 <Button variant="link">Detaylı bilgi</Button>

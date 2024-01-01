@@ -81,53 +81,57 @@ const Analiz = () => {
               </div>
             </div>
             <div className="grid grid-cols-1 space-y-4 md:grid-cols-2 md:space-y-0">
-              <Card className="mx-8 md:ml-10 md:mr-2">
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <BarChart className="mr-2 h-4 w-4" />
-                    Analiz oluştur
-                  </CardTitle>
-                  <CardDescription>
-                    Manuel analiz oluşturmak için aşağıdaki butona tıklayın.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="mb-4 text-sm">
-                    Manuel analizlerde, analiz yapılacak şirketin verilerini ve
-                    analiz yapılacak tarih aralığını seçerek analiz
-                    oluşturabilirsiniz. Analiz oluşturduktan sonra analizinizin
-                    sonuçlarını görüntüleyebilirsiniz. Ayrıca analizinizin
-                    sonuçlarını PDF formatında indirebilirsiniz.
-                  </p>
-                </CardContent>
+              <Card className="mx-8 flex flex-col justify-between md:ml-10 md:mr-2">
+                <div>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <BarChart className="mr-2 h-4 w-4" />
+                      Analiz oluştur
+                    </CardTitle>
+                    <CardDescription>
+                      Manuel analiz oluşturmak için aşağıdaki butona tıklayın.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="mb-4 text-sm">
+                      Manuel analizlerde, analiz yapılacak şirketin verilerini
+                      ve analiz yapılacak tarih aralığını seçerek analiz
+                      oluşturabilirsiniz. Analiz oluşturduktan sonra
+                      analizinizin sonuçlarını görüntüleyebilirsiniz. Ayrıca
+                      analizinizin sonuçlarını PDF formatında indirebilirsiniz.
+                    </p>
+                  </CardContent>
+                </div>
                 <CardFooter className="flex flex-col space-y-2 md:flex-row md:space-x-4 md:space-y-0">
                   <Button>Analiz et</Button>
                   <Button variant="link">Detaylı bilgi</Button>
                 </CardFooter>
               </Card>
-              <Card className="mx-8 md:ml-2 md:mr-10">
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Brain className="mr-2 h-4 w-4" />
-                    Yapay zeka destekli analiz oluştur
-                  </CardTitle>
-                  <CardDescription>
-                    Yapay zeka destekli analiz yapmak için aşağıdaki butona
-                    tıklayın.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="mb-4 text-sm">
-                    Yapay zeka destekli analizlerde, analiz yapılacak şirketin
-                    verilerini ve analiz yapılacak tarih aralığını seçerek
-                    analiz oluşturabilirsiniz. Bu analiz türünde, analiz
-                    sonuçları binlerce restoranın verileri ile eğitilerek
-                    oluşturulmuş yapay zeka modeli tarafından oluşturulur.
-                    Analiz oluşturduktan sonra analizinizin sonuçlarını
-                    görüntüleyebilirsiniz. Ayrıca analizinizin sonuçlarını PDF
-                    formatında indirebilirsiniz.
-                  </p>
-                </CardContent>
+              <Card className="mx-8 flex flex-col justify-between md:ml-2 md:mr-10">
+                <div>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Brain className="mr-2 h-4 w-4" />
+                      Yapay zeka destekli analiz oluştur
+                    </CardTitle>
+                    <CardDescription>
+                      Yapay zeka destekli analiz yapmak için aşağıdaki butona
+                      tıklayın.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="mb-4 text-sm">
+                      Yapay zeka destekli analizlerde, analiz yapılacak şirketin
+                      verilerini ve analiz yapılacak tarih aralığını seçerek
+                      analiz oluşturabilirsiniz. Bu analiz türünde, analiz
+                      sonuçları binlerce restoranın verileri ile eğitilerek
+                      oluşturulmuş yapay zeka modeli tarafından oluşturulur.
+                      Analiz oluşturduktan sonra analizinizin sonuçlarını
+                      görüntüleyebilirsiniz. Ayrıca analizinizin sonuçlarını PDF
+                      formatında indirebilirsiniz.
+                    </p>
+                  </CardContent>
+                </div>
                 <CardFooter className="flex flex-col space-y-2 md:flex-row md:space-x-4 md:space-y-0">
                   <Button>Analiz et</Button>
                   <Button variant="link">Detaylı bilgi</Button>

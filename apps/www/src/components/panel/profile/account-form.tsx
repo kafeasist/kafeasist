@@ -102,11 +102,11 @@ const AccountForm = ({
           </Avatar>
           <div className="mt-4 flex flex-col items-center space-y-4 lg:ml-4 lg:mt-0 lg:items-start lg:space-y-2">
             <div className="space-x-2">
-              <Button>
+              <Button type="button">
                 <Upload className="mr-2 h-4 w-4" />
                 Fotoğraf yükle
               </Button>
-              <Button variant="outline">
+              <Button variant="outline" type="button">
                 <Trash className="mr-2 h-4 w-4" />
                 Sil
               </Button>

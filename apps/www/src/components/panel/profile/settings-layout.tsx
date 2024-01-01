@@ -19,6 +19,7 @@ import { useSession } from "~/hooks/use-session";
 import { AccountForm } from "./account-form";
 import { Billing } from "./billing";
 import { Companies } from "./companies";
+import { Developers } from "./developers";
 import { Integrations } from "./integrations";
 
 type Tabs =
@@ -115,10 +116,10 @@ export const SettingsLayout = ({ defaultTab }: SettingsLayoutProps) => {
       icon: <LinkIcon className="mr-2 h-4 w-4" />,
     },
     {
-      name: "Geliştirici",
+      name: "Geliştiriciler",
       slug: "api",
       isActive: activeTab === "api",
-      content: <div>api</div>,
+      content: <Developers />,
       icon: <Code className="mr-2 h-4 w-4" />,
     },
   ];
