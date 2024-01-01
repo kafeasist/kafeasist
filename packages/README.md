@@ -10,7 +10,6 @@
 - [@kafeasist:eslint](#kafeasisteslint)
 - [@kafeasist:prettier](#kafeasistprettier)
 - [@kafeasist:redis](#kafeasistredis)
-- [@kafeasist:responses](#kafeasistresponses)
 - [@kafeasist:tailwind](#kafeasisttailwind)
 - [@kafeasist:typescript](#kafeasisttypescript)
 
@@ -45,12 +44,6 @@ This is the [Prettier](https://prettier.io/) configuration package of kafeasist.
 ## [@kafeasist:redis](@kafeasist:redis)
 
 This is the caching package of kafeasist. It is used to cache data in [Redis](https://redis.io/). It is used by the API package. It uses [Upstash](https://upstash.com/) as the [Redis](https://redis.io/) provider. For more information about the caching package including the usage, please see the [README file for the `redis` package](@kafeasist:redis).
-
-## [@kafeasist:responses](@kafeasist:responses)
-
-**OUTDATED!** This package is outdated. It is not used anymore.
-
-This is the responses package of kafeasist. It is a [TypeScript](https://www.typescriptlang.org/) application. It contains the responses of the API.
 
 ## [@kafeasist:tailwind](@kafeasist:tailwind)
 

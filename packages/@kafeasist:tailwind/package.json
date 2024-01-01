@@ -9,12 +9,12 @@
   ],
   "devDependencies": {
     "@kafeasist/typescript": "^0.1.0",
-    "autoprefixer": "^10.4.15",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.1"
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0"
   },
   "dependencies": {
-    "tailwindcss-animate": "^1.0.5"
+    "tailwindcss-animate": "^1.0.7"
   },
   "prettier": "@kafeasist/prettier"
 }

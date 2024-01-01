@@ -1,2 +1,6 @@
-// @ts-expect-error - No types for postcss
-module.exports = require("@kafeasist/tailwind/postcss");
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
