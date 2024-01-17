@@ -11,8 +11,8 @@
     "@kafeasist/auth": "^0.2.0",
     "@kafeasist/db": "^0.1.1",
     "@kafeasist/redis": "^0.1.0",
-    "@trpc/client": "^10.21.1",
-    "@trpc/server": "^10.21.1",
+    "@trpc/client": "10.45.0",
+    "@trpc/server": "10.45.0",
     "argon2": "^0.30.3",
     "superjson": "^1.12.3",
     "zod": "^3.22.3"

@@ -10,15 +10,6 @@
   kafeasist is a café/restaurant/bar management software made with ❤️. kafeasist is a software as a service that you can subscribe to monthly or yearly and leave whenever you want. kafeasist makes managing your business much more simpler with easy-to-use dashboard. Keeps track of your data and stores it in a cloud server so you wouldn't lose any of it! With kafeasist, you won't need any other software to run your business.
 </p>
 
-<div align="center">
-
-[![Build][build-shield]][build-url]
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-
-</div>
-
 # Table of contents
 
 - [Getting started](#getting-started)
@@ -106,12 +97,3 @@ This project is licensed under `GNU General Public License v3.0` if you want to 
 | Ege Onder | 40398628+EgeOnder@users.noreply.github.com | [@EgeOnder23](https://twitter.com/EgeOnder23) |
 
 [⬆ Back to top](#table-of-contents)
-
-[build-shield]: https://img.shields.io/github/actions/workflow/status/kafeasist/kafeasist/ci.yml?style=for-the-badge
-[build-url]: https://github.com/kafeasist/kafeasist/actions
-[contributors-shield]: https://img.shields.io/github/contributors/kafeasist/kafeasist.svg?style=for-the-badge
-[contributors-url]: https://github.com/kafeasist/kafeasist/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/kafeasist/kafeasist.svg?style=for-the-badge
-[forks-url]: https://github.com/kafeasist/kafeasist/network/members
-[stars-shield]: https://img.shields.io/github/stars/kafeasist/kafeasist.svg?style=for-the-badge
-[stars-url]: https://github.com/kafeasist/kafeasist/stargazers

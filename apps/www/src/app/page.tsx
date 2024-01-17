@@ -1,3 +1,5 @@
+import { Activity } from "react-feather";
+
 import { Avatar, Button, Input, Skeleton, Tooltip } from "@kafeasist/ui";
 
 export default function Home() {
@@ -28,13 +30,18 @@ export default function Home() {
       <div className="flex items-center gap-2">
         <h1 className="text-xl font-bold">Button:</h1>
         <Button>Hello from button!</Button>
-        <Button size="lg">Hello from button!</Button>
-        <Button size="sm">Hello from button!</Button>
-        <Button variant={"outline"}>Hello from button!</Button>
+        <Button variant="destructive">Hello from button!</Button>
+        <Button variant="ghost">Hello from button!</Button>
+        <Button variant="secondary">Hello from button!</Button>
+        <Button variant="link">Hello from button!</Button>
+        <Button size="icon" variant="outline">
+          <Activity className="h-4 w-4" />
+        </Button>
+        <Button variant="outline">Hello from button!</Button>
       </div>
       <div className="flex items-center gap-2">
         <h1 className="text-xl font-bold">Input:</h1>
-        <Input />
+        <Input placeholder="Default" />
         <Input type="password" />
       </div>
     </div>
