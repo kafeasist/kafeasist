@@ -1,7 +1,8 @@
 import React from "react";
+import { AreaChart } from "@tremor/react";
 import { DollarSign, DownloadCloud } from "lucide-react";
 
-import { Button, cn, Progress, Separator } from "@kafeasist/ui";
+import { Button, cn, Input, Progress, Separator } from "@kafeasist/ui";
 
 import { Alerts } from "~/components/panel/alerts";
 import { Filters } from "~/components/panel/filters";
@@ -63,7 +64,69 @@ function StatCard({
   );
 }
 
+interface OrderProps extends React.HTMLAttributes<HTMLDivElement> {
+  title: string;
+  price: number;
+  date: Date;
+}
+
+function Order({ title, price, date, className, ...props }: OrderProps) {
+  return (
+    <div className={cn("w-full", className)} {...props}>
+      <div className="flex justify-between">
+        <h3 className="text-sm">{title}</h3>
+        <span className="text-right text-sm">₺{price}</span>
+      </div>
+      <div className="flex justify-end">
+        <span className="text-sm text-muted-foreground">
+          {date.toLocaleDateString("tr-TR", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: false,
+          })}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function Panel() {
+  const chartdata = [
+    {
+      date: "Jan 22",
+      SemiAnalysis: 2890,
+      "The Pragmatic Engineer": 2338,
+    },
+    {
+      date: "Feb 22",
+      SemiAnalysis: 2756,
+      "The Pragmatic Engineer": 2103,
+    },
+    {
+      date: "Mar 22",
+      SemiAnalysis: 3322,
+      "The Pragmatic Engineer": 2194,
+    },
+    {
+      date: "Apr 22",
+      SemiAnalysis: 3470,
+      "The Pragmatic Engineer": 2108,
+    },
+    {
+      date: "May 22",
+      SemiAnalysis: 3475,
+      "The Pragmatic Engineer": 1812,
+    },
+    {
+      date: "Jun 22",
+      SemiAnalysis: 3129,
+      "The Pragmatic Engineer": 1726,
+    },
+  ];
+
   return (
     <>
       <div className="space-y-4">
@@ -99,8 +162,40 @@ export default function Panel() {
               <DownloadCloud className="mr-2 h-4 w-4" /> Verilerimi indir
             </Button>
           </div>
+
+          <AreaChart
+            className="h-96 w-full"
+            data={chartdata}
+            index="date"
+            yAxisWidth={65}
+            categories={["SemiAnalysis", "The Pragmatic Engineer"]}
+            colors={["indigo", "cyan"]}
+          />
         </div>
-        <div className="col-span-2"></div>
+        <div className="col-span-2">
+          <div className="space-y-4">
+            <Input placeholder="Ara..." />
+            <div className="h-full space-y-4 rounded-xl border border-border px-6 py-4">
+              <h2 className="font-bold">Son siparişler</h2>
+              <Separator className="w-full" />
+              <Order
+                title="Masa 1"
+                price={273.98}
+                date={new Date(2024, 5, 17, 17, 35)}
+              />
+              <Order
+                title="Masa 2"
+                price={151.99}
+                date={new Date(2024, 5, 17, 17, 32)}
+              />
+              <Order
+                title="Masa 8"
+                price={1170.5}
+                date={new Date(2024, 5, 17, 16, 57)}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

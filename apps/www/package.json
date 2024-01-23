@@ -10,11 +10,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
+    "@headlessui/tailwindcss": "^0.2.0",
     "@hookform/resolvers": "^3.3.4",
     "@kafeasist/api": "^0.1.1",
     "@kafeasist/ui": "^0.1.0",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-label": "^2.0.2",
+    "@tremor/react": "^3.13.2",
     "lucide-react": "^0.312.0",
     "next": "14.0.4",
     "react": "^18",
@@ -28,6 +31,7 @@
     "@kafeasist/prettier": "^0.1.0",
     "@kafeasist/tailwind": "^0.1.0",
     "@kafeasist/typescript": "^0.1.0",
+    "@tailwindcss/forms": "^0.5.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
