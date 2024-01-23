@@ -12,6 +12,8 @@ export default {
         border: "hsl(var(--border))",
         secondary: "hsl(var(--secondary))",
         logo: "hsl(var(--logo))",
+        link: "hsl(var(--link))",
+        destructive: "hsl(var(--destructive))",
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",

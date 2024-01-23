@@ -20,7 +20,7 @@
     "@kafeasist/typescript": "^0.1.0",
     "@types/cookie": "^0.5.1",
     "@types/jsonwebtoken": "latest",
-    "@types/node": "^17.0.35",
+    "@types/node": "^20",
     "typescript": "^5.3.3"
   },
   "private": true,

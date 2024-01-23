@@ -68,6 +68,7 @@ export function FormControl({ ...props }: FormControlProps) {
           ? `${formDescriptionId}`
           : `${formDescriptionId} ${formMessageId}`
       }
+      className={cn(error && "focus:ring-destructive border-destructive")}
       aria-invalid={!!error}
       {...props}
     />
@@ -102,7 +103,7 @@ export function FormMessage({
     <p
       id={formMessageId}
       className={cn(
-        error ? "text-destructive font-medium" : "mt-1 text-xs",
+        error ? "text-destructive mt-1 text-xs font-medium" : "",
         className,
       )}
       {...props}

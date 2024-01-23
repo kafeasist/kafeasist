@@ -1,3 +1,5 @@
+import * as React from "react";
+
 import { Separator } from "@kafeasist/ui";
 
 import { InnerTitle } from "~/components/panel/inner-title";

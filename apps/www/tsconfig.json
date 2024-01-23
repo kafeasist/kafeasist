@@ -1,9 +1,17 @@
 {
   "extends": "@kafeasist/typescript/base.json",
   "compilerOptions": {
+    "jsx": "preserve",
+    "strict": true,
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
-    "plugins": [{ "name": "next" }],
-    "paths": { "~/*": ["./src/*"] }
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   },
   "include": [
     "next-env.d.ts",

@@ -25,7 +25,11 @@
   --warning: 55 92% 95%;
   --warning-foreground: 35 92% 33%;
 
+  --destructive: 0 72% 51%;
+
   --logo: 0 0% 93%;
+
+  --link: 224 88% 49%;
 
   --kafeasist: 233 59% 29%;
   --kafeasist-foreground: 0 0% 100%;
@@ -57,7 +61,11 @@
   --warning: 55 100% 7%;
   --warning-foreground: 35 84% 73%;
 
+  --destructive: 0 91% 71%;
+
   --logo: 0 0% 93%;
+
+  --link: 224 100% 78%;
 
   --kafeasist: 233 59% 29%;
   --kafeasist-foreground: 0 0% 100%;

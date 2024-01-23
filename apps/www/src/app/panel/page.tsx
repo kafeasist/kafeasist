@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { AreaChart } from "@tremor/react";
 import { DollarSign, DownloadCloud } from "lucide-react";
 

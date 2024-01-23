@@ -1,4 +1,5 @@
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { z } from "zod";
+
 import {
   AuthResponse,
   forgotPassword,
@@ -7,7 +8,8 @@ import {
   removeCookie,
   setCookie,
 } from "@kafeasist/auth";
-import { z } from "zod";
+
+import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const authRouter = createTRPCRouter({
   /**
@@ -44,7 +46,7 @@ export const authRouter = createTRPCRouter({
         ctx.session = response.session;
 
         // Set the cookie with the token returned from the server
-        setCookie(ctx.res, response.token);
+        setCookie(ctx.headers, response.token);
       }
 
       return response;
@@ -71,7 +73,7 @@ export const authRouter = createTRPCRouter({
         ctx.session = response.session;
 
         // Set the cookie with the token returned from the server
-        setCookie(ctx.res, response.token);
+        setCookie(ctx.headers, response.token);
       }
 
       return response;
@@ -87,7 +89,7 @@ export const authRouter = createTRPCRouter({
     ctx.session = null;
 
     // Remove the token cookie
-    removeCookie(ctx.res);
+    removeCookie(ctx.headers);
   }),
 
   /**

@@ -1,7 +1,7 @@
-import { COOKIE_NAME } from "../config";
-import { type CookieSerializeOptions, serialize } from "cookie";
-import type { NextApiResponse } from "next";
+import { serialize, type CookieSerializeOptions } from "cookie";
 import { stringify } from "superjson";
+
+import { COOKIE_NAME } from "../config";
 
 const defaultCookieOptions: CookieSerializeOptions = {
   path: "/",
@@ -20,7 +20,7 @@ const defaultCookieOptions: CookieSerializeOptions = {
  * @see https://nextjs.org/docs/api-routes/request-helpers#extending-the-reqres-objects-with-typescript
  */
 export const setCookie = (
-  res: NextApiResponse,
+  headers: Headers,
   value: unknown,
   name: string = COOKIE_NAME,
   options: CookieSerializeOptions = defaultCookieOptions,
@@ -33,5 +33,5 @@ export const setCookie = (
   if (typeof options.maxAge === "number")
     options.expires = new Date(Date.now() + options.maxAge * 1000);
 
-  res.setHeader("Set-Cookie", serialize(name, stringValue, options));
+  headers.append("Set-Cookie", serialize(name, stringValue, options));
 };

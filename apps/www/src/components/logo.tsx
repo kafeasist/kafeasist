@@ -15,7 +15,7 @@ export function Logo({ className, width, height }: LogoProps) {
       width={width ?? 70}
       height={height ?? 70}
       priority
-      className={"h-auto w-auto " + className}
+      className={className}
     />
   );
 }

@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Metadata } from "next";
 
 import SideBar from "~/components/panel/side-bar";
@@ -18,7 +19,7 @@ export default function DashboardLayout({
 }) {
   return (
     <ProvidersWrapper>
-      <div className="bg-primary text-primary-foreground min-h-screen w-full overflow-hidden">
+      <div className="min-h-screen w-full overflow-hidden">
         <TopBar />
         <div className="mt-[66px] flex w-full">
           <SideBar />
