@@ -7,36 +7,38 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "#ffffff",
-        foreground: "#09090b",
-        border: "#e2e8f0",
-        input: "#e2e8f0",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        border: "hsl(var(--border))",
+        secondary: "hsl(var(--secondary))",
+        logo: "hsl(var(--logo))",
         muted: {
-          DEFAULT: "#f4f4f5",
-          foreground: "71717a",
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
-        card: {
-          DEFAULT: "#ffffff",
-          foreground: "#0f172a",
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
         },
-        primary: {
-          DEFAULT: "#0f172a",
-          foreground: "#f8fafc",
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
         },
-        secondary: {
-          DEFAULT: "#f1f5f9",
-          foreground: "#0f172a",
+        error: {
+          DEFAULT: "hsl(var(--error))",
+          foreground: "hsl(var(--error-foreground))",
         },
-        accent: {
-          DEFAULT: "#f1f5f9",
-          foreground: "#0f172a",
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
         },
-        destructive: {
-          DEFAULT: "#ff0000",
-          foreground: "#f8fafc",
+        kafeasist: {
+          DEFAULT: "hsl(var(--kafeasist))",
+          foreground: "hsl(var(--kafeasist-foreground))",
         },
-        ring: "#94a3b8",
-        radius: "0.5rem",
+      },
+      borderRadius: {
+        DEFAULT: "10%",
       },
     },
   },

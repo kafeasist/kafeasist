@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 
-import cn from "../";
+import { cn } from "../";
 
 interface TooltipProps extends React.HTMLAttributes<HTMLDivElement> {
   side?: TooltipPrimitive.TooltipContentProps["side"];

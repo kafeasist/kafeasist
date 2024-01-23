@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 
-import cn from "../";
+import { cn } from "../";
 import { Skeleton } from "./skeleton";
 
 interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -10,7 +10,7 @@ import {
   type FieldValues,
 } from "react-hook-form";
 
-import cn from "..";
+import { cn } from "..";
 import { FormFieldContextProvider } from "../context/FormField";
 import { FormItemContextProvider } from "../context/FormItem";
 import { useFormField } from "../hooks/use-form-field";
@@ -102,7 +102,7 @@ export function FormMessage({
     <p
       id={formMessageId}
       className={cn(
-        error ? "font-medium text-destructive" : "mt-1 text-xs",
+        error ? "text-destructive font-medium" : "mt-1 text-xs",
         className,
       )}
       {...props}

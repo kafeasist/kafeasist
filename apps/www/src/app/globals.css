@@ -1,3 +1,64 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222 47 11%;
+
+  --muted: 214 32% 91%;
+  --muted-foreground: 215 16% 47%;
+
+  --border: 0 0% 89%;
+
+  --secondary: 0 0% 97%;
+
+  --info: 212 100% 97%;
+  --info-foreground: 224 77% 48%;
+
+  --success: 141 78% 96%;
+  --success-foreground: 143 64% 24%;
+
+  --error: 355 87% 97%;
+  --error-foreground: 0 70% 35%;
+
+  --warning: 55 92% 95%;
+  --warning-foreground: 35 92% 33%;
+
+  --logo: 0 0% 93%;
+
+  --kafeasist: 233 59% 29%;
+  --kafeasist-foreground: 0 0% 100%;
+}
+
+.dark {
+  --background: 0 0% 0%;
+  --foreground: 0 0 93%;
+
+  --muted: 0 0% 27%;
+  --muted-foreground: 215 0% 62%;
+
+  --border: 0 0% 23%;
+
+  --secondary: 0 0% 13%;
+
+  /*
+	TODO: Add dark mode colors
+  --info: 212 100% 97%;
+  --info-foreground: 224 77% 48%;
+
+  --success: 141 78% 96%;
+  --success-foreground: 143 64% 24%;
+
+  --error: 355 87% 97%;
+  --error-foreground: 0 70% 35%;
+	*/
+
+  --warning: 55 100% 7%;
+  --warning-foreground: 35 84% 73%;
+
+  --logo: 0 0% 93%;
+
+  --kafeasist: 233 59% 29%;
+  --kafeasist-foreground: 0 0% 100%;
+}

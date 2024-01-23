@@ -4,7 +4,7 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "dev": "pnpm with-env email dev -p 1337",
+    "email": "pnpm with-env email dev -p 1337",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {

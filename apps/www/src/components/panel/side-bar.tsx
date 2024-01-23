@@ -1,0 +1,118 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  BarChart3,
+  Croissant,
+  Home,
+  LayoutGrid,
+  Link as LinkIcon,
+  Settings,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
+
+import { Avatar, cn } from "@kafeasist/ui";
+
+type Navigation =
+  | "dashboard"
+  | "tables"
+  | "products"
+  | "users"
+  | "analytics"
+  | "integrations"
+  | "settings";
+
+export default function SideBar() {
+  const pathname = usePathname();
+
+  const navigationItems: {
+    id: Navigation;
+    label: string;
+    href: string;
+    icon: LucideIcon;
+    active: boolean;
+  }[] = [
+    {
+      id: "dashboard",
+      label: "Kontrol paneli",
+      href: "/panel",
+      icon: Home,
+      active: pathname === "/panel",
+    },
+    {
+      id: "tables",
+      label: "Masalar",
+      href: "/panel/masalar",
+      icon: LayoutGrid,
+      active: pathname === "/panel/masalar",
+    },
+    {
+      id: "products",
+      label: "Ürünler",
+      href: "/panel/urunler",
+      icon: Croissant,
+      active: pathname === "/panel/urunler",
+    },
+    {
+      id: "users",
+      label: "Kullanıcılar",
+      href: "/panel/kullanicilar",
+      icon: Users,
+      active: pathname === "/panel/kullanicilar",
+    },
+    {
+      id: "analytics",
+      label: "Analizler",
+      href: "/panel/analiz",
+      icon: BarChart3,
+      active: pathname === "/panel/analiz",
+    },
+    {
+      id: "integrations",
+      label: "Entegrasyonlar",
+      href: "/panel/entegrasyonlar",
+      icon: LinkIcon,
+      active: pathname === "/panel/entegrasyonlar",
+    },
+    {
+      id: "settings",
+      label: "Ayarlar",
+      href: "/panel/ayarlar",
+      icon: Settings,
+      active: pathname === "/panel/ayarlar",
+    },
+  ];
+
+  return (
+    <div className="fixed z-10 flex h-[calc(100vh-4.5rem)] flex-col justify-between border border-r-border bg-secondary px-4 py-6 md:w-72">
+      <nav className="flex w-full flex-col items-center justify-start space-y-1">
+        {navigationItems.map((item) => (
+          <Link
+            key={item.id}
+            href={item.href}
+            className={cn(
+              "flex w-full items-center space-x-2 rounded-lg px-4 py-2 text-left text-sm transition-colors duration-150 ease-in-out hover:bg-muted",
+              item.active && "bg-muted",
+            )}
+          >
+            <item.icon size={24} />
+            <span className="hidden truncate text-sm font-bold md:block">
+              {item.label}
+            </span>
+          </Link>
+        ))}
+      </nav>
+      <button className="flex w-full items-center space-x-2.5 rounded-lg p-2 duration-150 ease-in-out hover:bg-muted">
+        <Avatar alt="Ege Önder" placeholder="EÖ" />
+        <div className="hidden flex-col items-start justify-center md:flex">
+          <span className="font-bold">Ege Önder</span>
+          <span className="text-xs text-muted-foreground">
+            ege@kafeasist.com
+          </span>
+        </div>
+      </button>
+    </div>
+  );
+}

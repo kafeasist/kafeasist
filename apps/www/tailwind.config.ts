@@ -8,4 +8,13 @@ export default {
     "../../packages/@kafeasist:ui/src/**/*.{ts,tsx}",
   ],
   presets: [baseConfig],
+  theme: {
+    ...baseConfig.theme,
+    extend: {
+      ...baseConfig.theme.extend,
+      colors: {
+        ...baseConfig.theme.extend.colors,
+      },
+    },
+  },
 } satisfies Config;

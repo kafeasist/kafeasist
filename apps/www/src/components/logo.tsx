@@ -10,11 +10,12 @@ interface LogoProps {
 export function Logo({ className, width, height }: LogoProps) {
   return (
     <Image
-      src="/logo/logowithtext.png"
+      src="/logo/plain.png"
       alt="kafeasist Logo"
-      width={width ?? 200}
-      height={height ?? 100}
-      className={className}
+      width={width ?? 70}
+      height={height ?? 70}
+      priority
+      className={"h-auto w-auto " + className}
     />
   );
 }

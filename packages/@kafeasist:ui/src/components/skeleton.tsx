@@ -1,4 +1,4 @@
-import cn from "../";
+import { cn } from "../";
 
 interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   rounded?: boolean;
@@ -12,7 +12,7 @@ export function Skeleton({
   return (
     <div
       className={cn(
-        "animate-pulse bg-primary/10",
+        "bg-primary/10 animate-pulse",
         className,
         rounded ? "rounded-full" : "rounded-md",
       )}
