@@ -7,7 +7,10 @@ import { appRouter, createContext } from "@kafeasist/api";
 import { reportError } from "@kafeasist/error";
 
 function setCorsHeaders(res: Response) {
-  res.headers.set("Access-Control-Allow-Origin", "*");
+  res.headers.set(
+    "Access-Control-Allow-Origin",
+    process.env.NODE_ENV === "production" ? process.env.URL! : "*",
+  );
   res.headers.set("Access-Control-Request-Method", "*");
   res.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
   res.headers.set("Access-Control-Allow-Headers", "*");

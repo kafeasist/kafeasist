@@ -15,9 +15,7 @@
     "argon2": "^0.30.3",
     "cookie": "^0.5.0",
     "jsonwebtoken": "latest",
-    "superjson": "^1.12.3"
-  },
-  "devDependencies": {
+    "superjson": "^1.12.3",
     "@kafeasist/typescript": "^0.1.0",
     "@types/cookie": "^0.5.1",
     "@types/jsonwebtoken": "latest",

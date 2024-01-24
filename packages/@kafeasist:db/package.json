@@ -12,9 +12,7 @@
   "dependencies": {
     "@prisma/client": "^4.12.0",
     "jsonwebtoken": "^9.0.0",
-    "uuid": "^9.0.0"
-  },
-  "devDependencies": {
+    "uuid": "^9.0.0",
     "@kafeasist/typescript": "^0.1.0",
     "@types/uuid": "^9.0.1",
     "dotenv-cli": "^7.2.1",
