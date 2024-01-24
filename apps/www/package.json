@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
@@ -51,14 +50,6 @@
     "prettier": "^3.0.2",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.3.3"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "@kafeasist/eslint/base",
-      "@kafeasist/eslint/nextjs",
-      "@kafeasist/eslint/react"
-    ]
   },
   "prettier": "@kafeasist/prettier"
 }

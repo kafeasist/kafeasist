@@ -127,7 +127,7 @@ importers:
         version: 3.22.3
     devDependencies:
       '@kafeasist/eslint':
-        specifier: 0.2.0
+        specifier: workspace:^0.2.0
         version: link:../../packages/@kafeasist:eslint
       '@kafeasist/prettier':
         specifier: 0.1.0
@@ -483,9 +483,6 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.0)
     devDependencies:
-      '@kafeasist/eslint':
-        specifier: ^0.2.0
-        version: link:../@kafeasist:eslint
       '@kafeasist/prettier':
         specifier: ^0.1.0
         version: link:../@kafeasist:prettier

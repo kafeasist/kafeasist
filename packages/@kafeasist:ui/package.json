@@ -7,18 +7,9 @@
   "license": "MIT",
   "scripts": {
     "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },
-  "eslintConfig": {
-    "extends": [
-      "@kafeasist/eslint/base",
-      "@kafeasist/eslint/react"
-    ]
-  },
-  "prettier": "@kafeasist/prettier",
   "devDependencies": {
-    "@kafeasist/eslint": "^0.2.0",
     "@kafeasist/prettier": "^0.1.0",
     "@kafeasist/tailwind": "^0.1.0",
     "@kafeasist/typescript": "^0.1.0",
@@ -37,5 +28,6 @@
     "react-hook-form": "^7.49.2",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7"
-  }
+  },
+  "prettier": "@kafeasist/prettier"
 }

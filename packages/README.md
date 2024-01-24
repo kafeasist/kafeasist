@@ -33,6 +33,10 @@ This is the database package of kafeasist that uses [Prisma](https://www.prisma.
 
 This is the email package of kafeasist. It is under construction.
 
+## [@kafeasist:error](@kafeasist:error)
+
+This is the error package of kafeasist with [Sentry](https://sentry.io/) integration.
+
 ## [@kafeasist:eslint](@kafeasist:eslint)
 
 This is the [ESLint](https://eslint.org/) configuration package of kafeasist.
