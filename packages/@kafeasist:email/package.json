@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@kafeasist/error": "^0.1.0",
+    "@kafeasist/typescript": "^0.1.0",
     "@react-email/body": "^0.0.3",
     "@react-email/button": "0.0.10",
     "@react-email/column": "^0.0.7",
@@ -27,7 +28,6 @@
     "react-dom": "^18.2.0",
     "react-email": "1.9.4",
     "resend": "^3.1.0",
-    "@kafeasist/typescript": "^0.1.0",
     "typescript": "^5.3.3"
   },
   "private": true,

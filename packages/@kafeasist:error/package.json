@@ -8,9 +8,9 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@sentry/node": "^7.95.0",
     "@kafeasist/prettier": "^0.1.0",
     "@kafeasist/typescript": "^0.1.0",
+    "@sentry/node": "^7.95.0",
     "eslint": "^8.47.0",
     "typescript": "^5.3.3"
   },

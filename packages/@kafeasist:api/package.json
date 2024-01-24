@@ -10,15 +10,15 @@
   "dependencies": {
     "@kafeasist/auth": "0.2.0",
     "@kafeasist/db": "^0.1.1",
+    "@kafeasist/prettier": "^0.1.0",
     "@kafeasist/redis": "^0.1.0",
+    "@kafeasist/typescript": "^0.1.0",
     "@trpc/server": "next",
     "argon2": "^0.30.3",
-    "superjson": "^1.12.3",
-    "zod": "^3.22.3",
-    "@kafeasist/prettier": "^0.1.0",
-    "@kafeasist/typescript": "^0.1.0",
     "eslint": "^8.47.0",
-    "typescript": "^5.3.3"
+    "superjson": "^1.12.3",
+    "typescript": "^5.3.3",
+    "zod": "^3.22.3"
   },
   "private": true,
   "prettier": "@kafeasist/prettier"
