@@ -8,6 +8,7 @@ import { cn } from "@kafeasist/ui";
 import "./globals.css";
 
 import { APIClientProvider } from "~/utils/api-provider";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,14 +23,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body
-        className={cn(inter.className, "bg-primary text-primary-foreground")}
-      >
-        <APIClientProvider>
-          <Toaster position="bottom-right" richColors />
-          {children}
-        </APIClientProvider>
+    <html suppressHydrationWarning>
+      <body className={cn(inter.className, "bg-background text-foreground")}>
+        <Providers>
+          <APIClientProvider>
+            <Toaster position="bottom-right" richColors />
+            {children}
+          </APIClientProvider>
+        </Providers>
       </body>
     </html>
   );

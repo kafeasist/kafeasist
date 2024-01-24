@@ -24,7 +24,13 @@ type Navigation =
   | "integrations"
   | "settings";
 
-export default function SideBar() {
+export default function SideBar({
+  name,
+  email,
+}: {
+  name: string;
+  email: string;
+}) {
   const pathname = usePathname();
 
   const navigationItems: {
@@ -86,7 +92,7 @@ export default function SideBar() {
   ];
 
   return (
-    <div className="fixed z-10 flex h-[calc(100vh-4.5rem)] flex-col justify-between border border-r-border bg-secondary px-4 py-6 md:w-72">
+    <div className="fixed z-10 flex h-[calc(100vh-4rem)] flex-col justify-between border border-border bg-secondary px-4 py-6 md:w-72">
       <nav className="flex w-full flex-col items-center justify-start space-y-1">
         {navigationItems.map((item) => (
           <Link
@@ -105,14 +111,18 @@ export default function SideBar() {
         ))}
       </nav>
       <button className="flex w-full items-center space-x-2.5 rounded-lg p-2 duration-150 ease-in-out hover:bg-muted">
-        <Avatar alt="Ege Önder" placeholder="EÖ" />
+        <Avatar alt={name} placeholder={getInitials(name)} />
         <div className="hidden flex-col items-start justify-center md:flex">
-          <span className="font-bold">Ege Önder</span>
-          <span className="text-xs text-muted-foreground">
-            ege@kafeasist.com
-          </span>
+          <span className="font-bold">{name}</span>
+          <span className="text-xs text-muted-foreground">{email}</span>
         </div>
       </button>
     </div>
   );
+}
+
+function getInitials(name: string) {
+  const [firstName, lastName] = name.split(" ");
+
+  return ((firstName?.[0] ?? "") + (lastName?.[0] ?? "")).toLocaleUpperCase();
 }

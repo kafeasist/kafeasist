@@ -172,7 +172,7 @@ export default function Panel() {
             colors={["indigo", "cyan"]}
           />
         </div>
-        <div className="col-span-2">
+        <div className="col-span-6 md:col-span-2">
           <div className="space-y-4">
             <Input placeholder="Ara..." />
             <div className="h-full space-y-4 rounded-xl border border-border px-6 py-4">

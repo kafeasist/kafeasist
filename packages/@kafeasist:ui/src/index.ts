@@ -9,6 +9,7 @@ export { Input } from "./components/input";
 export { Separator } from "./components/separator";
 export { Alert } from "./components/alert";
 export { Progress } from "./components/progress";
+export { Spinner } from "./components/spinner";
 export * from "./components/form";
 
 export function cn(...inputs: CxOptions) {

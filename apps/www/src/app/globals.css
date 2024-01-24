@@ -35,9 +35,9 @@
   --kafeasist-foreground: 0 0% 100%;
 }
 
-.dark {
+[data-theme="dark"] {
   --background: 0 0% 0%;
-  --foreground: 0 0 93%;
+  --foreground: 0 0% 93%;
 
   --muted: 0 0% 27%;
   --muted-foreground: 215 0% 62%;

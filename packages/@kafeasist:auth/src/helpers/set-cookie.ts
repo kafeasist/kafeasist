@@ -17,7 +17,6 @@ const defaultCookieOptions: CookieSerializeOptions = {
  * @param name Cookie name (default: COOKIE_NAME)
  * @param options Cookie options (default: defaultCookieOptions)
  * @returns void
- * @see https://nextjs.org/docs/api-routes/request-helpers#extending-the-reqres-objects-with-typescript
  */
 export const setCookie = (
   headers: Headers,
@@ -33,5 +32,6 @@ export const setCookie = (
   if (typeof options.maxAge === "number")
     options.expires = new Date(Date.now() + options.maxAge * 1000);
 
-  headers.append("Set-Cookie", serialize(name, stringValue, options));
+  const cookie = serialize(name, stringValue, options);
+  headers.append("Set-Cookie", cookie);
 };

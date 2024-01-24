@@ -1,3 +1,4 @@
+import { parse } from "cookie";
 import { verify } from "jsonwebtoken";
 
 import { prisma } from "@kafeasist/db";
@@ -13,9 +14,12 @@ export const getSessionFromCookie = async (
   headers: Headers,
 ): Promise<Session | null> => {
   const cookieName = process.env.COOKIE_NAME!;
-  const token = headers
-    .getSetCookie()
-    .find((c) => c.split("=")[0] === cookieName);
+
+  const cookie = headers.get("cookie");
+
+  if (!cookie) return null;
+
+  const token = parse(cookie)[cookieName];
 
   if (!token) return null;
 
@@ -24,6 +28,7 @@ export const getSessionFromCookie = async (
   const payload = decodeJwt(token) as { id: number };
 
   const session = await readCache<Session>(`session:${payload.id}`);
+
   if (!session) {
     const user = await prisma.user.findUnique({
       where: {
@@ -32,7 +37,9 @@ export const getSessionFromCookie = async (
     });
 
     if (!user) return null;
+
     await setCache(`${REDIS_SESSION_PREFIX}:${user.id}`, user, REDIS_TTL);
+
     return user;
   }
 
