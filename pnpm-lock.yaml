@@ -63,13 +63,13 @@ importers:
         specifier: ^3.3.4
         version: 3.3.4(react-hook-form@7.49.2)
       '@kafeasist/api':
-        specifier: workspace:^0.1.1
+        specifier: 0.1.1
         version: link:../../packages/@kafeasist:api
       '@kafeasist/auth':
-        specifier: workspace:^0.2.0
+        specifier: 0.2.0
         version: link:../../packages/@kafeasist:auth
       '@kafeasist/ui':
-        specifier: workspace:^0.1.0
+        specifier: 0.1.0
         version: link:../../packages/@kafeasist:ui
       '@radix-ui/react-avatar':
         specifier: ^1.0.4
@@ -127,16 +127,16 @@ importers:
         version: 3.22.3
     devDependencies:
       '@kafeasist/eslint':
-        specifier: workspace:^0.2.0
+        specifier: 0.2.0
         version: link:../../packages/@kafeasist:eslint
       '@kafeasist/prettier':
-        specifier: workspace:^0.1.0
+        specifier: 0.1.0
         version: link:../../packages/@kafeasist:prettier
       '@kafeasist/tailwind':
-        specifier: workspace:^0.1.0
+        specifier: 0.1.0
         version: link:../../packages/@kafeasist:tailwind
       '@kafeasist/typescript':
-        specifier: workspace:^0.1.0
+        specifier: 0.1.0
         version: link:../../packages/@kafeasist:typescript
       '@tailwindcss/forms':
         specifier: ^0.5.7
@@ -175,14 +175,11 @@ importers:
   packages/@kafeasist:api:
     dependencies:
       '@kafeasist/auth':
-        specifier: workspace:^0.2.0
+        specifier: 0.2.0
         version: link:../@kafeasist:auth
       '@kafeasist/db':
         specifier: ^0.1.1
         version: link:../@kafeasist:db
-      '@kafeasist/error':
-        specifier: ^0.1.0
-        version: link:../@kafeasist:error
       '@kafeasist/redis':
         specifier: ^0.1.0
         version: link:../@kafeasist:redis
