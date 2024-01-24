@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ShieldX, UserCheck } from "lucide-react";
+import { ShieldX } from "lucide-react";
 
 import { Banner, Spinner } from "@kafeasist/ui";
 
@@ -29,27 +29,12 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen w-full">
-      <Banner
-        title="İki faktörlü kimlik doğrulama"
-        subtitle="Güvenliğiniz için hesabınızı iki faktörlü kimlik doğrulama ile koruyun"
-        icon={<UserCheck className="h-4 w-4" />}
-        className="bg-info text-info-foreground"
-        action={
-          <Link
-            href="/panel/profil"
-            className="text-sm underline hover:opacity-75"
-          >
-            Hemen etkinleştir {"->"}
-          </Link>
-        }
-        closable={false}
-      />
       {!user.emailVerified && (
         <Banner
           title="Hesabınızı doğrulayın"
           subtitle="E-postanızdaki bağlantıya tıklayarak kafeasist hesabınızı doğrulayın"
           icon={<ShieldX className="h-4 w-4" />}
-          className="bg-warning text-warning-foreground"
+          className="bg-error text-error-foreground"
           action={
             <Link
               href="/panel/profil"

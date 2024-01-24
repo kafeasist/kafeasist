@@ -53,10 +53,10 @@
 	TODO: Add dark mode colors
   --success: 141 78% 96%;
   --success-foreground: 143 64% 24%;
+  */
 
-  --error: 355 87% 97%;
-  --error-foreground: 0 70% 35%;
-	*/
+  --error: 355 100% 12%;
+  --error-foreground: 0 100% 84%;
 
   --warning: 55 100% 7%;
   --warning-foreground: 35 84% 73%;

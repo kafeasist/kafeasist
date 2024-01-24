@@ -130,6 +130,7 @@ export const register = async (
     phone: user.phone,
     email: user.email,
     imageUrl: user.imageUrl,
+    emailVerified: user.emailVerified,
     twoFA: false,
   };
 
