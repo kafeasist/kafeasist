@@ -3,9 +3,8 @@ import {
   type FetchCreateContextFnOptions,
 } from "@trpc/server/adapters/fetch";
 
-import { appRouter } from "@kafeasist/api";
-import { getSessionFromCookie } from "@kafeasist/auth";
-import { prisma } from "@kafeasist/db";
+import { appRouter, createContext } from "@kafeasist/api";
+import { reportError } from "@kafeasist/error";
 
 function setCorsHeaders(res: Response) {
   res.headers.set("Access-Control-Allow-Origin", "*");
@@ -31,20 +30,47 @@ const handler = (req: Request) => {
     router: appRouter,
 
     createContext: async (opts: FetchCreateContextFnOptions) => {
-      const session = await getSessionFromCookie(opts.req.headers);
+      const { req, resHeaders: headers } = opts;
 
-      return {
-        session,
-        prisma,
-        headers: opts.resHeaders,
-      };
+      const context = await createContext({ req, headers });
+
+      return context;
     },
+
     onError({ error, path }) {
-      console.error(`>>> tRPC Error on '${path}'`, error);
+      console.error(`>>> tRPC Error on '${path}'`);
 
       if (error.code === "INTERNAL_SERVER_ERROR") {
-        // TODO: Send error to Sentry
+        const { message, stack, name, cause } = error;
+
+        const sentryError = new Error(message);
+        sentryError.stack = stack;
+        sentryError.name = name;
+        sentryError.cause = cause;
+
+        const sentryErrorId = reportError(sentryError);
+
+        console.error(`>>> Sentry Error ID: ${sentryErrorId}`);
       }
+    },
+
+    responseMeta: ({ ctx, errors, type }) => {
+      const isOk = errors.length === 0;
+      const isQuery = type === "query";
+
+      if (ctx?.headers && isOk && isQuery) {
+        const ONE_HOUR = 60 * 60;
+
+        return {
+          headers: {
+            "Cache-Control": `s-maxage=${ONE_HOUR}, state-while-revalidate=${
+              ONE_HOUR * 24
+            }`,
+          },
+        };
+      }
+
+      return {};
     },
   });
 };

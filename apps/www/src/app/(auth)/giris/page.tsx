@@ -64,7 +64,7 @@ export default function Login() {
   const onSubmit = async (values: LoginInputs) => {
     const response = await mutateAsync(values);
 
-    if (response.success) return (window.location.href = "/panel");
+    if (response.success) return window.location.replace("/panel");
 
     toast.error(response.message);
 

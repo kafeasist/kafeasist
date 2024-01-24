@@ -66,11 +66,8 @@ importers:
         specifier: workspace:^0.1.1
         version: link:../../packages/@kafeasist:api
       '@kafeasist/auth':
-        specifier: ^0.2.0
+        specifier: workspace:^0.2.0
         version: link:../../packages/@kafeasist:auth
-      '@kafeasist/db':
-        specifier: ^0.1.1
-        version: link:../../packages/@kafeasist:db
       '@kafeasist/ui':
         specifier: workspace:^0.1.0
         version: link:../../packages/@kafeasist:ui
@@ -183,6 +180,9 @@ importers:
       '@kafeasist/db':
         specifier: ^0.1.1
         version: link:../@kafeasist:db
+      '@kafeasist/error':
+        specifier: ^0.1.0
+        version: link:../@kafeasist:error
       '@kafeasist/redis':
         specifier: ^0.1.0
         version: link:../@kafeasist:redis
@@ -199,6 +199,9 @@ importers:
         specifier: ^3.22.3
         version: 3.22.3
     devDependencies:
+      '@kafeasist/prettier':
+        specifier: ^0.1.0
+        version: link:../@kafeasist:prettier
       '@kafeasist/typescript':
         specifier: ^0.1.0
         version: link:../@kafeasist:typescript
@@ -331,6 +334,25 @@ importers:
       '@kafeasist/typescript':
         specifier: ^0.1.0
         version: link:../@kafeasist:typescript
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  packages/@kafeasist:error:
+    dependencies:
+      '@sentry/node':
+        specifier: ^7.95.0
+        version: 7.95.0
+    devDependencies:
+      '@kafeasist/prettier':
+        specifier: ^0.1.0
+        version: link:../@kafeasist:prettier
+      '@kafeasist/typescript':
+        specifier: ^0.1.0
+        version: link:../@kafeasist:typescript
+      eslint:
+        specifier: ^8.47.0
+        version: 8.56.0
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -1122,12 +1144,10 @@ packages:
     dependencies:
       eslint: 8.56.0
       eslint-visitor-keys: 3.4.3
-    dev: false
 
   /@eslint-community/regexpp@4.10.0:
     resolution: {integrity: sha512-Cu96Sd2By9mCNTx2iyKOmq10v22jUVQv0lQnlGNy16oE9589yE+QADPbrMGCkA51cKZSg3Pu/aTJVTGfL/qjUA==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
-    dev: false
 
   /@eslint-community/regexpp@4.7.0:
     resolution: {integrity: sha512-+HencqxU7CFJnQb7IKtuNBqS6Yx3Tz4kOL8BJXo+JyeiBm5MEX6pO8onXDkjrkCRlfYXS1Axro15ZjVFe9YgsA==}
@@ -1164,7 +1184,6 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@eslint/js@8.47.0:
     resolution: {integrity: sha512-P6omY1zv5MItm93kLM8s2vr1HICJH8v0dvddDhysbIuZ+vcjOHg5Zbkf1mTkcmi2JA9oBG2anOkRnW8WJTS8Og==}
@@ -1173,7 +1192,6 @@ packages:
   /@eslint/js@8.56.0:
     resolution: {integrity: sha512-gMsVel9D7f2HLkBma9VbtzZRehRogVRfbr++f06nL2vnCGCNlzOD+/MUov/F4p8myyAHspEhVobgjpX64q5m6A==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dev: false
 
   /@floating-ui/core@1.5.2:
     resolution: {integrity: sha512-Ii3MrfY/GAIN3OhXNzpCKaLxHQfJF9qvwq/kEJYdqDxeIHa01K8sldugal6TmeeXl+WMvhv9cnVzUTaFFJF09A==}
@@ -1276,7 +1294,6 @@ packages:
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@humanwhocodes/module-importer@1.0.1:
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -1287,7 +1304,6 @@ packages:
 
   /@humanwhocodes/object-schema@2.0.1:
     resolution: {integrity: sha512-dvuCeX5fC9dXgJn9t+X5atfmgQAzUOWqS1254Gh0m6i8wKd10ebXkfNKiRK+1GWi/yTvvLDHpoxLr0xxxeslWw==}
-    dev: false
 
   /@ianvs/prettier-plugin-sort-imports@4.1.0(prettier@3.0.2):
     resolution: {integrity: sha512-IAXeTLU24k6mRPa6mFbW1qZJ/j0m3OeH44wyijWyr+YqqdNtBnfHxAntOAATS9iDfrT01NesKGsdzqnXdDQa/A==}
@@ -2233,6 +2249,45 @@ packages:
       selderee: 0.10.0
     dev: false
 
+  /@sentry-internal/tracing@7.95.0:
+    resolution: {integrity: sha512-YKiLPMnEgTsTh7u/W1Zep9HtV1rJqAetqJ4ekaIxyUUB6ppi6V00MacSjb01o++fwlNNDYFxNpJlgQqNPqsCNA==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/core': 7.95.0
+      '@sentry/types': 7.95.0
+      '@sentry/utils': 7.95.0
+    dev: false
+
+  /@sentry/core@7.95.0:
+    resolution: {integrity: sha512-z+ffO6jK/ZUxnRbBGmnj5sOouKZ4mvRY0KJa33kbyqcmeiJKrN81M7Ecj1IJUCamo/6RqX0GCwDDxgUPZZZBwA==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/types': 7.95.0
+      '@sentry/utils': 7.95.0
+    dev: false
+
+  /@sentry/node@7.95.0:
+    resolution: {integrity: sha512-3fbN+4ajPly9rhbuJtuZ+o2FGmka8Y7A3T/ooHuhCGoWegKtn3OzaOIrdwcYoBIy1fO6SuldTi/P72Y7wgIPtw==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry-internal/tracing': 7.95.0
+      '@sentry/core': 7.95.0
+      '@sentry/types': 7.95.0
+      '@sentry/utils': 7.95.0
+    dev: false
+
+  /@sentry/types@7.95.0:
+    resolution: {integrity: sha512-ouU7NsEcrwmcnXHMNBGmKZEmKMzmgPGoBydZn1gukCI67Ci71fAYpPNrbtmjai6+jtsY21o45rVLqExru2sdfw==}
+    engines: {node: '>=8'}
+    dev: false
+
+  /@sentry/utils@7.95.0:
+    resolution: {integrity: sha512-0zget8AOaQWLIEA9cTx/qiQQYpx2x0UfnaW5xRmQg12QGTSngo/cUm9O04zuHw5gpBBGG0ocMDHxwwr+UCCBiw==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/types': 7.95.0
+    dev: false
+
   /@sindresorhus/is@0.14.0:
     resolution: {integrity: sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==}
     engines: {node: '>=6'}
@@ -2711,7 +2766,6 @@ packages:
 
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
-    dev: false
 
   /@upstash/core-analytics@0.0.6:
     resolution: {integrity: sha512-cpPSR0XJAJs4Ddz9nq3tINlPS5aLfWVCqhhtHnXt4p7qr5+/Znlt1Es736poB/9rnl1hAHrOsOvVj46NEXcVqA==}
@@ -4444,7 +4498,6 @@ packages:
       text-table: 0.2.0
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /espree@9.6.1:
     resolution: {integrity: sha512-oruZaFkjorTpF32kDSI5/75ViwGeZginGGy2NoOSg3Q9bnwlnmDm4HLnkl0RE3n+njDXR037aY1+x58Z/zFdwQ==}
@@ -4866,7 +4919,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       type-fest: 0.20.2
-    dev: false
 
   /globalthis@1.0.3:
     resolution: {integrity: sha512-sFdI5LyBiNTHjRd7cGPWapiHWMOXKyuBNX/cWJ3NfzrZQVa8GI/8cofCl74AOVqq9W5kNmguTIzJ/1s2gyI9wA==}

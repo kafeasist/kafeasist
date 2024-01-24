@@ -1,6 +1,6 @@
 {
-  "name": "@kafeasist/api",
-  "version": "0.1.1",
+  "name": "@kafeasist/error",
+  "version": "0.1.0",
   "main": "./index.ts",
   "scripts": {
     "type-check": "tsc --noEmit",
@@ -8,13 +8,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@kafeasist/auth": "workspace:^0.2.0",
-    "@kafeasist/db": "^0.1.1",
-    "@kafeasist/redis": "^0.1.0",
-    "@trpc/server": "next",
-    "argon2": "^0.30.3",
-    "superjson": "^1.12.3",
-    "zod": "^3.22.3"
+    "@sentry/node": "^7.95.0"
   },
   "devDependencies": {
     "@kafeasist/prettier": "^0.1.0",

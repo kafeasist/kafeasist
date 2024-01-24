@@ -91,7 +91,7 @@ export default function Register() {
   const onSubmit = async (values: RegisterInputs) => {
     const result = await mutateAsync(values);
 
-    if (result.success) return (window.location.href = "/panel");
+    if (result.success) return window.location.replace("/panel");
 
     toast.error(result.message);
 
