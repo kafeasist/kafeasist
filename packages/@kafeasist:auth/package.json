@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@kafeasist/db": "^0.1.1",
+    "@kafeasist/email": "^0.1.0",
     "@kafeasist/redis": "^0.1.0",
     "argon2": "^0.30.3",
     "cookie": "^0.5.0",

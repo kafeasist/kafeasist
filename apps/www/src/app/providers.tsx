@@ -33,7 +33,7 @@ function Session({
   });
 
   return (
-    <SessionProvider session={data} loading={isPending}>
+    <SessionProvider session={data} loading={!cookie ? false : isPending}>
       {children}
     </SessionProvider>
   );

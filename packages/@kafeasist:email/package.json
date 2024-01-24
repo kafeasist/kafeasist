@@ -8,6 +8,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@kafeasist/error": "^0.1.0",
     "@react-email/body": "^0.0.3",
     "@react-email/button": "0.0.10",
     "@react-email/column": "^0.0.7",
@@ -24,7 +25,8 @@
     "dotenv-cli": "^7.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-email": "1.9.4"
+    "react-email": "1.9.4",
+    "resend": "^3.1.0"
   },
   "devDependencies": {
     "@kafeasist/typescript": "^0.1.0",

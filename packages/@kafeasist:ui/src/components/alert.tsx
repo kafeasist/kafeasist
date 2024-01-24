@@ -4,7 +4,7 @@ import React from "react";
 import { cva, VariantProps } from "class-variance-authority";
 import { AlertTriangle, X } from "lucide-react";
 
-const alertVariants = cva("rounded-xl p-4 space-x-3 relative", {
+const alertVariants = cva("rounded-xl p-4 space-x-3 relative flex", {
   variants: {
     variant: {
       info: "bg-info text-info-foreground",
@@ -38,6 +38,8 @@ export function Alert({
 }: AlertProps) {
   const [closed, setClosed] = React.useState(false);
 
+  if (closed) return null;
+
   return (
     <div
       className={alertVariants({
@@ -45,7 +47,6 @@ export function Alert({
         className,
       })}
       {...props}
-      style={{ display: closed ? "none" : "flex" }}
     >
       <AlertTriangle className="mt-0.5 h-8 w-8 md:h-4 md:w-4" />
       <div className="space-y-1">

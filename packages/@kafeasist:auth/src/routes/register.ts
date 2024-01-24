@@ -113,7 +113,6 @@ export const register = async (
       email,
       password: hashedPassword,
       token,
-      isVerified: false,
     },
   });
 
@@ -131,7 +130,6 @@ export const register = async (
     phone: user.phone,
     email: user.email,
     imageUrl: user.imageUrl,
-    isVerified: false,
     twoFA: false,
   };
 

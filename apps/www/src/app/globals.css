@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 100%;
+  --background: 40 79% 99%;
   --foreground: 222 47 11%;
 
   --muted: 214 32% 91%;
@@ -36,7 +36,7 @@
 }
 
 [data-theme="dark"] {
-  --background: 0 0% 0%;
+  --background: 0 0% 8%;
   --foreground: 0 0% 93%;
 
   --muted: 0 0% 27%;
@@ -46,11 +46,11 @@
 
   --secondary: 0 0% 13%;
 
+  --info: 223 99% 10%;
+  --info-foreground: 245 100% 86%;
+
   /*
 	TODO: Add dark mode colors
-  --info: 212 100% 97%;
-  --info-foreground: 224 77% 48%;
-
   --success: 141 78% 96%;
   --success-foreground: 143 64% 24%;
 

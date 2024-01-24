@@ -6,6 +6,7 @@ import {
   login,
   register,
   removeCookie,
+  resetPassword,
   setCookie,
 } from "@kafeasist/auth";
 
@@ -106,6 +107,31 @@ export const authRouter = createTRPCRouter({
     )
     .mutation(async ({ input }): Promise<AuthResponse<typeof input>> => {
       const response = await forgotPassword(input);
+
+      return response;
+    }),
+
+  /**
+   * Reset password
+   * @param ctx
+   * @param input
+   * @returns void
+   */
+  resetPassword: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        password: z.string(),
+        confirmPassword: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }): Promise<AuthResponse<typeof input>> => {
+      const response = await resetPassword(input);
+
+      if (response.success) {
+        // Set the cookie with the token returned from the server
+        setCookie(ctx.headers, response.token);
+      }
 
       return response;
     }),

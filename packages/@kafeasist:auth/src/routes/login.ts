@@ -43,7 +43,7 @@ export const login = async (
     phone: user.phone,
     email: user.email,
     imageUrl: user.imageUrl,
-    isVerified: user.isVerified,
+    emailVerified: user.emailVerified,
     twoFA: user.twoFA,
     // companies: user.companies,
   };

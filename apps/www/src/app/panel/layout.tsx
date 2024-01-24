@@ -1,8 +1,10 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
+import { ShieldX, UserCheck } from "lucide-react";
 
-import { Spinner } from "@kafeasist/ui";
+import { Banner, Spinner } from "@kafeasist/ui";
 
 import SideBar from "~/components/panel/side-bar";
 import TopBar from "~/components/panel/top-bar";
@@ -26,14 +28,46 @@ export default function DashboardLayout({
   if (!user) return window.location.replace("/giris");
 
   return (
-    <div className="min-h-screen w-full overflow-hidden">
+    <div className="min-h-screen w-full">
+      <Banner
+        title="İki faktörlü kimlik doğrulama"
+        subtitle="Güvenliğiniz için hesabınızı iki faktörlü kimlik doğrulama ile koruyun"
+        icon={<UserCheck className="h-4 w-4" />}
+        className="bg-info text-info-foreground"
+        action={
+          <Link
+            href="/panel/profil"
+            className="text-sm underline hover:opacity-75"
+          >
+            Hemen etkinleştir {"->"}
+          </Link>
+        }
+        closable={false}
+      />
+      {!user.emailVerified && (
+        <Banner
+          title="Hesabınızı doğrulayın"
+          subtitle="E-postanızdaki bağlantıya tıklayarak kafeasist hesabınızı doğrulayın"
+          icon={<ShieldX className="h-4 w-4" />}
+          className="bg-warning text-warning-foreground"
+          action={
+            <Link
+              href="/panel/profil"
+              className="text-sm underline hover:opacity-75"
+            >
+              Doğrulama bağlantısını tekrar gönder {"->"}
+            </Link>
+          }
+          closable={false}
+        />
+      )}
       <TopBar />
-      <div className="mt-[66px] flex w-full">
+      <div className="flex h-full w-full">
         <SideBar
           name={user.firstName + " " + user.lastName}
           email={user.email}
         />
-        <div className="ml-24 w-full p-8 md:ml-72">{children}</div>
+        <div className="h-full w-full p-8">{children}</div>
       </div>
     </div>
   );

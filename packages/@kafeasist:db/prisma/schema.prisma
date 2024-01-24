@@ -17,17 +17,17 @@ enum Plan {
 model User {
   id Int @id @default(autoincrement())
 
-  firstName    String
-  lastName     String
-  companies    Company[]
-  Notification Notification[]
-  phone        String         @unique
-  email        String         @unique
-  imageUrl     String?
-  isVerified   Boolean        @default(false)
-  twoFA        Boolean        @default(false)
-  token        String         @unique
-  password     String
+  firstName     String
+  lastName      String
+  companies     Company[]
+  Notification  Notification[]
+  phone         String         @unique
+  email         String         @unique
+  imageUrl      String?
+  emailVerified DateTime?
+  twoFA         Boolean        @default(false)
+  token         String         @unique
+  password      String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

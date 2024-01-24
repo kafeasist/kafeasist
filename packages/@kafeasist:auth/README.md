@@ -116,7 +116,7 @@ type Session = {
   lastName: string;
   phone: string;
   email: string;
-  isVerified: boolean;
+  emailVerified: Date | null;
 };
 ```
 
