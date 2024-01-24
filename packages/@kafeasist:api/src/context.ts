@@ -9,7 +9,7 @@ import { prisma, PrismaClient } from "@kafeasist/db";
  */
 export type Context = {
   session: Session | null;
-  prisma?: PrismaClient;
+  prisma: PrismaClient;
 } & CreateContextProps;
 
 interface CreateContextProps {
