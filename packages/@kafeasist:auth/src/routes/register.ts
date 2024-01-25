@@ -3,8 +3,14 @@ import { sign } from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 
 import { prisma } from "@kafeasist/db";
+import { sendEmail, VerifyEmail } from "@kafeasist/email";
+import { invalidateCache, readCache, setCache } from "@kafeasist/redis";
 
-import { JWT_SECRET, JWT_SIGNING_OPTIONS } from "../config";
+import {
+  JWT_SECRET,
+  JWT_SIGNING_OPTIONS,
+  REDIS_SESSION_PREFIX,
+} from "../config";
 import {
   validateEmail,
   validateNameLastName,
@@ -13,6 +19,8 @@ import {
 } from "../helpers/validators";
 import { AuthResponse } from "../types/AuthResponse";
 import { Session } from "../types/Session";
+
+const CACHE_PREFIX = "register";
 
 interface RegisterParams {
   firstName: string;
@@ -136,9 +144,58 @@ export const register = async (
 
   const jwt = sign({ id: user.id }, JWT_SECRET, JWT_SIGNING_OPTIONS);
 
+  await setCache(`${CACHE_PREFIX}:${user.id}`, token, 60 * 60 * 24 * 7);
+
+  try {
+    await sendEmail(
+      [user.email],
+      "kafeasist hesabın oluşturuldu!",
+      VerifyEmail({ token }),
+    );
+  } catch (error: unknown) {
+    console.error(error);
+  }
+
   return {
     success: true,
     token: jwt,
     session,
+  };
+};
+
+interface VerifyEmailProps {
+  id: number;
+  token: string;
+}
+
+export const verifyEmail = async (props: VerifyEmailProps) => {
+  const { token, id } = props;
+
+  const redisToken = await readCache(`${CACHE_PREFIX}:${id}`);
+
+  if (redisToken !== token)
+    return {
+      success: false,
+      message:
+        "Bağlantının süresi dolmuş veya geçersiz. Lütfen tekrar deneyin.",
+    };
+
+  const user = await prisma.user.update({
+    where: { id },
+    data: { emailVerified: new Date() },
+  });
+
+  if (!user)
+    return {
+      success: false,
+      message: "Bilinmeyen bir hata oluştu",
+    };
+
+  await invalidateCache(`${CACHE_PREFIX}:${id}`);
+  await invalidateCache(`${REDIS_SESSION_PREFIX}:${id}`);
+
+  return {
+    success: true,
+    message: "E-posta adresin başarıyla doğrulandı!",
   };
 };

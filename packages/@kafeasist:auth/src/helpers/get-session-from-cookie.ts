@@ -4,10 +4,10 @@ import { verify } from "jsonwebtoken";
 import { prisma } from "@kafeasist/db";
 import { readCache, setCache } from "@kafeasist/redis";
 
+import { REDIS_SESSION_PREFIX } from "../config";
 import type { Session } from "../types/Session";
 import { decodeJwt } from "./decode-jwt";
 
-const REDIS_SESSION_PREFIX = "session";
 const REDIS_TTL = 60 * 60 * 24; // 1 day
 
 export const getSessionFromCookie = async (

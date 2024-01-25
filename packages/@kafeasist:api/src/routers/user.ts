@@ -1,7 +1,7 @@
 import { hash, verify } from "argon2";
 import { z } from "zod";
 
-import { validateNameLastName } from "@kafeasist/auth";
+import { validateNameLastName, verifyEmail } from "@kafeasist/auth";
 import { validatePassword } from "@kafeasist/auth/src/helpers/validators";
 import { prisma } from "@kafeasist/db";
 import { Cache, invalidateCache } from "@kafeasist/redis";
@@ -155,6 +155,63 @@ export const userRouter = createTRPCRouter({
         return {
           error: false,
           message: "Şifre başarıyla değiştirildi",
+        };
+      },
+    ),
+
+  /**
+   * Verify e-mail
+   * @param ctx
+   * @param input
+   * @returns Promise<KafeasistResponse>
+   */
+  verifyEmail: protectedProcedure
+    .input(
+      z.object({
+        token: z.string(),
+      }),
+    )
+    .mutation(
+      async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
+        if (!ctx.session)
+          return { error: true, message: "Oturum açın", fields: [] };
+
+        const user = await prisma.user.findUnique({
+          where: {
+            id: ctx.session.id,
+          },
+        });
+
+        if (!user)
+          return {
+            error: true,
+            message: "Kullanıcı bulunamadı",
+            fields: [],
+          };
+
+        if (user.emailVerified)
+          return {
+            error: true,
+            message: "E-posta zaten doğrulanmış!",
+            fields: [],
+          };
+
+        const response = await verifyEmail({
+          id: user.id,
+          token: input.token,
+        });
+
+        if (response.success) {
+          return {
+            error: false,
+            message: response.message,
+          };
+        }
+
+        return {
+          error: true,
+          message: response.message,
+          fields: [],
         };
       },
     ),

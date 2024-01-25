@@ -9,13 +9,13 @@ import { Text } from "@react-email/text";
 
 const baseUrl = process.env.URL || "https://kafeasist.com";
 
-interface ForgotPasswordEmailProps {
+interface VerifyEmailProps {
   token: string;
 }
 
-export const ForgotPasswordEmail = ({ token }: ForgotPasswordEmailProps) => (
+export const VerifyEmail = ({ token }: VerifyEmailProps) => (
   <Html>
-    <Preview>kafeasist şifreni sıfırla</Preview>
+    <Preview>kafeasist hesabın başarıyla oluşturuldu</Preview>
     <Container style={{ ...container, ...main }}>
       <Img
         src={`${baseUrl}/logo/logo_light.svg`}
@@ -26,20 +26,17 @@ export const ForgotPasswordEmail = ({ token }: ForgotPasswordEmailProps) => (
       />
       <Text style={paragraph}>Merhaba,</Text>
       <Text style={paragraph}>
-        kafeasist hesabının şifresini sıfırlamak için aşağıdaki butona tıkla. Bu
-        bağlantı 24 saat boyunca geçerli olacak.
+        kafeasist hesabın başarıyla oluşturuldu. Hesabını aktifleştirmek için
+        aşağıdaki butona tıkla.
       </Text>
       <Section style={btnContainer}>
-        <Button
-          style={button}
-          href={`${baseUrl}/sifremi-unuttum?token=${token}`}
-        >
-          Şifremi sıfırla
+        <Button style={button} href={`${baseUrl}/dogrula?token=${token}`}>
+          Hesabımı aktifleştir
         </Button>
       </Section>
       <Text style={paragraph}>
-        Eğer bu e-postayı beklemiyorsan, lütfen görmezden gel. Bu e-posta adresi
-        üzerinden başka bir işlem yapmadan hesabını güvende tutabilirsin.
+        kafeasist ailesine hoş geldin. Hesabını aktifleştirdikten sonra
+        kafeasist ile işletmeni yönetmeye başlayabilirsin.
       </Text>
       <Text style={paragraph}>
         Saygılarımızla,

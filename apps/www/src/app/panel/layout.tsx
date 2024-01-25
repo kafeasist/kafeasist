@@ -51,6 +51,7 @@ export default function DashboardLayout({
         <SideBar
           name={user.firstName + " " + user.lastName}
           email={user.email}
+          emailVerified={user.emailVerified ? true : false}
         />
         <div className="h-full w-full p-8">{children}</div>
       </div>

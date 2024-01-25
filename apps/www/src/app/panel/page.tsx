@@ -2,7 +2,7 @@ import * as React from "react";
 import { AreaChart } from "@tremor/react";
 import { DollarSign, DownloadCloud } from "lucide-react";
 
-import { Button, cn, Input, Progress, Separator } from "@kafeasist/ui";
+import { Button, cn, Input, Progress, Separator, Tooltip } from "@kafeasist/ui";
 
 import { Alerts } from "~/components/panel/alerts";
 import { Filters } from "~/components/panel/filters";
@@ -12,6 +12,7 @@ import { formatMoney } from "~/utils/format-money";
 interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   percentage: number;
+  percentageText: string;
   progress: number;
   value: number;
   targetText: string;
@@ -21,6 +22,7 @@ function StatCard({
   className,
   title,
   percentage,
+  percentageText,
   progress,
   value,
   targetText,
@@ -49,9 +51,11 @@ function StatCard({
           <DollarSign className="h-4 w-4" />
           <h1 className="text-lg font-bold">{title}</h1>
         </div>
-        <span className="text-xs font-bold text-muted-foreground">
-          %{percentage}
-        </span>
+        <Tooltip text={percentageText}>
+          <span className="text-xs font-bold text-muted-foreground">
+            %{percentage}
+          </span>
+        </Tooltip>
       </div>
       <div>
         <span className="text-4xl">₺ {formatMoney(value)}</span>
@@ -143,6 +147,7 @@ export default function Panel() {
             <StatCard
               title="Ciro"
               percentage={13.65}
+              percentageText="Düne göre artış"
               value={23177}
               progress={87}
               targetText={`Hedefinize ₺ ${formatMoney(30000 - 23177)} kaldı.`}
@@ -150,6 +155,7 @@ export default function Panel() {
             <StatCard
               title="Açık siparişler"
               percentage={-7.65}
+              percentageText="Düne göre düşüş"
               value={1009}
               progress={13}
               targetText={`Masaların %13'ü dolu.`}

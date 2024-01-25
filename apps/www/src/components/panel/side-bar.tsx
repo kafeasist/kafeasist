@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  BadgeCheck,
   BarChart3,
   Croissant,
   Home,
@@ -13,7 +14,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { Avatar, cn } from "@kafeasist/ui";
+import { Avatar, cn, Tooltip } from "@kafeasist/ui";
 
 type Navigation =
   | "dashboard"
@@ -27,9 +28,11 @@ type Navigation =
 export default function SideBar({
   name,
   email,
+  emailVerified,
 }: {
   name: string;
   email: string;
+  emailVerified: boolean;
 }) {
   const pathname = usePathname();
 
@@ -111,11 +114,18 @@ export default function SideBar({
             </Link>
           ))}
         </nav>
-        <button className="flex w-full items-center space-x-2.5 rounded-lg p-2 duration-150 ease-in-out hover:bg-muted">
+        <button className="flex w-full items-center space-x-2.5 rounded-lg p-2 duration-150 ease-in-out hover:bg-muted/50">
           <Avatar alt={name} placeholder={getInitials(name)} />
           <div className="hidden flex-col items-start justify-center md:flex">
             <span className="font-bold">{name}</span>
-            <span className="text-xs text-muted-foreground">{email}</span>
+            <div className="flex items-center space-x-2">
+              <span className="text-xs text-muted-foreground">{email}</span>
+              {emailVerified && (
+                <Tooltip text="Doğrulanmış hesap">
+                  <BadgeCheck className="h-3 w-3 opacity-50" />
+                </Tooltip>
+              )}
+            </div>
           </div>
         </button>
       </div>

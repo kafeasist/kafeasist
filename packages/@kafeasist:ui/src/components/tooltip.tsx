@@ -15,15 +15,13 @@ export function Tooltip({ className, delay = true, ...props }: TooltipProps) {
   return (
     <TooltipPrimitive.Provider>
       <TooltipPrimitive.Root delayDuration={delay ? 700 : 0} {...props}>
-        <TooltipPrimitive.Trigger className="cursor-auto">
-          {props.children}
-        </TooltipPrimitive.Trigger>
+        <TooltipPrimitive.Trigger>{props.children}</TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Content
             side={props.side ?? "top"}
             sideOffset={3}
             className={cn(
-              "z-10 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-xs animate-in fade-in-0 zoom-in-95",
+              "z-10 whitespace-nowrap rounded-xl border border-border bg-background px-4 py-1.5 text-xs animate-in fade-in-0 zoom-in-95",
               className,
             )}
           >
