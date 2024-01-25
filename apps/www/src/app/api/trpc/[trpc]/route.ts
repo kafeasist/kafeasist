@@ -6,10 +6,12 @@ import {
 import { appRouter, createContext } from "@kafeasist/api";
 import { reportError } from "@kafeasist/error";
 
+import { getBaseUrl } from "~/utils/get-base-url";
+
 function setCorsHeaders(res: Response) {
   res.headers.set(
     "Access-Control-Allow-Origin",
-    process.env.NODE_ENV === "production" ? process.env.URL! : "*",
+    process.env.NODE_ENV === "production" ? getBaseUrl() : "*",
   );
   res.headers.set("Access-Control-Request-Method", "*");
   res.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
