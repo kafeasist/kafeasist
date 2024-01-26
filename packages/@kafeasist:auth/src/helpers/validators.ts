@@ -21,6 +21,8 @@ export const validateNameLastName = (firstName: string, lastName: string) => {
 };
 
 export const validatePhone = (phone: string) => {
+  phone = phone.replace(/\D+/g, "");
+
   if (!phone.startsWith("5"))
     throw new Error("Telefon numaranızı başında '5' olacak şekilde giriniz");
 

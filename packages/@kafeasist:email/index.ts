@@ -6,6 +6,7 @@ import { resend } from "./lib/resend";
 
 export { ForgotPasswordEmail } from "./emails/forgot-password";
 export { VerifyEmail } from "./emails/verify";
+export { VerifyThanksEmail } from "./emails/verify-thanks";
 
 export async function sendEmail(
   to: string[],

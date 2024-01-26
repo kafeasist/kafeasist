@@ -2,7 +2,7 @@ import { hash } from "argon2";
 import { v4 as uuidv4 } from "uuid";
 
 import { prisma } from "@kafeasist/db";
-import { sendEmail, VerifyEmail } from "@kafeasist/email";
+import { sendEmail, VerifyEmail, VerifyThanksEmail } from "@kafeasist/email";
 import { Cache, invalidateCache } from "@kafeasist/redis";
 
 import { createToken } from "../helpers/create-token";
@@ -177,9 +177,8 @@ export const verifyEmail = async (props: VerifyEmailProps) => {
       message: VERIFY_EMAIL_ERROR,
     };
 
-  const user = await prisma.user.update({
+  const user = await prisma.user.findUnique({
     where: { email },
-    data: { emailVerified: new Date() },
   });
 
   if (!user)
@@ -188,7 +187,28 @@ export const verifyEmail = async (props: VerifyEmailProps) => {
       message: "Bilinmeyen bir hata oluştu",
     };
 
+  if (user.emailVerified)
+    return {
+      success: true,
+      message: "E-posta adresin zaten doğrulanmış!",
+    };
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { emailVerified: new Date() },
+  });
+
   await invalidateCache(Cache.SESSION + user.id);
+
+  try {
+    await sendEmail(
+      [user.email],
+      "kafeasist hesabın doğrulandı!",
+      VerifyThanksEmail(),
+    );
+  } catch (error: unknown) {
+    console.error(error);
+  }
 
   return {
     success: true,

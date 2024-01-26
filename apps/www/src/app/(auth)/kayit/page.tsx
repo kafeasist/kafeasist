@@ -48,7 +48,8 @@ const registerSchema = z
       .string({
         required_error: "Lütfen telefon numaranızı giriniz",
       })
-      .min(10, "Geçerli bir telefon numarası olmalıdır"),
+      .startsWith("(5", "Telefon numarası 5 ile başlamalıdır")
+      .length(15, "Geçerli bir telefon numarası olmalıdır"),
     password: z
       .string({
         required_error: "Lütfen parolanızı giriniz",
@@ -158,7 +159,7 @@ export default function Register() {
               <FormItem className="space-y-1">
                 <FormLabel>Telefon numarası</FormLabel>
                 <FormControl>
-                  <Input placeholder="(555) 555 55 55" {...field} />
+                  <Input placeholder="(555) 555 55-55" phone {...field} />
                 </FormControl>
                 <FormDescription>
                   Size ulaşabileceğimiz bir telefon numarası
