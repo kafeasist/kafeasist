@@ -1,17 +1,12 @@
-import {
-  fetchRequestHandler,
-  type FetchCreateContextFnOptions,
-} from "@trpc/server/adapters/fetch";
+import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 import { appRouter, createContext } from "@kafeasist/api";
 import { reportError } from "@kafeasist/error";
 
-import { getBaseUrl } from "~/utils/get-base-url";
-
 function setCorsHeaders(res: Response) {
   res.headers.set(
     "Access-Control-Allow-Origin",
-    process.env.NODE_ENV === "production" ? getBaseUrl() : "*",
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "*",
   );
   res.headers.set("Access-Control-Request-Method", "*");
   res.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
@@ -28,19 +23,14 @@ export function OPTIONS() {
   return response;
 }
 
-const handler = (req: Request) => {
-  return fetchRequestHandler({
+const handler = async (req: Request) => {
+  const response = await fetchRequestHandler({
     endpoint: "/api/trpc",
     req,
     router: appRouter,
 
-    createContext: async (opts: FetchCreateContextFnOptions) => {
-      const { req, resHeaders: headers } = opts;
-
-      const context = await createContext({ req, headers });
-
-      return context;
-    },
+    createContext: (opts) =>
+      createContext({ req: opts.req, headers: opts.resHeaders }),
 
     onError({ error, path }) {
       console.error(`>>> tRPC Error on '${path}'`);
@@ -78,6 +68,9 @@ const handler = (req: Request) => {
       return {};
     },
   });
+
+  setCorsHeaders(response);
+  return response;
 };
 
 export { handler as GET, handler as POST };

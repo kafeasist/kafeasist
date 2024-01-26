@@ -7,7 +7,6 @@ import { httpBatchLink, loggerLink } from "@trpc/client";
 import superjson from "superjson";
 
 import { api } from "./api";
-import { getBaseUrl } from "./get-base-url";
 
 export function APIClientProvider({ children }: { children: React.ReactNode }) {
   const [queryClient] = React.useState(() => {
@@ -24,7 +23,7 @@ export function APIClientProvider({ children }: { children: React.ReactNode }) {
             (opts.direction == "down" && opts.result instanceof Error),
         }),
         httpBatchLink({
-          url: getBaseUrl() + "/api/trpc",
+          url: "/api/trpc",
           fetch: async (url, init) => {
             return fetch(url, {
               ...init,
