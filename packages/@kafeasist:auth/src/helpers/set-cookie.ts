@@ -1,10 +1,10 @@
 import { serialize, type CookieSerializeOptions } from "cookie";
-import { stringify } from "superjson";
 
 import { Cache, invalidateCache } from "@kafeasist/redis";
 
 import { COOKIE_NAME } from "../config";
 import { Session } from "../types/Session";
+import { createToken } from "./create-token";
 
 const defaultCookieOptions: CookieSerializeOptions = {
   path: "/",
@@ -29,12 +29,12 @@ export const setCookie = async (
 ) => {
   options = { ...defaultCookieOptions, ...options };
 
-  const value = { id: user.id };
+  const value = createToken({ id: user.id });
 
   if (typeof options.maxAge === "number")
     options.expires = new Date(Date.now() + options.maxAge * 1000);
 
-  const cookie = serialize(name, stringify(value), options);
+  const cookie = serialize(name, value, options);
   headers.append("Set-Cookie", cookie);
 
   await invalidateCache(Cache.SESSION + user.id);
