@@ -1,16 +1,12 @@
 import { hash } from "argon2";
-import { sign } from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 
 import { prisma } from "@kafeasist/db";
 import { sendEmail, VerifyEmail } from "@kafeasist/email";
-import { invalidateCache, readCache, setCache } from "@kafeasist/redis";
+import { Cache, invalidateCache } from "@kafeasist/redis";
 
-import {
-  JWT_SECRET,
-  JWT_SIGNING_OPTIONS,
-  REDIS_SESSION_PREFIX,
-} from "../config";
+import { createToken } from "../helpers/create-token";
+import { getPayloadFromJWT } from "../helpers/get-payload-from-jwt";
 import {
   validateEmail,
   validateNameLastName,
@@ -19,8 +15,6 @@ import {
 } from "../helpers/validators";
 import { AuthResponse } from "../types/AuthResponse";
 import { Session } from "../types/Session";
-
-const CACHE_PREFIX = "register";
 
 interface RegisterParams {
   firstName: string;
@@ -142,15 +136,14 @@ export const register = async (
     twoFA: false,
   };
 
-  const jwt = sign({ id: user.id }, JWT_SECRET, JWT_SIGNING_OPTIONS);
-
-  await setCache(`${CACHE_PREFIX}:${user.id}`, token, 60 * 60 * 24 * 7);
+  const jwt = createToken({ id: user.id });
+  const jwtVerify = createToken({ email: user.email });
 
   try {
     await sendEmail(
       [user.email],
       "kafeasist hesabın oluşturuldu!",
-      VerifyEmail({ token }),
+      VerifyEmail({ token: jwtVerify }),
     );
   } catch (error: unknown) {
     console.error(error);
@@ -164,24 +157,28 @@ export const register = async (
 };
 
 interface VerifyEmailProps {
-  id: number;
   token: string;
 }
 
+const VERIFY_EMAIL_ERROR =
+  "Bağlantının süresi dolmuş veya geçersiz. Lütfen tekrar deneyin.";
+
 export const verifyEmail = async (props: VerifyEmailProps) => {
-  const { token, id } = props;
+  const { token } = props;
 
-  const redisToken = await readCache(`${CACHE_PREFIX}:${id}`);
+  const response = getPayloadFromJWT<{ email: string }>(token);
+  if (!response.success) return response;
 
-  if (redisToken !== token)
+  const { email } = response.payload;
+
+  if (!email)
     return {
       success: false,
-      message:
-        "Bağlantının süresi dolmuş veya geçersiz. Lütfen tekrar deneyin.",
+      message: VERIFY_EMAIL_ERROR,
     };
 
   const user = await prisma.user.update({
-    where: { id },
+    where: { email },
     data: { emailVerified: new Date() },
   });
 
@@ -191,8 +188,7 @@ export const verifyEmail = async (props: VerifyEmailProps) => {
       message: "Bilinmeyen bir hata oluştu",
     };
 
-  await invalidateCache(`${CACHE_PREFIX}:${id}`);
-  await invalidateCache(`${REDIS_SESSION_PREFIX}:${id}`);
+  await invalidateCache(Cache.SESSION + user.id);
 
   return {
     success: true,

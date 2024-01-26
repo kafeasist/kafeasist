@@ -6,7 +6,7 @@ import { validatePassword } from "@kafeasist/auth/src/helpers/validators";
 import { prisma } from "@kafeasist/db";
 import { Cache, invalidateCache } from "@kafeasist/redis";
 
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { KafeasistResponse } from "../types/KafeasistResponse";
 
 export const userRouter = createTRPCRouter({
@@ -165,54 +165,28 @@ export const userRouter = createTRPCRouter({
    * @param input
    * @returns Promise<KafeasistResponse>
    */
-  verifyEmail: protectedProcedure
+  verifyEmail: publicProcedure
     .input(
       z.object({
         token: z.string(),
       }),
     )
-    .mutation(
-      async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
+    .mutation(async ({ input }): Promise<KafeasistResponse<typeof input>> => {
+      const { token } = input;
 
-        const user = await prisma.user.findUnique({
-          where: {
-            id: ctx.session.id,
-          },
-        });
+      const response = await verifyEmail({ token });
 
-        if (!user)
-          return {
-            error: true,
-            message: "Kullanıcı bulunamadı",
-            fields: [],
-          };
-
-        if (user.emailVerified)
-          return {
-            error: true,
-            message: "E-posta zaten doğrulanmış!",
-            fields: [],
-          };
-
-        const response = await verifyEmail({
-          id: user.id,
-          token: input.token,
-        });
-
-        if (response.success) {
-          return {
-            error: false,
-            message: response.message,
-          };
-        }
-
+      if (!response.success) {
         return {
           error: true,
           message: response.message,
           fields: [],
         };
-      },
-    ),
+      }
+
+      return {
+        error: false,
+        message: response.message,
+      };
+    }),
 });

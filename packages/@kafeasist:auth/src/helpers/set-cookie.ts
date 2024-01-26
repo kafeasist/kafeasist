@@ -1,7 +1,10 @@
 import { serialize, type CookieSerializeOptions } from "cookie";
 import { stringify } from "superjson";
 
+import { Cache, invalidateCache } from "@kafeasist/redis";
+
 import { COOKIE_NAME } from "../config";
+import { Session } from "../types/Session";
 
 const defaultCookieOptions: CookieSerializeOptions = {
   path: "/",
@@ -13,25 +16,26 @@ const defaultCookieOptions: CookieSerializeOptions = {
 /**
  * Set a session cookie
  * @param res NextApiResponse
- * @param value Cookie value
+ * @param user Session user
  * @param name Cookie name (default: COOKIE_NAME)
  * @param options Cookie options (default: defaultCookieOptions)
  * @returns void
  */
-export const setCookie = (
+export const setCookie = async (
   headers: Headers,
-  value: unknown,
+  user: Session,
   name: string = COOKIE_NAME,
   options: CookieSerializeOptions = defaultCookieOptions,
 ) => {
   options = { ...defaultCookieOptions, ...options };
 
-  const stringValue =
-    typeof value === "object" ? "j:" + stringify(value) : String(value);
+  const value = { id: user.id };
 
   if (typeof options.maxAge === "number")
     options.expires = new Date(Date.now() + options.maxAge * 1000);
 
-  const cookie = serialize(name, stringValue, options);
+  const cookie = serialize(name, stringify(value), options);
   headers.append("Set-Cookie", cookie);
+
+  await invalidateCache(Cache.SESSION + user.id);
 };

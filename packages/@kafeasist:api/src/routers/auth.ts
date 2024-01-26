@@ -47,7 +47,7 @@ export const authRouter = createTRPCRouter({
         ctx.session = response.session;
 
         // Set the cookie with the token returned from the server
-        setCookie(ctx.headers, response.token);
+        await setCookie(ctx.headers, response.session);
       }
 
       return response;
@@ -74,7 +74,7 @@ export const authRouter = createTRPCRouter({
         ctx.session = response.session;
 
         // Set the cookie with the token returned from the server
-        setCookie(ctx.headers, response.token);
+        await setCookie(ctx.headers, response.session);
       }
 
       return response;
@@ -129,8 +129,11 @@ export const authRouter = createTRPCRouter({
       const response = await resetPassword(input);
 
       if (response.success) {
+        // Assign the session to the context
+        ctx.session = response.session;
+
         // Set the cookie with the token returned from the server
-        setCookie(ctx.headers, response.token);
+        await setCookie(ctx.headers, response.session);
       }
 
       return response;

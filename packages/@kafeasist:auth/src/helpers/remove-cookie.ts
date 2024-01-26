@@ -4,7 +4,7 @@ import { COOKIE_NAME } from "../config";
 
 /**
  * Remove a session cookie
- * @param res NextApiResponse
+ * @param headers Headers
  * @param name Cookie name to remove (default: COOKIE_NAME)
  * @returns void
  */

@@ -1,12 +1,11 @@
 import { parse } from "cookie";
-import { verify } from "jsonwebtoken";
 
 import { prisma } from "@kafeasist/db";
 import { readCache, setCache } from "@kafeasist/redis";
 
 import { REDIS_SESSION_PREFIX } from "../config";
 import type { Session } from "../types/Session";
-import { decodeJwt } from "./decode-jwt";
+import { getPayloadFromJWT } from "./get-payload-from-jwt";
 
 const REDIS_TTL = 60 * 60 * 24; // 1 day
 
@@ -23,18 +22,15 @@ export const getSessionFromCookie = async (
 
   if (!token) return null;
 
-  if (!verify(token, process.env.JWT_SECRET!)) return null;
+  const response = getPayloadFromJWT<{ id: number }>(token);
+  if (!response.success) return null;
 
-  const payload = decodeJwt(token) as { id: number };
+  const { id } = response.payload;
 
-  const session = await readCache<Session>(`session:${payload.id}`);
+  const session = await readCache<Session>(`session:${id}`);
 
   if (!session) {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: payload.id,
-      },
-    });
+    const user = await prisma.user.findUnique({ where: { id } });
 
     if (!user) return null;
 

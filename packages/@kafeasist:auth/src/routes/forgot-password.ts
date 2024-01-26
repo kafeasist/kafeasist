@@ -1,10 +1,11 @@
 import { hash } from "argon2";
-import { sign, verify } from "jsonwebtoken";
+import { verify } from "jsonwebtoken";
 
 import { prisma } from "@kafeasist/db";
 import { ForgotPasswordEmail, sendEmail } from "@kafeasist/email";
 
-import { JWT_SECRET, JWT_SIGNING_OPTIONS } from "../config";
+import { JWT_SECRET } from "../config";
+import { createToken } from "../helpers/create-token";
 import { decodeJwt } from "../helpers/decode-jwt";
 import { validateEmail, validatePassword } from "../helpers/validators";
 import { AuthResponse } from "../types/AuthResponse";
@@ -43,7 +44,7 @@ export const forgotPassword = async (
   const EMAIL_ERROR = "E-posta gönderilirken bir hata ile karşılaşıldı.";
 
   if (user) {
-    const token = sign({ id: user.id }, JWT_SECRET, JWT_SIGNING_OPTIONS);
+    const token = createToken({ id: user.id });
 
     const result = await sendEmail(
       [user.email],
@@ -155,7 +156,7 @@ export const resetPassword = async (
 
   return {
     success: false,
-    message: "Bir haya oluştu. Lütfen tekrar deneyin.",
+    message: "Bir hata oluştu. Lütfen tekrar deneyin.",
     fields: [],
   };
 };

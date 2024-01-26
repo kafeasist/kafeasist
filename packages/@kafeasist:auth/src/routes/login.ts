@@ -1,9 +1,8 @@
 import { verify } from "argon2";
-import { sign } from "jsonwebtoken";
 
 import { prisma } from "@kafeasist/db";
 
-import { JWT_SECRET, JWT_SIGNING_OPTIONS } from "../config";
+import { createToken } from "../helpers/create-token";
 import { AuthResponse } from "../types/AuthResponse";
 import { Session } from "../types/Session";
 
@@ -48,7 +47,7 @@ export const login = async (
     // companies: user.companies,
   };
 
-  const jwt = sign({ id: user.id }, JWT_SECRET, JWT_SIGNING_OPTIONS);
+  const jwt = createToken({ id: user.id });
 
   return {
     success: true,
