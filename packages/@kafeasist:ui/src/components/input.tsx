@@ -57,7 +57,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
                   input.slice(3, 6) +
                   " " +
                   input.slice(6, 8) +
-                  " " +
+                  "-" +
                   input.slice(8, 10);
             }
 

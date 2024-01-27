@@ -1,3 +1,3 @@
 export const CompanySwitcher = () => {
-  return <div>This is company switcher!</div>;
+  return <div>Company switcher!</div>;
 };

@@ -43,9 +43,7 @@ export default function DashboardLayout({
             <div className="flex w-full justify-center">
               <Spinner />
             </div>
-          ) : data!.length > 0 ? (
-            children
-          ) : pathname === "/panel/sirketlerim/olustur" ? (
+          ) : data!.length > 0 || pathname === "/panel/sirketlerim/olustur" ? (
             children
           ) : (
             <NoCompaniesFound />

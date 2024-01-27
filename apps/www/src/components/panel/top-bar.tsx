@@ -13,7 +13,7 @@ export function TopBar({ className, ...props }: TopBarProps) {
   return (
     <section
       className={cn(
-        "fixed top-0 z-20 w-full border-b border-border bg-secondary px-4 py-4",
+        "fixed top-0 z-20 w-full border-b border-border bg-secondary px-6 py-4",
         className,
       )}
       {...props}
