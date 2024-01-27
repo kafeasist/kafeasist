@@ -9,11 +9,11 @@ import { Logo } from "../logo";
 
 interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export default function TopBar({ className, ...props }: TopBarProps) {
+export function TopBar({ className, ...props }: TopBarProps) {
   return (
     <section
       className={cn(
-        "sticky top-0 z-10 w-full border border-border bg-secondary px-4 py-4",
+        "fixed top-0 z-20 w-full border-b border-border bg-secondary px-4 py-4",
         className,
       )}
       {...props}

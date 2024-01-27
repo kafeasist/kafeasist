@@ -18,7 +18,7 @@ const alertVariants = cva("rounded-xl p-4 space-x-3 relative flex", {
   },
 });
 
-interface AlertProps
+export interface AlertProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof alertVariants> {
   title?: string;
@@ -51,7 +51,7 @@ export function Alert({
       <AlertTriangle className="mt-0.5 h-8 w-8 md:h-4 md:w-4" />
       <div className="space-y-1">
         <h2 className="max-w-[80%] text-sm font-bold">{title}</h2>
-        <div className="md:flex md:items-center md:space-x-2">
+        <div className="lg:flex lg:items-center lg:space-x-2">
           <p className="text-sm">{description}</p>
           {action}
         </div>

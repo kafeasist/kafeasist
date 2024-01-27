@@ -1,6 +1,6 @@
 import * as React from "react";
 import { AreaChart } from "@tremor/react";
-import { DollarSign, DownloadCloud } from "lucide-react";
+import { DollarSign, DownloadCloud, Search } from "lucide-react";
 
 import { Button, cn, Input, Progress, Separator, Tooltip } from "@kafeasist/ui";
 
@@ -178,9 +178,12 @@ export default function Panel() {
             colors={["indigo", "cyan"]}
           />
         </div>
-        <div className="col-span-6 md:col-span-2">
+        <div className="col-span-6 lg:col-span-2">
           <div className="space-y-4">
-            <Input placeholder="Ara..." />
+            <Input
+              icon={<Search className="h-4 w-4 opacity-50" />}
+              placeholder="Ara..."
+            />
             <div className="h-full space-y-4 rounded-xl border border-border px-6 py-4">
               <h2 className="font-bold">Son siparişler</h2>
               <Separator className="w-full" />

@@ -13,6 +13,7 @@
     "@kafeasist/prettier": "^0.1.0",
     "@kafeasist/tailwind": "^0.1.0",
     "@kafeasist/typescript": "^0.1.0",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-progress": "^1.0.3",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
