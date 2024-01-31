@@ -10,6 +10,10 @@
   kafeasist is a café/restaurant/bar management software made with ❤️. kafeasist is a software as a service that you can subscribe to monthly or yearly and leave whenever you want. kafeasist makes managing your business much more simpler with easy-to-use dashboard. Keeps track of your data and stores it in a cloud server so you wouldn't lose any of it! With kafeasist, you won't need any other software to run your business.
 </p>
 
+<p align="center">
+  <img src="https://github.com/kafeasist/soon/assets/40398628/3fc14efb-b2ff-4c56-9363-710665511381" alt="Dashboard image" />
+</p>
+
 # Table of contents
 
 - [Getting started](#getting-started)
