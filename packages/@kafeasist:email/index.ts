@@ -14,7 +14,7 @@ export async function sendEmail(
   react: React.JSX.Element,
 ) {
   const { data, error } = await resend.emails.send({
-    from: "team@kafeasist.com",
+    from: process.env.NO_REPLY_EMAIL ?? "no-reply@kafeasist.com",
     to,
     subject,
     react,
