@@ -429,8 +429,8 @@ importers:
         specifier: ^0.1.0
         version: link:../@kafeasist:typescript
       '@upstash/ratelimit':
-        specifier: ^0.4.2
-        version: 0.4.2(@upstash/redis@1.20.4)
+        specifier: ^0.4.4
+        version: 0.4.4
       '@upstash/redis':
         specifier: ^1.20.4
         version: 1.20.4
@@ -3484,13 +3484,10 @@ packages:
       - encoding
     dev: false
 
-  /@upstash/ratelimit@0.4.2(@upstash/redis@1.20.4):
-    resolution: {integrity: sha512-nuuPK2IoPJywAK/8cosNiyM3vlcL6tFPaAwrLes0j2J5b1Hs/W7XDO72/AuC+K+dt89TP50WK9bvDFUwLRuhvw==}
-    peerDependencies:
-      '@upstash/redis': ^1.20.1
+  /@upstash/ratelimit@0.4.4:
+    resolution: {integrity: sha512-y3q6cNDdcRQ2MRPRf5UNWBN36IwnZ4kAEkGoH3i6OqdWwz4qlBxNsw4/Rpqn9h93+Nx1cqg5IOq7O2e2zMJY1w==}
     dependencies:
       '@upstash/core-analytics': 0.0.6
-      '@upstash/redis': 1.20.4
     transitivePeerDependencies:
       - encoding
     dev: false
