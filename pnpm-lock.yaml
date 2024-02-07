@@ -105,8 +105,8 @@ importers:
         specifier: ^5.17.19
         version: 5.17.19(@tanstack/react-query@5.17.19)(next@14.0.4)(react@18.2.0)
       '@tremor/react':
-        specifier: ^3.13.2
-        version: 3.13.2(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.4.0)
+        specifier: ^3.13.4
+        version: 3.13.4(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.4.0)
       '@trpc/client':
         specifier: next
         version: 11.0.0-next-beta.228(@trpc/server@11.0.0-next-beta.228)
@@ -3032,8 +3032,8 @@ packages:
     resolution: {integrity: sha512-SYXOBTjJb05rXa2vl55TTwO40A6wKu0R5i1qQwhJYNDIqaIGF7D0HsLw+pJAyi2OvntlEIVusx3xtbbgSUi6zg==}
     dev: false
 
-  /@tremor/react@3.13.2(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.4.0):
-    resolution: {integrity: sha512-Imw5wei9A8fOUIKkqt8+XDzY8NCh88cO/hmzhv0HV+SMydj/Km0WpMvQqeo1Ft6GUIVNhcIo1L/T3/02+OwHWA==}
+  /@tremor/react@3.13.4(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.4.0):
+    resolution: {integrity: sha512-T5RZDuNNsZqQui7KEbSlZzUJnP01Vq2L8eW83iXqdi4DGG9X+CJf5JoJcNWcF2IR3NOr+HEzcgUOFzzMSymWmg==}
     peerDependencies:
       react: ^18.0.0
       react-dom: '>=16.6.0'
@@ -3045,7 +3045,7 @@ packages:
       react: 18.2.0
       react-day-picker: 8.10.0(date-fns@2.30.0)(react@18.2.0)
       react-dom: 18.2.0(react@18.2.0)
-      react-transition-group: 4.4.5(react-dom@18.2.0)(react@18.2.0)
+      react-transition-state: 2.1.1(react-dom@18.2.0)(react@18.2.0)
       recharts: 2.10.4(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
       tailwind-merge: 1.14.0
     transitivePeerDependencies:
@@ -4618,13 +4618,6 @@ packages:
     resolution: {integrity: sha512-LnuPJ+dwqKDIyotW1VzmOZ5TONUN7CwkCR5hrgawTUbkBGYdeoNLZo6nNfGkCrjtE1nXXaj7iMMpDa8/d9WoIA==}
     dependencies:
       '@babel/runtime': 7.23.7
-    dev: false
-
-  /dom-helpers@5.2.1:
-    resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
-    dependencies:
-      '@babel/runtime': 7.23.7
-      csstype: 3.1.2
     dev: false
 
   /dom-serializer@2.0.0:
@@ -7875,16 +7868,12 @@ packages:
       react-lifecycles-compat: 3.0.4
     dev: false
 
-  /react-transition-group@4.4.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
+  /react-transition-state@2.1.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-kQx5g1FVu9knoz1T1WkapjUgFz08qQ/g1OmuWGi3/AoEFfS0kStxrPlZx81urjCXdz2d+1DqLpU6TyLW/Ro04Q==}
     peerDependencies:
-      react: '>=16.6.0'
-      react-dom: '>=16.6.0'
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
     dependencies:
-      '@babel/runtime': 7.23.7
-      dom-helpers: 5.2.1
-      loose-envify: 1.4.0
-      prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -7961,7 +7950,7 @@ packages:
       react: ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      clsx: 2.0.0
+      clsx: 2.1.0
       eventemitter3: 4.0.7
       lodash: 4.17.21
       prop-types: 15.8.1
