@@ -261,7 +261,7 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1
       dotenv-cli:
-        specifier: ^7.2.1
+        specifier: ^7.3.0
         version: 7.3.0
       jsonwebtoken:
         specifier: ^9.0.0
@@ -324,7 +324,7 @@ importers:
         specifier: latest
         version: 0.0.7(react@18.2.0)
       dotenv-cli:
-        specifier: ^7.2.1
+        specifier: ^7.3.0
         version: 7.3.0
       react:
         specifier: ^18.2.0
@@ -435,7 +435,7 @@ importers:
         specifier: ^1.20.4
         version: 1.20.4
       dotenv-cli:
-        specifier: ^7.2.1
+        specifier: ^7.3.0
         version: 7.3.0
       typescript:
         specifier: ^5.3.3
