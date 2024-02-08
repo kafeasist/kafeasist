@@ -23,7 +23,7 @@
     "@react-email/row": "latest",
     "@react-email/section": "latest",
     "@react-email/text": "latest",
-    "dotenv-cli": "^7.2.1",
+    "dotenv-cli": "^7.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-email": "2.0.0",
