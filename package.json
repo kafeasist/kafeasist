@@ -21,7 +21,7 @@
     "type-check": "turbo type-check"
   },
   "engines": {
-    "node": ">=21"
+    "node": ">=21.6.1"
   },
   "dependencies": {
     "@changesets/cli": "^2.27.1",
