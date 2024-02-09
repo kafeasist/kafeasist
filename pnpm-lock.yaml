@@ -201,8 +201,8 @@ importers:
         specifier: ^8.47.0
         version: 8.47.0
       superjson:
-        specifier: ^1.12.3
-        version: 1.12.3
+        specifier: ^1.13.3
+        version: 1.13.3
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -243,8 +243,8 @@ importers:
         specifier: latest
         version: 9.0.2
       superjson:
-        specifier: ^1.12.3
-        version: 1.12.3
+        specifier: ^1.13.3
+        version: 1.13.3
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -8716,8 +8716,8 @@ packages:
       ts-interface-checker: 0.1.13
     dev: false
 
-  /superjson@1.12.3:
-    resolution: {integrity: sha512-0j+U70KUtP8+roVPbwfqkyQI7lBt7ETnuA7KXbTDX3mCKiD/4fXs2ldKSMdt0MCfpTwiMxo20yFU3vu6ewETpQ==}
+  /superjson@1.13.3:
+    resolution: {integrity: sha512-mJiVjfd2vokfDxsQPOwJ/PtanO87LhpYY88ubI5dUB1Ab58Txbyje3+jpm+/83R/fevaq/107NNhtYBLuoTrFg==}
     engines: {node: '>=10'}
     dependencies:
       copy-anything: 3.0.5
