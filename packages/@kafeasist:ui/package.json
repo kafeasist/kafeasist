@@ -20,7 +20,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "class-variance-authority": "^0.7.0",
     "eslint": "^8.47.0",
-    "lucide-react": "^0.312.0",
+    "lucide-react": "^0.323.0",
     "prettier": "^3.0.2",
     "react-hook-form": "^7.49.2",
     "tailwind-merge": "^2.2.1",
