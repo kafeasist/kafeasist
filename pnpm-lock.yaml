@@ -429,8 +429,8 @@ importers:
         specifier: ^0.1.0
         version: link:../@kafeasist:typescript
       '@upstash/ratelimit':
-        specifier: ^0.4.4
-        version: 0.4.4
+        specifier: ^1.0.1
+        version: 1.0.1
       '@upstash/redis':
         specifier: ^1.28.3
         version: 1.28.3
@@ -3411,17 +3411,17 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: false
 
-  /@upstash/core-analytics@0.0.6:
-    resolution: {integrity: sha512-cpPSR0XJAJs4Ddz9nq3tINlPS5aLfWVCqhhtHnXt4p7qr5+/Znlt1Es736poB/9rnl1hAHrOsOvVj46NEXcVqA==}
+  /@upstash/core-analytics@0.0.7:
+    resolution: {integrity: sha512-lC2j5efqb1haX/fpTGaPUx1rue1WUkOZBVHDzCB7eMIVsRdFFp4xiHtyH/G9omiR1zj39fU5SCTWFiKJH3KOpw==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@upstash/redis': 1.28.3
     dev: false
 
-  /@upstash/ratelimit@0.4.4:
-    resolution: {integrity: sha512-y3q6cNDdcRQ2MRPRf5UNWBN36IwnZ4kAEkGoH3i6OqdWwz4qlBxNsw4/Rpqn9h93+Nx1cqg5IOq7O2e2zMJY1w==}
+  /@upstash/ratelimit@1.0.1:
+    resolution: {integrity: sha512-G9LZ7idhlkuYknbUngCB3qzd7QnkK1xDkFG5jRtEJZuOUS5UKJ0UTKbhalCtp39eX2wu2Ubv8W7HCeaJQOWM0A==}
     dependencies:
-      '@upstash/core-analytics': 0.0.6
+      '@upstash/core-analytics': 0.0.7
     dev: false
 
   /@upstash/redis@1.28.3:
