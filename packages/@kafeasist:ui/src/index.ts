@@ -1,18 +1,22 @@
 import { cx, type CxOptions } from "class-variance-authority";
 import { twMerge } from "tailwind-merge";
 
-export * from "./components/avatar";
-export * from "./components/skeleton";
-export * from "./components/tooltip";
-export * from "./components/button";
-export * from "./components/input";
-export * from "./components/separator";
 export * from "./components/alert";
-export * from "./components/progress";
-export * from "./components/spinner";
+export * from "./components/avatar";
 export * from "./components/banner";
-export * from "./components/form";
+export * from "./components/button";
+export * from "./components/command";
+export * from "./components/dialog";
 export * from "./components/dropdown";
+export * from "./components/form";
+export * from "./components/input";
+export * from "./components/popover";
+export * from "./components/progress";
+export * from "./components/separator";
+export * from "./components/skeleton";
+export * from "./components/spinner";
+export * from "./components/tooltip";
+
 export * from "./hooks/use-element-size";
 
 export function cn(...inputs: CxOptions) {

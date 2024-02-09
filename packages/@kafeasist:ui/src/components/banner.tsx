@@ -46,7 +46,10 @@ export function Banner({
         {action}
       </div>
       {closable ? (
-        <X className="h-4 w-4 cursor-pointer" onClick={() => setClosed(true)} />
+        <X
+          className="h-5 w-5 rounded-md p-0.5 duration-150 hover:bg-foreground/10"
+          onClick={() => setClosed(true)}
+        />
       ) : (
         <div />
       )}

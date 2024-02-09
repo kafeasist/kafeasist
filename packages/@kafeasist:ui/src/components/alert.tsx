@@ -58,7 +58,7 @@ export function Alert({
       </div>
       {closable && (
         <X
-          className="absolute right-4 top-4 h-4 w-4 cursor-pointer"
+          className="absolute right-4 top-4 h-5 w-5 rounded-md p-0.5 duration-150 hover:bg-foreground/10"
           onClick={() => setClosed(true)}
         />
       )}
