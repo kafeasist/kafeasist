@@ -195,8 +195,8 @@ importers:
         specifier: next
         version: 11.0.0-next-beta.228
       argon2:
-        specifier: ^0.30.3
-        version: 0.30.3
+        specifier: ^0.31.2
+        version: 0.31.2
       eslint:
         specifier: ^8.47.0
         version: 8.47.0
@@ -234,8 +234,8 @@ importers:
         specifier: ^20.11.17
         version: 20.11.17
       argon2:
-        specifier: ^0.30.3
-        version: 0.30.3
+        specifier: ^0.31.2
+        version: 0.31.2
       cookie:
         specifier: ^0.6.0
         version: 0.6.0
@@ -3758,14 +3758,14 @@ packages:
     resolution: {integrity: sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==}
     dev: false
 
-  /argon2@0.30.3:
-    resolution: {integrity: sha512-DoH/kv8c9127ueJSBxAVJXinW9+EuPA3EMUxoV2sAY1qDE5H9BjTyVF/aD2XyHqbqUWabgBkIfcP3ZZuGhbJdg==}
+  /argon2@0.31.2:
+    resolution: {integrity: sha512-QSnJ8By5Mth60IEte45w9Y7v6bWcQw3YhRtJKKN8oNCxnTLDiv/AXXkDPf2srTMfxFVn3QJdVv2nhXESsUa+Yg==}
     engines: {node: '>=14.0.0'}
     requiresBuild: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       '@phc/format': 1.0.0
-      node-addon-api: 5.1.0
+      node-addon-api: 7.1.0
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -7165,8 +7165,9 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /node-addon-api@5.1.0:
-    resolution: {integrity: sha512-eh0GgfEkpnoWDq+VY8OyvYhFEzBk6jIYbRKdIlyTiAXIVJ8PyBaKb0rp7oDtoddbdoHWhq8wwr+XZ81F1rpNdA==}
+  /node-addon-api@7.1.0:
+    resolution: {integrity: sha512-mNcltoe1R8o7STTegSOHdnJNN7s5EUvhoS7ShnTHDyOSd+8H+UdWODq6qSv67PjC8Zc5JRT8+oLAMCr0SIXw7g==}
+    engines: {node: ^16 || ^18 || >= 20}
     dev: false
 
   /node-fetch@2.7.0:

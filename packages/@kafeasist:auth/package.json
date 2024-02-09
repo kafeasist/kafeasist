@@ -16,7 +16,7 @@
     "@types/cookie": "^0.6.0",
     "@types/jsonwebtoken": "latest",
     "@types/node": "^20.11.17",
-    "argon2": "^0.30.3",
+    "argon2": "^0.31.2",
     "cookie": "^0.6.0",
     "jsonwebtoken": "latest",
     "superjson": "^1.12.3",
