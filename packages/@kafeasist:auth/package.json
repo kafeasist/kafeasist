@@ -13,11 +13,11 @@
     "@kafeasist/email": "^0.1.0",
     "@kafeasist/redis": "^0.1.0",
     "@kafeasist/typescript": "^0.1.0",
-    "@types/cookie": "^0.5.1",
+    "@types/cookie": "^0.6.0",
     "@types/jsonwebtoken": "latest",
     "@types/node": "^20",
     "argon2": "^0.30.3",
-    "cookie": "^0.5.0",
+    "cookie": "^0.6.0",
     "jsonwebtoken": "latest",
     "superjson": "^1.12.3",
     "typescript": "^5.3.3"
