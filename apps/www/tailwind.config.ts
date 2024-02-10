@@ -7,7 +7,7 @@ export default {
   content: [
     ...baseConfig.content,
     "../../packages/@kafeasist:ui/src/**/*.{ts,tsx}",
-    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
+    "../../node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
   ],
   presets: [baseConfig],
   theme: {
@@ -76,6 +76,31 @@ export default {
             inverted: colors.gray[950],
           },
         },
+      },
+      borderRadius: {
+        "tremor-small": "0.375rem",
+        "tremor-default": "0.5rem",
+        "tremor-full": "9999px",
+      },
+      boxShadow: {
+        // light
+        "tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        "tremor-card":
+          "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+        "tremor-dropdown":
+          "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+        // dark
+        "dark-tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        "dark-tremor-card":
+          "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+        "dark-tremor-dropdown":
+          "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+      },
+      fontSize: {
+        "tremor-label": "0.75rem",
+        "tremor-default": ["0.875rem", { lineHeight: "1.25rem" }],
+        "tremor-title": ["1.125rem", { lineHeight: "1.75rem" }],
+        "tremor-metric": ["1.875rem", { lineHeight: "2.25rem" }],
       },
     },
     safelist: [
