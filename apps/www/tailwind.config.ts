@@ -7,7 +7,10 @@ export default {
   content: [
     ...baseConfig.content,
     "../../packages/@kafeasist:ui/src/**/*.{ts,tsx}",
+
+    // Tremor
     "../../node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
   ],
   presets: [baseConfig],
   theme: {
@@ -97,7 +100,7 @@ export default {
           "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
       },
       fontSize: {
-        "tremor-label": "0.75rem",
+        "tremor-label": ["0.75rem", { lineHeight: "1rem" }],
         "tremor-default": ["0.875rem", { lineHeight: "1.25rem" }],
         "tremor-title": ["1.125rem", { lineHeight: "1.75rem" }],
         "tremor-metric": ["1.875rem", { lineHeight: "2.25rem" }],

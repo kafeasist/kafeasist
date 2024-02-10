@@ -49,7 +49,7 @@ export const Alerts = () => {
     <div className="space-y-4">
       {alerts
         .filter((alert) => alert.show === true)
-        .map((alert, index) => (
+        .map(({ show, ...alert }, index) => (
           <Alert key={index} {...alert} />
         ))}
     </div>

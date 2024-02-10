@@ -131,7 +131,7 @@ export function SideBar({
                   isActive && "bg-muted",
                 )}
               >
-                <item.icon size={24} />
+                <item.icon size={20} />
                 <span className="hidden truncate text-sm font-bold md:block">
                   {item.label}
                 </span>
@@ -164,7 +164,7 @@ function UserMenu({ firstName, lastName, email, emailVerified }: SideBarProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex w-full items-center space-x-2.5 rounded-lg p-2 duration-150 ease-in-out hover:bg-muted/50">
+        <div className="flex w-full cursor-pointer items-center space-x-2.5 rounded-lg p-2 duration-150 ease-in-out hover:bg-muted/50">
           {name ? (
             <Avatar alt={name} placeholder={getInitials(name)} />
           ) : (
@@ -193,7 +193,7 @@ function UserMenu({ firstName, lastName, email, emailVerified }: SideBarProps) {
               )}
             </div>
           </div>
-        </button>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-16 md:w-40 lg:w-72">
         <DropdownMenuItem>

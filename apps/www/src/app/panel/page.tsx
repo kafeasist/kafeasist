@@ -100,34 +100,64 @@ function Order({ title, price, date, className, ...props }: OrderProps) {
 export default function Panel() {
   const chartdata = [
     {
-      date: "Jan 22",
-      SemiAnalysis: 2890,
-      "The Pragmatic Engineer": 2338,
+      time: "10:00",
+      Ciro: 2890,
+      "Açık siparişler": 2338,
     },
     {
-      date: "Feb 22",
-      SemiAnalysis: 2756,
-      "The Pragmatic Engineer": 2103,
+      time: "11:00",
+      Ciro: 2756,
+      "Açık siparişler": 2103,
     },
     {
-      date: "Mar 22",
-      SemiAnalysis: 3322,
-      "The Pragmatic Engineer": 2194,
+      time: "12:00",
+      Ciro: 3322,
+      "Açık siparişler": 2194,
     },
     {
-      date: "Apr 22",
-      SemiAnalysis: 3470,
-      "The Pragmatic Engineer": 2108,
+      time: "13:00",
+      Ciro: 3470,
+      "Açık siparişler": 2108,
     },
     {
-      date: "May 22",
-      SemiAnalysis: 3475,
-      "The Pragmatic Engineer": 1812,
+      time: "14:00",
+      Ciro: 3475,
+      "Açık siparişler": 1812,
     },
     {
-      date: "Jun 22",
-      SemiAnalysis: 3129,
-      "The Pragmatic Engineer": 1726,
+      time: "15:00",
+      Ciro: 3129,
+      "Açık siparişler": 1726,
+    },
+    {
+      time: "16:00",
+      Ciro: 2890,
+      "Açık siparişler": 2338,
+    },
+    {
+      time: "17:00",
+      Ciro: 2756,
+      "Açık siparişler": 2103,
+    },
+    {
+      time: "18:00",
+      Ciro: 3322,
+      "Açık siparişler": 2194,
+    },
+    {
+      time: "19:00",
+      Ciro: 3470,
+      "Açık siparişler": 2108,
+    },
+    {
+      time: "20:00",
+      Ciro: 3475,
+      "Açık siparişler": 1812,
+    },
+    {
+      time: "21:00",
+      Ciro: 3129,
+      "Açık siparişler": 1726,
     },
   ];
 
@@ -169,13 +199,20 @@ export default function Panel() {
             </Button>
           </div>
 
+          <div className="flex flex-col space-y-1">
+            <h2 className="text-lg font-bold">Şirket istatistikleri</h2>
+            <p className="text-sm text-muted-foreground">
+              Şirketinizin seçtiğiniz aralıktaki ciro istatistikleri
+            </p>
+          </div>
           <AreaChart
-            className="h-96 w-full"
+            className="h-80 w-full pt-4"
             data={chartdata}
-            index="date"
+            index="time"
+            showLegend={false}
             yAxisWidth={65}
-            categories={["SemiAnalysis", "The Pragmatic Engineer"]}
-            colors={["indigo", "cyan"]}
+            categories={["Ciro", "Açık siparişler"]}
+            colors={["indigo", "rose"]}
           />
         </div>
         <div className="col-span-6 lg:col-span-2">
