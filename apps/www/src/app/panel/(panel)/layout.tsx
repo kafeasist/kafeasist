@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation";
 
 import { Spinner } from "@kafeasist/ui";
 
-import { NoCompaniesFound } from "~/components/panel/no-companies-found";
-import { SideBar } from "~/components/panel/side-bar";
-import { TopBar } from "~/components/panel/top-bar";
 import { useSession } from "~/hooks/use-session";
 import { api } from "~/utils/api";
+import { NoCompaniesFound } from "./_components/no-companies-found";
+import { SideBar } from "./_components/side-bar";
+import { TopBar } from "./_components/top-bar";
 
 export default function DashboardLayout({
   children,

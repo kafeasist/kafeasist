@@ -4,10 +4,10 @@ import { DollarSign, DownloadCloud, Search } from "lucide-react";
 
 import { Button, cn, Input, Progress, Separator, Tooltip } from "@kafeasist/ui";
 
-import { Alerts } from "~/components/panel/alerts";
-import { Filters } from "~/components/panel/filters";
-import { InnerTitle } from "~/components/panel/inner-title";
 import { formatMoney } from "~/utils/format-money";
+import { InnerTitle } from "../_components/inner-title";
+import { Alerts } from "./_components/alerts";
+import { Filters } from "./_components/filters";
 
 interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;

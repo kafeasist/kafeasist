@@ -20,9 +20,9 @@ import {
   Separator,
 } from "@kafeasist/ui";
 
-import { InnerTitle } from "~/components/panel/inner-title";
 import { api } from "~/utils/api";
 import { ToZod } from "~/utils/to-zod";
+import { InnerTitle } from "../../_components/inner-title";
 
 type CreateCompanyInputs = RouterInputs["company"]["create"];
 

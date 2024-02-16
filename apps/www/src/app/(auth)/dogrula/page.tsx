@@ -8,8 +8,8 @@ import { toast } from "sonner";
 
 import { Button, Spinner } from "@kafeasist/ui";
 
-import { AuthWrapper } from "~/components/auth/wrapper";
 import { api } from "~/utils/api";
+import { AuthWrapper } from "../_components/wrapper";
 
 function Footer() {
   return (

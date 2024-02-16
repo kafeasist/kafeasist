@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Separator } from "@kafeasist/ui";
 
-import { InnerTitle } from "~/components/panel/inner-title";
+import { InnerTitle } from "../_components/inner-title";
 
 export default function Masalar() {
   return (

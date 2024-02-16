@@ -20,9 +20,9 @@ import {
   Input,
 } from "@kafeasist/ui";
 
-import { AuthWrapper } from "~/components/auth/wrapper";
 import { api } from "~/utils/api";
 import type { ToZod } from "~/utils/to-zod";
+import { AuthWrapper } from "../_components/wrapper";
 
 type LoginInputs = RouterInputs["auth"]["login"];
 

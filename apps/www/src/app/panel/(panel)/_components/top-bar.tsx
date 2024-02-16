@@ -4,8 +4,7 @@ import * as React from "react";
 
 import { cn } from "@kafeasist/ui";
 
-import { CompanySwitcher } from "../company-switcher";
-import { Logo } from "../logo";
+import { Logo } from "../../../../components/logo";
 
 interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -27,4 +26,8 @@ export function TopBar({ className, ...props }: TopBarProps) {
       </div>
     </section>
   );
+}
+
+function CompanySwitcher() {
+  return <div>Company switcher!</div>;
 }
