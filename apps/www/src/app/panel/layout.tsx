@@ -28,9 +28,18 @@ export default function DashboardLayout({
     enabled: !!user,
   });
 
+  const companies =
+    data?.map((company) => ({
+      id: company.id,
+      name: company.name,
+      address: company.address,
+      plan: company.plan,
+      imageUrl: company.imageUrl,
+    })) || [];
+
   return (
     <div className="min-h-screen w-full">
-      <TopBar />
+      <TopBar companies={companies} isPending={isPending} />
       <div className="flex h-full w-full">
         <SideBar
           firstName={user?.firstName}

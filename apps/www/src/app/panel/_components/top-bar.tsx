@@ -4,7 +4,10 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
 
+import type { Plan } from "@kafeasist/api";
 import {
+  Avatar,
+  Badge,
   Button,
   cn,
   Command,
@@ -17,13 +20,31 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Skeleton,
 } from "@kafeasist/ui";
 
 import { Logo } from "~/components/logo";
+import { getInitials } from "~/utils/get-initials";
 
-interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
+type Company = {
+  id: number;
+  name: string;
+  address: string;
+  plan: Plan;
+  imageUrl: string | null;
+};
 
-export function TopBar({ className, ...props }: TopBarProps) {
+interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {
+  companies: Company[];
+  isPending: boolean;
+}
+
+export function TopBar({
+  className,
+  companies,
+  isPending,
+  ...props
+}: TopBarProps) {
   return (
     <section
       className={cn(
@@ -37,17 +58,21 @@ export function TopBar({ className, ...props }: TopBarProps) {
           <Logo width={39} />
           <span className="invisible text-2xl md:visible">kafeasist</span>
         </div>
-        <CompanySwitcher companies={["testing", "testing2"]} />
+        {isPending ? (
+          <Skeleton className="h-9 w-[18rem]" />
+        ) : (
+          <CompanySwitcher companies={companies} />
+        )}
       </div>
     </section>
   );
 }
 
-function CompanySwitcher({ companies }: { companies: string[] }) {
+function CompanySwitcher({ companies }: { companies: Company[] }) {
   const [open, setOpen] = React.useState(false);
-  const [selectedCompany, setSelectedCompany] = React.useState<string>(
-    companies[0]!,
-  );
+  const [selectedCompany, setSelectedCompany] = React.useState<
+    Company | undefined
+  >(companies[0]);
   const { push } = useRouter();
 
   return (
@@ -60,7 +85,21 @@ function CompanySwitcher({ companies }: { companies: string[] }) {
           aria-label="Select a team"
           className="w-[18rem] justify-between truncate"
         >
-          {selectedCompany}
+          {!selectedCompany ? (
+            "Şirketler yükleniyor..."
+          ) : (
+            <div className="flex items-center space-x-2">
+              <Avatar
+                alt="Şirket fotoğrafı"
+                placeholder={getInitials(selectedCompany.name)}
+                className="h-8 w-8"
+                src={selectedCompany.imageUrl || ""}
+                size={24}
+              />
+              <span className="truncate">{selectedCompany.name}</span>
+              <Badge variant="outline">{selectedCompany.plan}</Badge>
+            </div>
+          )}
           <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -73,18 +112,30 @@ function CompanySwitcher({ companies }: { companies: string[] }) {
             </CommandEmpty>
             {companies.map((company) => (
               <CommandItem
-                key={company}
+                key={company.id}
                 onSelect={() => {
                   setSelectedCompany(company);
                   setOpen(false);
                 }}
                 className="py-2 text-sm"
               >
-                {company}
+                <div className="flex items-center space-x-2">
+                  <Avatar
+                    alt="Şirket fotoğrafı"
+                    placeholder={getInitials(company.name)}
+                    className="h-8 w-8"
+                    src={company.imageUrl || ""}
+                    size={24}
+                  />
+                  <span className="truncate">{company.name}</span>
+                  <Badge variant="outline">{company.plan}</Badge>
+                </div>
                 <Check
                   className={cn(
                     "ml-auto h-4 w-4",
-                    selectedCompany === company ? "opacity-100" : "opacity-0",
+                    selectedCompany?.name === company.name
+                      ? "opacity-100"
+                      : "opacity-0",
                   )}
                 />
               </CommandItem>

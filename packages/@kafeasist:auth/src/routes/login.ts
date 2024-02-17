@@ -1,6 +1,7 @@
 import { verify } from "argon2";
 
 import { prisma } from "@kafeasist/db";
+import { Cache, invalidateCache } from "@kafeasist/redis";
 
 import { createToken } from "../helpers/create-token";
 import { AuthResponse } from "../types/AuthResponse";
@@ -48,6 +49,7 @@ export const login = async (
   };
 
   const jwt = createToken({ id: user.id });
+  await invalidateCache(Cache.COMPANY + user.id);
 
   return {
     success: true,

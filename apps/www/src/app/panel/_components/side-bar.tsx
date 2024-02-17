@@ -6,6 +6,7 @@ import {
   BadgeCheck,
   BarChart3,
   Building2,
+  CreditCard,
   Croissant,
   Home,
   LayoutGrid,
@@ -30,6 +31,7 @@ import {
 } from "@kafeasist/ui";
 
 import { api } from "~/utils/api";
+import { getInitials } from "~/utils/get-initials";
 
 type Navigation =
   | "dashboard"
@@ -39,7 +41,7 @@ type Navigation =
   | "analytics"
   | "integrations"
   | "companies"
-  | "settings";
+  | "billing";
 
 const navigationItems: {
   id: Navigation;
@@ -90,10 +92,10 @@ const navigationItems: {
     icon: Building2,
   },
   {
-    id: "settings",
-    label: "Ayarlar",
-    href: "/panel/ayarlar",
-    icon: Settings,
+    id: "billing",
+    label: "Faturalandırma",
+    href: "/panel/faturalandirma",
+    icon: CreditCard,
   },
 ];
 
@@ -217,10 +219,4 @@ function UserMenu({ firstName, lastName, email, emailVerified }: SideBarProps) {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
-
-function getInitials(name: string) {
-  const [firstName, lastName] = name.split(" ");
-
-  return ((firstName?.[0] ?? "") + (lastName?.[0] ?? "")).toLocaleUpperCase();
 }
