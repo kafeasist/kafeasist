@@ -54,13 +54,13 @@ const handler = async (req: Request) => {
       const isQuery = type === "query";
 
       if (ctx?.headers && isOk && isQuery) {
-        const ONE_HOUR = 60 * 60;
+        // TODO: Temporarily disable cache
+        // const ONE_HOUR = 60 * 60;
+        const NO_CACHE = 1;
 
         return {
           headers: {
-            "Cache-Control": `s-maxage=${ONE_HOUR}, state-while-revalidate=${
-              ONE_HOUR * 24
-            }`,
+            "Cache-Control": `public, s-maxage=${NO_CACHE}`,
           },
         };
       }
