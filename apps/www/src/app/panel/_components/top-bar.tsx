@@ -86,7 +86,7 @@ function CompanySwitcher({ companies }: { companies: Company[] }) {
           className="w-[18rem] justify-between truncate"
         >
           {!selectedCompany ? (
-            "Şirketler yükleniyor..."
+            "Şirket bulunamadı"
           ) : (
             <div className="flex items-center space-x-2">
               <Avatar
