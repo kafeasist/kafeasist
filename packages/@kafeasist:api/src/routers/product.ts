@@ -33,9 +33,6 @@ export const productRouter = createTRPCRouter({
       }): Promise<
         KafeasistResponse<typeof input> & { products?: Product[] }
       > => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const company = await ctx.prisma.company.findFirst({
           where: {
             id: input.companyId,
@@ -104,9 +101,6 @@ export const productRouter = createTRPCRouter({
         ctx,
         input,
       }): Promise<KafeasistResponse<typeof input> & { product?: Product }> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const product = await ctx.prisma.product.findFirst({
           where: {
             id: input.id,
@@ -155,9 +149,6 @@ export const productRouter = createTRPCRouter({
         ctx,
         input,
       }): Promise<KafeasistResponse<typeof input> & { product?: Product }> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         try {
           validateName(input.name);
         } catch (error: unknown) {
@@ -269,9 +260,6 @@ export const productRouter = createTRPCRouter({
         ctx,
         input,
       }): Promise<KafeasistResponse<typeof input> & { product?: Product }> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         try {
           validateName(input.name);
         } catch (error: unknown) {
@@ -363,9 +351,6 @@ export const productRouter = createTRPCRouter({
         ctx,
         input,
       }): Promise<KafeasistResponse<typeof input> & { product?: Product }> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const product = await ctx.prisma.product.delete({
           where: {
             id: input.id,

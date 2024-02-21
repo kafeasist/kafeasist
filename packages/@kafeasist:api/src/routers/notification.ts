@@ -48,9 +48,6 @@ export const notificationRouter = createTRPCRouter({
     )
     .mutation(
       async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const notification = await prisma.notification.findFirst({
           where: {
             id: input.id,

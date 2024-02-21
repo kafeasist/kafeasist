@@ -30,9 +30,6 @@ export const placeRouter = createTRPCRouter({
         ctx,
         input,
       }): Promise<KafeasistResponse<typeof input> & { places?: Place[] }> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const company = await ctx.prisma.company.findFirst({
           where: {
             id: input.companyId,
@@ -93,9 +90,6 @@ export const placeRouter = createTRPCRouter({
         ctx,
         input,
       }): Promise<KafeasistResponse<typeof input> & { place?: Place }> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const company = await ctx.prisma.company.findFirst({
           where: {
             id: input.companyId,

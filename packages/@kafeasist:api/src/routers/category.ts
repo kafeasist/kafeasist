@@ -33,9 +33,6 @@ export const categoryRouter = createTRPCRouter({
       }): Promise<
         KafeasistResponse<typeof input> & { categories?: Category[] }
       > => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const company = await ctx.prisma.company.findFirst({
           where: {
             id: input.companyId,
@@ -106,9 +103,6 @@ export const categoryRouter = createTRPCRouter({
       }): Promise<
         KafeasistResponse<typeof input> & { category?: Category }
       > => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const category = await ctx.prisma.category.findFirst({
           where: {
             id: input.id,
@@ -154,9 +148,6 @@ export const categoryRouter = createTRPCRouter({
       }): Promise<
         KafeasistResponse<typeof input> & { category?: Category }
       > => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         try {
           validateName(input.name);
         } catch (error: unknown) {
@@ -239,9 +230,6 @@ export const categoryRouter = createTRPCRouter({
       }): Promise<
         KafeasistResponse<typeof input> & { category?: Category }
       > => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         try {
           validateName(input.name);
         } catch (error: unknown) {
@@ -316,9 +304,6 @@ export const categoryRouter = createTRPCRouter({
     )
     .mutation(
       async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const category = await ctx.prisma.category.findFirst({
           where: {
             id: input.id,

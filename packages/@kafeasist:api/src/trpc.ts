@@ -67,10 +67,14 @@ export const createCallerFactory = t.createCallerFactory;
 export const protectedProcedure = publicProcedure.use(async (opts) => {
   const { ctx, next } = opts;
 
-  if (!ctx.session) throw new TRPCError({ code: "UNAUTHORIZED" });
+  if (ctx.session == null || !ctx.session)
+    throw new TRPCError({ code: "UNAUTHORIZED" });
 
   return next({
-    ctx,
+    ctx: {
+      ...ctx,
+      session: ctx.session,
+    },
   });
 });
 

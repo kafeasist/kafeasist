@@ -126,9 +126,6 @@ export const companyRouter = createTRPCRouter({
         ctx,
         input,
       }): Promise<KafeasistResponse<typeof input> & { company?: Company }> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         if (!plans.includes(input.plan as any))
           return {
             error: true,
@@ -249,9 +246,6 @@ export const companyRouter = createTRPCRouter({
     )
     .mutation(
       async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         try {
           validatePhone(input.phone);
         } catch (error: unknown) {
@@ -346,9 +340,6 @@ export const companyRouter = createTRPCRouter({
     )
     .mutation(
       async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const companyExists = await prisma.company.findFirst({
           where: {
             id: input.id,
@@ -401,9 +392,6 @@ export const companyRouter = createTRPCRouter({
     )
     .mutation(
       async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         if (!input.plan || !plans.includes(input.plan as any))
           return {
             error: true,

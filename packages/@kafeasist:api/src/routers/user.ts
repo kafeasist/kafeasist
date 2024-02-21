@@ -25,9 +25,6 @@ export const userRouter = createTRPCRouter({
     )
     .mutation(
       async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         try {
           validateNameLastName(input.firstName, input.lastName);
         } catch (error: unknown) {
@@ -82,9 +79,6 @@ export const userRouter = createTRPCRouter({
     )
     .mutation(
       async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         if (input.newPassword !== input.newPasswordAgain)
           return {
             error: true,

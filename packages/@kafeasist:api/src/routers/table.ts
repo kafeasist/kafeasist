@@ -31,9 +31,6 @@ export const tableRouter = createTRPCRouter({
         ctx,
         input,
       }): Promise<KafeasistResponse<typeof input> & { tables?: Table[] }> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const company = await ctx.prisma.company.findFirst({
           where: {
             id: input.companyId,
@@ -88,9 +85,6 @@ export const tableRouter = createTRPCRouter({
         ctx,
         input,
       }): Promise<KafeasistResponse<typeof input> & { tables?: Table[] }> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const place = await ctx.prisma.place.findFirst({
           where: {
             id: input.placeId,
@@ -140,9 +134,6 @@ export const tableRouter = createTRPCRouter({
         ctx,
         input,
       }): Promise<KafeasistResponse<typeof input> & { table?: Table }> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         try {
           validateName(input.name);
         } catch (error: unknown) {
@@ -224,9 +215,6 @@ export const tableRouter = createTRPCRouter({
         ctx,
         input,
       }): Promise<KafeasistResponse<typeof input> & { table?: Table }> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         try {
           validateName(input.name);
         } catch (error: unknown) {
@@ -282,9 +270,6 @@ export const tableRouter = createTRPCRouter({
     )
     .mutation(
       async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
-        if (!ctx.session)
-          return { error: true, message: "Oturum açın", fields: [] };
-
         const table = await ctx.prisma.table.findFirst({
           where: {
             id: input.tableId,
