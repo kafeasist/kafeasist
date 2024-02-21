@@ -5,8 +5,9 @@ import { reportError } from "@kafeasist/error";
 import { resend } from "./lib/resend";
 
 export { ForgotPasswordEmail } from "./emails/forgot-password";
-export { VerifyEmail } from "./emails/verify";
+export { ResetPasswordEmail } from "./emails/reset-password";
 export { VerifyThanksEmail } from "./emails/verify-thanks";
+export { VerifyEmail } from "./emails/verify";
 
 export async function sendEmail(
   to: string[],

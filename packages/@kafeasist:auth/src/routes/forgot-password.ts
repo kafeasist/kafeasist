@@ -2,7 +2,12 @@ import { hash } from "argon2";
 import { verify } from "jsonwebtoken";
 
 import { prisma } from "@kafeasist/db";
-import { ForgotPasswordEmail, sendEmail } from "@kafeasist/email";
+import {
+  ForgotPasswordEmail,
+  ResetPasswordEmail,
+  sendEmail,
+} from "@kafeasist/email";
+import { Cache, invalidateCache } from "@kafeasist/redis";
 
 import { JWT_SECRET } from "../config";
 import { createToken } from "../helpers/create-token";
@@ -139,6 +144,9 @@ export const resetPassword = async (
           };
       }
     }
+
+    await invalidateCache(Cache.SESSION + user.id);
+    await sendEmail([user.email], "Şifre değişikliği", ResetPasswordEmail());
 
     return {
       success: true,
