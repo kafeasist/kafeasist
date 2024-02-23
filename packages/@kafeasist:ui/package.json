@@ -24,7 +24,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "class-variance-authority": "^0.7.0",
     "cmdk": "^0.2.1",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "lucide-react": "^0.338.0",
     "prettier": "^3.2.5",
     "react-hook-form": "^7.50.1",
