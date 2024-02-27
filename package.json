@@ -27,7 +27,7 @@
     "@changesets/cli": "^2.27.1",
     "@kafeasist/prettier": "^0.1.0",
     "@manypkg/cli": "^0.21.2",
-    "@types/eslint": "^8.56.3",
+    "@types/eslint": "^8.56.4",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
     "eslint": "^8.57.0",
