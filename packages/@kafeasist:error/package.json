@@ -10,7 +10,7 @@
   "dependencies": {
     "@kafeasist/prettier": "^0.1.0",
     "@kafeasist/typescript": "^0.1.0",
-    "@sentry/node": "^7.103.0",
+    "@sentry/node": "^7.109.0",
     "eslint": "^8.57.0",
     "typescript": "^5.3.3"
   },
