@@ -17,7 +17,7 @@
     "argon2": "^0.40.1",
     "eslint": "^8.57.0",
     "superjson": "^2.2.1",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.5",
     "zod": "^3.22.4"
   },
   "private": true,
