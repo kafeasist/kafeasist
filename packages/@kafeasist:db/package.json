@@ -16,7 +16,7 @@
     "dotenv-cli": "^7.3.0",
     "jsonwebtoken": "^9.0.2",
     "prisma": "^5.10.2",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.5",
     "uuid": "^9.0.1"
   },
   "private": true,

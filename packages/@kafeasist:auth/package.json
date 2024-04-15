@@ -20,7 +20,7 @@
     "cookie": "^0.6.0",
     "jsonwebtoken": "latest",
     "superjson": "^2.2.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.5"
   },
   "private": true,
   "prettier": "@kafeasist/prettier"
