@@ -261,8 +261,8 @@ importers:
         specifier: ^9.0.8
         version: 9.0.8
       dotenv-cli:
-        specifier: ^7.3.0
-        version: 7.3.0
+        specifier: ^7.4.1
+        version: 7.4.1
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
@@ -324,8 +324,8 @@ importers:
         specifier: latest
         version: 0.0.7(react@18.2.0)
       dotenv-cli:
-        specifier: ^7.3.0
-        version: 7.3.0
+        specifier: ^7.4.1
+        version: 7.4.1
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -435,8 +435,8 @@ importers:
         specifier: ^1.29.0
         version: 1.29.0
       dotenv-cli:
-        specifier: ^7.3.0
-        version: 7.3.0
+        specifier: ^7.4.1
+        version: 7.4.1
       typescript:
         specifier: ^5.4.5
         version: 5.4.5
@@ -4946,8 +4946,8 @@ packages:
       domhandler: 5.0.3
     dev: false
 
-  /dotenv-cli@7.3.0:
-    resolution: {integrity: sha512-314CA4TyK34YEJ6ntBf80eUY+t1XaFLyem1k9P0sX1gn30qThZ5qZr/ZwE318gEnzyYP9yj9HJk6SqwE0upkfw==}
+  /dotenv-cli@7.4.1:
+    resolution: {integrity: sha512-fE1aywjRrWGxV3miaiUr3d2zC/VAiuzEGghi+QzgIA9fEf/M5hLMaRSXb4IxbUAwGmaLi0IozdZddnVU96acag==}
     hasBin: true
     dependencies:
       cross-spawn: 7.0.3
