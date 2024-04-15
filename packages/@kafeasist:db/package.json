@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "@kafeasist/typescript": "^0.1.0",
-    "@prisma/client": "^5.10.2",
+    "@prisma/client": "^5.12.1",
     "@types/uuid": "^9.0.8",
     "dotenv-cli": "^7.3.0",
     "jsonwebtoken": "^9.0.2",
-    "prisma": "^5.10.2",
+    "prisma": "^5.12.1",
     "typescript": "^5.4.5",
     "uuid": "^9.0.1"
   },
