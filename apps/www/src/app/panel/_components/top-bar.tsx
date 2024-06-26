@@ -55,7 +55,7 @@ export function TopBar({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <Logo width={39} />
+          <Logo height={40} width={40} />
           <span className="invisible text-2xl md:visible">kafeasist</span>
         </div>
         {isPending ? (
@@ -82,7 +82,7 @@ function CompanySwitcher({ companies }: { companies: Company[] }) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          aria-label="Select a team"
+          aria-label="Bir şirket seçin"
           className="w-[18rem] justify-between truncate"
         >
           {!selectedCompany ? (
