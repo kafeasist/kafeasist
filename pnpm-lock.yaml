@@ -442,7 +442,7 @@ importers:
         specifier: workspace:*
         version: link:../@kafeasist:typescript
       '@upstash/ratelimit':
-        specifier: ^1.0.3
+        specifier: ^1.2.1
         version: 1.2.1
       '@upstash/redis':
         specifier: ^1.29.0
