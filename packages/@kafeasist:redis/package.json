@@ -6,7 +6,7 @@
   "scripts": {
     "build": "pnpm with-env tsc --build",
     "watch": "pnpm with-env tsc --watch",
-    "type-check": "pnpm with-env tsc --noEmit",
+    "typecheck": "pnpm with-env tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {

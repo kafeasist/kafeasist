@@ -9,7 +9,7 @@
     "start": "pnpm with-env next start",
     "clean": "git clean -xdf .next .turbo node_modules",
     "lint": "eslint",
-    "type-check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "with-env": "dotenv -e ../../.env --"
   },

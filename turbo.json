@@ -35,7 +35,7 @@
       "dependsOn": ["^build"],
       "outputs": [".eslintcache"]
     },
-    "type-check": {
+    "typecheck": {
       "dependsOn": ["^db:generate"],
       "cache": false
     },

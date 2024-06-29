@@ -3,7 +3,8 @@
   "version": "0.1.1",
   "main": "./index.ts",
   "scripts": {
-    "type-check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "clean": "git clean -xdf .turbo node_modules",
     "build": "tsc --build",
     "watch": "tsc --watch"
   },

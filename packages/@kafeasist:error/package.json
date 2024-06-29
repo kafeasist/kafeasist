@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "./index.ts",
   "scripts": {
-    "type-check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "build": "tsc --build",
     "watch": "tsc --watch"
   },

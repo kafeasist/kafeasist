@@ -6,7 +6,7 @@
   "scripts": {
     "watch": "tsc --watch",
     "build": "tsc --build",
-    "type-check": "tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@kafeasist/db": "workspace:*",

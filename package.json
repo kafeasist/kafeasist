@@ -18,7 +18,7 @@
     "lint": "turbo lint",
     "manypkg:check": "manypkg check",
     "manypkg:fix": "manypkg fix",
-    "type-check": "turbo type-check",
+    "typecheck": "turbo typecheck",
     "clean": "git clean -xdf node_modules",
     "clean:all": "turbo clean && pnpm clean"
   },

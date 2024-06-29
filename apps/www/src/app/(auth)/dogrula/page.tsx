@@ -84,7 +84,7 @@ export default function VerifyEmail() {
             className="w-full"
             loading={isPending}
             onClick={() => {
-              setTryAgain((state) => (state = true));
+              setTryAgain(true);
               verify();
             }}
           >
