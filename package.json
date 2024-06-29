@@ -1,44 +1,46 @@
 {
-	"name": "kafeasist",
-	"private": true,
-	"author": {
-		"name": "Ege Onder",
-		"email": "40398628+EgeOnder@users.noreply.github.com",
-		"url": "https://github.com/EgeOnder"
-	},
-	"license": "GNU General Public License v3.0",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/kafeasist/kafeasist.git"
-	},
-	"scripts": {
-		"build": "turbo build",
-		"start": "turbo start",
-		"dev": "NODE_ENV=development turbo dev --concurrency 13",
-		"lint": "turbo lint",
-		"manypkg:check": "manypkg check",
-		"manypkg:fix": "manypkg fix",
-		"type-check": "turbo type-check"
-	},
-	"engines": {
-		"node": ">=21.7.3"
-	},
-	"dependencies": {
-		"@changesets/cli": "^2.27.1",
-		"@kafeasist/prettier": "^0.1.0",
-		"@manypkg/cli": "^0.21.4",
-		"@types/eslint": "^8.56.9",
-		"@typescript-eslint/eslint-plugin": "^7.1.0",
-		"@typescript-eslint/parser": "^7.1.0",
-		"eslint": "^8.57.0",
-		"eslint-config-next": "14.2.1",
-		"eslint-config-prettier": "^9.1.0",
-		"eslint-config-turbo": "^1.12.4",
-		"eslint-plugin-react": "^7.34.1",
-		"prettier": "^3.2.5",
-		"turbo": "^1.12.4",
-		"typescript": "^5.4.5"
-	},
-	"packageManager": "pnpm@9.0.6",
-	"prettier": "@kafeasist/prettier"
+  "name": "kafeasist",
+  "private": true,
+  "author": {
+    "name": "Ege Onder",
+    "email": "40398628+EgeOnder@users.noreply.github.com",
+    "url": "https://github.com/EgeOnder"
+  },
+  "license": "GNU General Public License v3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kafeasist/kafeasist.git"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "start": "turbo start",
+    "dev": "turbo dev --concurrency 13",
+    "lint": "turbo lint",
+    "manypkg:check": "manypkg check",
+    "manypkg:fix": "manypkg fix",
+    "type-check": "turbo type-check",
+    "clean": "git clean -xdf node_modules",
+    "clean:all": "turbo clean && pnpm clean"
+  },
+  "engines": {
+    "node": ">=21.7.3"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@kafeasist/prettier": "workspace:*",
+    "@manypkg/cli": "^0.21.4",
+    "@types/eslint": "^8.56.9",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-turbo": "^1.12.4",
+    "eslint-plugin-react": "^7.34.1",
+    "prettier": "^3.2.5",
+    "turbo": "^2.0.5",
+    "typescript": "^5.4.5"
+  },
+  "packageManager": "pnpm@9.0.6",
+  "prettier": "@kafeasist/prettier"
 }

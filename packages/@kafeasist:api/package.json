@@ -8,12 +8,12 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@kafeasist/auth": "0.2.0",
-    "@kafeasist/db": "^0.1.1",
-    "@kafeasist/prettier": "^0.1.0",
-    "@kafeasist/redis": "^0.1.0",
-    "@kafeasist/typescript": "^0.1.0",
-    "@trpc/server": "next",
+    "@kafeasist/auth": "workspace:*",
+    "@kafeasist/db": "workspace:*",
+    "@kafeasist/prettier": "workspace:*",
+    "@kafeasist/redis": "workspace:*",
+    "@kafeasist/typescript": "workspace:*",
+    "@trpc/server": "11.0.0-rc.364",
     "argon2": "^0.40.1",
     "eslint": "^8.57.0",
     "superjson": "^2.2.1",

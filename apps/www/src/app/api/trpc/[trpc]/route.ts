@@ -3,10 +3,12 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { appRouter, createContext } from "@kafeasist/api";
 import { reportError } from "@kafeasist/error";
 
+import { env } from "~/env";
+
 function setCorsHeaders(res: Response) {
   res.headers.set(
     "Access-Control-Allow-Origin",
-    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "*",
+    env.VERCEL_URL ? `https://${env.VERCEL_URL}` : "*",
   );
   res.headers.set("Access-Control-Request-Method", "*");
   res.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
@@ -34,6 +36,7 @@ const handler = async (req: Request) => {
 
     onError({ error, path }) {
       console.error(`>>> tRPC Error on '${path}'`);
+      // if (env.NODE_ENV === "development") console.error(error);
 
       if (error.code === "INTERNAL_SERVER_ERROR") {
         const { message, stack, name, cause } = error;

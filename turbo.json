@@ -1,39 +1,60 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env", "**/.env.local"],
-  "pipeline": {
+  "ui": "tui",
+  "tasks": {
     "db:generate": {
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
     "db:push": {
+      "dependsOn": ["^db:generate"],
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
     "build": {
       "dependsOn": ["^build", "^db:generate"],
-      "outputs": ["dist/**", ".next/**", ".expo/**"]
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "next-env.d.ts",
+        ".expo/**",
+        ".output/**",
+        ".vercel/output/**"
+      ]
     },
-    "lint": {
-      "outputs": [".eslintcache"]
+    "start": {
+      "dependsOn": ["^build"],
+      "persistent": true,
+      "cache": false
     },
     "dev": {
       "persistent": true,
       "cache": false
     },
+    "lint": {
+      "dependsOn": ["^build"],
+      "outputs": [".eslintcache"]
+    },
     "type-check": {
       "dependsOn": ["^db:generate"],
+      "cache": false
+    },
+    "clean": {
       "cache": false
     }
   },
   "globalEnv": [
-    "DATABASE_URL",
     "NODE_ENV",
-    "EXPO_ROUTER_APP_ROOT",
+    "URL",
+    "DATABASE_URL",
     "JWT_SECRET",
     "COOKIE_NAME",
-    "URL",
     "UPSTASH_REDIS_REST_URL",
-    "UPSTASH_REDIS_REST_TOKEN"
+    "UPSTASH_REDIS_REST_TOKEN",
+    "SENTRY_DSN",
+    "RESEND_API_KEY",
+    "NO_REPLY_EMAIL",
+    "TEAM_EMAIL",
+    "SUPPORT_EMAIL"
   ]
 }

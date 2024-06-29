@@ -10,9 +10,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@kafeasist/prettier": "^0.1.0",
-    "@kafeasist/tailwind": "^0.1.0",
-    "@kafeasist/typescript": "^0.1.0",
+    "@kafeasist/prettier": "workspace:*",
+    "@kafeasist/tailwind": "workspace:*",
+    "@kafeasist/typescript": "workspace:*",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-popover": "^1.0.7",

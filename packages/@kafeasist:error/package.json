@@ -8,8 +8,8 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@kafeasist/prettier": "^0.1.0",
-    "@kafeasist/typescript": "^0.1.0",
+    "@kafeasist/prettier": "workspace:*",
+    "@kafeasist/typescript": "workspace:*",
     "@sentry/node": "^7.110.1",
     "eslint": "^8.57.0",
     "typescript": "^5.4.5"

@@ -10,7 +10,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@kafeasist/typescript": "^0.1.0",
+    "@kafeasist/typescript": "workspace:*",
     "@prisma/client": "^5.12.1",
     "@types/uuid": "^9.0.8",
     "dotenv-cli": "^7.4.1",

@@ -1,5 +1,5 @@
 import { initTRPC, TRPCError } from "@trpc/server";
-import superjson from "superjson";
+import SuperJSON from "superjson";
 import { ZodError } from "zod";
 
 import { Context } from "./context";
@@ -9,7 +9,7 @@ import { Context } from "./context";
  * @see https://trpc.io/docs/server/routers#initialize-trpc
  */
 const t = initTRPC.context<Context>().create({
-  transformer: superjson,
+  transformer: SuperJSON,
   errorFormatter: ({ shape, error }) => {
     return {
       ...shape,

@@ -15,8 +15,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@kafeasist/prettier": "^0.1.0",
-    "@kafeasist/typescript": "^0.1.0",
+    "@kafeasist/prettier": "workspace:*",
+    "@kafeasist/typescript": "workspace:*",
     "@next/eslint-plugin-next": "^14.2.1",
     "@types/eslint": "^8.56.9",
     "@typescript-eslint/eslint-plugin": "^7.1.0",

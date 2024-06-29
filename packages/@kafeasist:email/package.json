@@ -8,8 +8,8 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@kafeasist/error": "^0.1.0",
-    "@kafeasist/typescript": "^0.1.0",
+    "@kafeasist/error": "workspace:*",
+    "@kafeasist/typescript": "workspace:*",
     "@react-email/body": "latest",
     "@react-email/button": "latest",
     "@react-email/column": "latest",

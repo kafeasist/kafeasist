@@ -1,3 +1,8 @@
+import { fileURLToPath } from "url";
+import createJiti from "jiti";
+
+createJiti(fileURLToPath(import.meta.url))("./src/env");
+
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
@@ -8,10 +13,11 @@ const config = {
    * @see https://nextjs.org/docs/app/api-reference/next-config-js/transpilePackages
    */
   transpilePackages: [
-    "@kafeasist/eslint",
-    "@kafeasist/prettier",
+    "@kafeasist/api",
     "@kafeasist/ui",
-    "@kafeasist/tailwind",
+    "@kafeasist/error",
+    "@kafeasist/auth",
+    "@kafeasist/db",
   ],
 
   /**

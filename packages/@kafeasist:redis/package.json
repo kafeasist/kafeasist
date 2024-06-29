@@ -10,7 +10,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@kafeasist/typescript": "^0.1.0",
+    "@kafeasist/typescript": "workspace:*",
     "@upstash/ratelimit": "^1.0.3",
     "@upstash/redis": "^1.29.0",
     "dotenv-cli": "^7.4.1",
