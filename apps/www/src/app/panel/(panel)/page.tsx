@@ -1,5 +1,4 @@
 import * as React from "react";
-import { AreaChart } from "@tremor/react";
 import { DollarSign, DownloadCloud, Search } from "lucide-react";
 
 import { Button, cn, Input, Progress, Separator, Tooltip } from "@kafeasist/ui";
@@ -7,6 +6,7 @@ import { Button, cn, Input, Progress, Separator, Tooltip } from "@kafeasist/ui";
 import { formatMoney } from "~/utils/format-money";
 import { InnerTitle } from "../_components/inner-title";
 import { Alerts } from "./_components/alerts";
+import { Chart } from "./_components/chart";
 import { Filters } from "./_components/filters";
 
 interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -98,69 +98,6 @@ function Order({ title, price, date, className, ...props }: OrderProps) {
 }
 
 export default function Panel() {
-  const chartdata = [
-    {
-      time: "10:00",
-      Ciro: 2890,
-      "Açık siparişler": 2338,
-    },
-    {
-      time: "11:00",
-      Ciro: 2756,
-      "Açık siparişler": 2103,
-    },
-    {
-      time: "12:00",
-      Ciro: 3322,
-      "Açık siparişler": 2194,
-    },
-    {
-      time: "13:00",
-      Ciro: 3470,
-      "Açık siparişler": 2108,
-    },
-    {
-      time: "14:00",
-      Ciro: 3475,
-      "Açık siparişler": 1812,
-    },
-    {
-      time: "15:00",
-      Ciro: 3129,
-      "Açık siparişler": 1726,
-    },
-    {
-      time: "16:00",
-      Ciro: 2890,
-      "Açık siparişler": 2338,
-    },
-    {
-      time: "17:00",
-      Ciro: 2756,
-      "Açık siparişler": 2103,
-    },
-    {
-      time: "18:00",
-      Ciro: 3322,
-      "Açık siparişler": 2194,
-    },
-    {
-      time: "19:00",
-      Ciro: 3470,
-      "Açık siparişler": 2108,
-    },
-    {
-      time: "20:00",
-      Ciro: 3475,
-      "Açık siparişler": 1812,
-    },
-    {
-      time: "21:00",
-      Ciro: 3129,
-      "Açık siparişler": 1726,
-    },
-  ];
-
   return (
     <>
       <div className="space-y-4">
@@ -205,15 +142,7 @@ export default function Panel() {
               Şirketinizin seçtiğiniz aralıktaki ciro istatistikleri
             </p>
           </div>
-          <AreaChart
-            className="h-80 w-full pt-4"
-            data={chartdata}
-            index="time"
-            showLegend={false}
-            yAxisWidth={65}
-            categories={["Ciro", "Açık siparişler"]}
-            colors={["indigo", "rose"]}
-          />
+          <Chart />
         </div>
         <div className="col-span-6 lg:col-span-2">
           <div className="space-y-4">

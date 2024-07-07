@@ -7,6 +7,7 @@ export * from "./components/badge";
 export * from "./components/banner";
 export * from "./components/button";
 export * from "./components/card";
+export * from "./components/chart";
 export * from "./components/command";
 export * from "./components/dialog";
 export * from "./components/dropdown";

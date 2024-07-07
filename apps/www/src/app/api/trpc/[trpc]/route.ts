@@ -30,9 +30,7 @@ const handler = async (req: Request) => {
     endpoint: "/api/trpc",
     req,
     router: appRouter,
-
-    createContext: (opts) =>
-      createContext({ req: opts.req, headers: opts.resHeaders }),
+    createContext,
 
     onError({ error, path }) {
       console.error(`>>> tRPC Error on '${path}'`);

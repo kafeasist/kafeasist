@@ -3,7 +3,7 @@
 import * as React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
+import { httpBatchLink, loggerLink } from "@trpc/client";
 import SuperJSON from "superjson";
 
 import { env } from "~/env";
@@ -30,15 +30,15 @@ const getQueryClient = () => {
 export function APIClientProvider({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
 
-  const [apiClient] = React.useState(() => {
-    return api.createClient({
+  const [apiClient] = React.useState(() =>
+    api.createClient({
       links: [
         loggerLink({
           enabled: (opts) =>
             env.NODE_ENV !== "production" ||
             (opts.direction === "down" && opts.result instanceof Error),
         }),
-        unstable_httpBatchStreamLink({
+        httpBatchLink({
           transformer: SuperJSON,
           url: getBaseUrl() + "/api/trpc",
           fetch: async (url, init) => {
@@ -49,8 +49,8 @@ export function APIClientProvider({ children }: { children: React.ReactNode }) {
           },
         }),
       ],
-    });
-  });
+    }),
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
