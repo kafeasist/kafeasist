@@ -8,6 +8,7 @@ import { InnerTitle } from "../_components/inner-title";
 import { Alerts } from "./_components/alerts";
 import { Chart } from "./_components/chart";
 import { Filters } from "./_components/filters";
+import { PaymentMethod } from "./_components/payment-method";
 
 interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
@@ -144,13 +145,13 @@ export default function Panel() {
           </div>
           <Chart />
         </div>
-        <div className="col-span-6 lg:col-span-2">
+        <div className="col-span-6 space-y-4 lg:col-span-2">
           <div className="space-y-4">
             <Input
               icon={<Search className="h-4 w-4 opacity-50" />}
               placeholder="Ara..."
             />
-            <div className="h-full space-y-4 rounded-xl border border-border px-6 py-4">
+            <div className="space-y-4 rounded-xl border border-border px-6 py-4">
               <h2 className="font-bold">Son siparişler</h2>
               <Separator className="w-full" />
               <Order
@@ -169,6 +170,11 @@ export default function Panel() {
                 date={new Date(2024, 5, 17, 16, 57)}
               />
             </div>
+          </div>
+          <div className="space-y-4 rounded-xl border border-border px-6 py-4">
+            <h2 className="font-bold">Ödeme dağılımı</h2>
+            <Separator className="w-full" />
+            <PaymentMethod />
           </div>
         </div>
       </div>

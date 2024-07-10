@@ -5,6 +5,8 @@ import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@kafeasist/ui";
@@ -39,7 +41,7 @@ const chartConfig = {
 
 export function Chart() {
   return (
-    <ChartContainer config={chartConfig}>
+    <ChartContainer config={chartConfig} className="max-h-[400px] w-full">
       <AreaChart
         accessibilityLayer
         data={chartData}
@@ -57,13 +59,25 @@ export function Chart() {
         />
         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
         <defs>
-          <linearGradient id="fillSiparis" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopOpacity={0.8} />
-            <stop offset="95%" stopOpacity={0.1} />
-          </linearGradient>
           <linearGradient id="fillCiro" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopOpacity={0.8} />
-            <stop offset="95%" stopOpacity={0.1} />
+            <stop offset="5%" stopColor="var(--color-ciro)" stopOpacity={0.8} />
+            <stop
+              offset="95%"
+              stopColor="var(--color-ciro)"
+              stopOpacity={0.1}
+            />
+          </linearGradient>
+          <linearGradient id="fillSiparis" x1="0" y1="0" x2="0" y2="1">
+            <stop
+              offset="5%"
+              stopColor="var(--color-siparis)"
+              stopOpacity={0.8}
+            />
+            <stop
+              offset="95%"
+              stopColor="var(--color-siparis)"
+              stopOpacity={0.1}
+            />
           </linearGradient>
         </defs>
         <Area
@@ -82,6 +96,7 @@ export function Chart() {
           stroke="var(--color-siparis)"
           stackId="a"
         />
+        <ChartLegend content={<ChartLegendContent />} />
       </AreaChart>
     </ChartContainer>
   );
