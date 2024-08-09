@@ -135,8 +135,8 @@ importers:
         specifier: 14.2.1
         version: 14.2.1(eslint@8.57.0)(typescript@5.5.2)
       lucide-react:
-        specifier: ^0.368.0
-        version: 0.368.0(react@18.2.0)
+        specifier: ^0.427.0
+        version: 0.427.0(react@18.2.0)
       next:
         specifier: ^14.2.4
         version: 14.2.4(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -299,43 +299,43 @@ importers:
         version: link:../@kafeasist:typescript
       '@react-email/body':
         specifier: latest
-        version: 0.0.8(react@18.2.0)
+        version: 0.0.9(react@18.2.0)
       '@react-email/button':
         specifier: latest
-        version: 0.0.15(react@18.2.0)
+        version: 0.0.16(react@18.2.0)
       '@react-email/column':
         specifier: latest
-        version: 0.0.10(react@18.2.0)
+        version: 0.0.11(react@18.2.0)
       '@react-email/container':
         specifier: latest
-        version: 0.0.12(react@18.2.0)
+        version: 0.0.13(react@18.2.0)
       '@react-email/head':
         specifier: latest
-        version: 0.0.9(react@18.2.0)
+        version: 0.0.10(react@18.2.0)
       '@react-email/hr':
         specifier: latest
-        version: 0.0.8(react@18.2.0)
+        version: 0.0.9(react@18.2.0)
       '@react-email/html':
         specifier: latest
-        version: 0.0.8(react@18.2.0)
+        version: 0.0.9(react@18.2.0)
       '@react-email/img':
         specifier: latest
-        version: 0.0.8(react@18.2.0)
+        version: 0.0.9(react@18.2.0)
       '@react-email/link':
         specifier: latest
-        version: 0.0.8(react@18.2.0)
+        version: 0.0.9(react@18.2.0)
       '@react-email/preview':
         specifier: latest
-        version: 0.0.9(react@18.2.0)
+        version: 0.0.10(react@18.2.0)
       '@react-email/row':
         specifier: latest
-        version: 0.0.8(react@18.2.0)
+        version: 0.0.9(react@18.2.0)
       '@react-email/section':
         specifier: latest
-        version: 0.0.12(react@18.2.0)
+        version: 0.0.13(react@18.2.0)
       '@react-email/text':
         specifier: latest
-        version: 0.0.8(react@18.2.0)
+        version: 0.0.9(react@18.2.0)
       dotenv-cli:
         specifier: ^7.4.1
         version: 7.4.2
@@ -519,8 +519,8 @@ importers:
         specifier: ^8.57.0
         version: 8.57.0
       lucide-react:
-        specifier: ^0.368.0
-        version: 0.368.0(react@18.2.0)
+        specifier: ^0.427.0
+        version: 0.427.0(react@18.2.0)
       prettier:
         specifier: ^3.2.5
         version: 3.2.5
@@ -1770,8 +1770,8 @@ packages:
     peerDependencies:
       react: 18.2.0
 
-  '@react-email/body@0.0.8':
-    resolution: {integrity: sha512-gqdkNYlIaIw0OdpWu8KjIcQSIFvx7t2bZpXVxMMvBS859Ia1+1X3b5RNbjI3S1ZqLddUf7owOHkO4MiXGE+nxg==}
+  '@react-email/body@0.0.9':
+    resolution: {integrity: sha512-bSGF6j+MbfQKYnnN+Kf57lGp/J+ci+435OMIv/BKAtfmNzHL+ptRrsINJELiO8QzwnZmQjTGKSMAMMJiQS+xwQ==}
     peerDependencies:
       react: ^18.2.0
 
@@ -1781,8 +1781,8 @@ packages:
     peerDependencies:
       react: 18.2.0
 
-  '@react-email/button@0.0.15':
-    resolution: {integrity: sha512-9Zi6SO3E8PoHYDfcJTecImiHLyitYWmIRs0HE3Ogra60ZzlWP2EXu+AZqwQnhXuq+9pbgwBWNWxB5YPetNPTNA==}
+  '@react-email/button@0.0.16':
+    resolution: {integrity: sha512-paptUerzDhKHEUmBuT0UecCoqo3N6ZQSyDKC1hFALTwKReGW2xQATisinho9Ybh9ZGw6IZ3n1nGtmX5k2sX70Q==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.2.0
@@ -1799,8 +1799,8 @@ packages:
     peerDependencies:
       react: 18.2.0
 
-  '@react-email/column@0.0.10':
-    resolution: {integrity: sha512-MnP8Mnwipr0X3XtdD6jMLckb0sI5/IlS6Kl/2F6/rsSWBJy5Gg6nizlekTdkwDmy0kNSe3/1nGU0Zqo98pl63Q==}
+  '@react-email/column@0.0.11':
+    resolution: {integrity: sha512-KvrPuQFn0hlItRRL3vmRuOJgKG+8I0oO9HM5ReLMi5Ns313JSEQogCJaXuOEFkOVeuu5YyY6zy/+5Esccc1AxQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.2.0
@@ -1823,8 +1823,8 @@ packages:
     peerDependencies:
       react: 18.2.0
 
-  '@react-email/container@0.0.12':
-    resolution: {integrity: sha512-HFu8Pu5COPFfeZxSL+wKv/TV5uO/sp4zQ0XkRCdnGkj/xoq0lqOHVDL4yC2Pu6fxXF/9C3PHDA++5uEYV5WVJw==}
+  '@react-email/container@0.0.13':
+    resolution: {integrity: sha512-ftke0N1FZl8MX3XXxXiiOaiJOnrQz7ZXUyqNj81K+BK+DePWIVaSmgK6Bu8fFnsgwdKuBdqjZTEtF4sIkU3FuQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.2.0
@@ -1834,17 +1834,17 @@ packages:
     peerDependencies:
       react: 18.2.0
 
+  '@react-email/head@0.0.10':
+    resolution: {integrity: sha512-VoH399w0/i3dJFnwH0Ixf9BTuiWhSA/y8PpsCJ7CPw8Mv8WNBqMAAsw0rmrITYI8uPd15LZ2zk2uwRDvqasMRw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^18.2.0
+
   '@react-email/head@0.0.7':
     resolution: {integrity: sha512-IcXL4jc0H1qzAXJCD9ajcRFBQdbUHkjKJyiUeogpaYSVZSq6cVDWQuGaI23TA9k+pI2TFeQimogUFb3Kgeeudw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: 18.2.0
-
-  '@react-email/head@0.0.9':
-    resolution: {integrity: sha512-dF3Uv1qy3oh+IU2atXdv5Xk0hk2udOlMb1A/MNGngC0eHyoEV9ThA0XvhN7mm5x9dDLkVamoWUKXDtmkiuSRqQ==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^18.2.0
 
   '@react-email/heading@0.0.11':
     resolution: {integrity: sha512-EF5ZtRCxhHPw3m+8iibKKg0RAvAeHj1AP68sjU7s6+J+kvRgllr/E972Wi5Y8UvcIGossCvpX1WrSMDzeB4puA==}
@@ -1858,8 +1858,8 @@ packages:
     peerDependencies:
       react: 18.2.0
 
-  '@react-email/hr@0.0.8':
-    resolution: {integrity: sha512-JLVvpCg2wYKEB+n/PGCggWG9fRU5e4lxsGdpK5SDLsCL0ic3OLKSpHMfeE+ZSuw0GixAVVQN7F64PVJHQkd4MQ==}
+  '@react-email/hr@0.0.9':
+    resolution: {integrity: sha512-Rte+EZL3ptH3rkVU3a7fh8/06mZ6Q679tDaWDjsw3878RQC9afWqUPp5lwgA/1pTouLmJlDs2BjRnV6H84O7iw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.2.0
@@ -1870,8 +1870,8 @@ packages:
     peerDependencies:
       react: 18.2.0
 
-  '@react-email/html@0.0.8':
-    resolution: {integrity: sha512-arII3wBNLpeJtwyIJXPaILm5BPKhA+nvdC1F9QkuKcOBJv2zXctn8XzPqyGqDfdplV692ulNJP7XY55YqbKp6w==}
+  '@react-email/html@0.0.9':
+    resolution: {integrity: sha512-NB74xwWaOJZxhpiy6pzkhHvugBa2vvmUa0KKnSwOEIX+WEQH8wj5UUhRN4F+Pmkiqz3QBTETUJiSsNWWFtrHgA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.2.0
@@ -1882,8 +1882,8 @@ packages:
     peerDependencies:
       react: 18.2.0
 
-  '@react-email/img@0.0.8':
-    resolution: {integrity: sha512-jx/rPuKo31tV18fu7P5rRqelaH5wkhg83Dq7uLwJpfqhbi4KFBGeBfD0Y3PiLPPoh+WvYf+Adv9W2ghNW8nOMQ==}
+  '@react-email/img@0.0.9':
+    resolution: {integrity: sha512-zDlQWmlSANb2dBYhDaKD12Z4xaGD5mEf3peawBYHGxYySzMLwRT2ANGvFqpDNd7iT0C5po+/9EWR8fS1dLy0QQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.2.0
@@ -1894,8 +1894,8 @@ packages:
     peerDependencies:
       react: 18.2.0
 
-  '@react-email/link@0.0.8':
-    resolution: {integrity: sha512-nVikuTi8WJHa6Baad4VuRUbUCa/7EtZ1Qy73TRejaCHn+vhetc39XGqHzKLNh+Z/JFL8Hv9g+4AgG16o2R0ogQ==}
+  '@react-email/link@0.0.9':
+    resolution: {integrity: sha512-rRqWGPUTGFwwtMCtsdCHNh0ewOsd4UBG/D12UcwJYFKRb0U6hUG/6VJZE3tB1QYZpLIESdvOLL6ztznh+D749g==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.2.0
@@ -1906,17 +1906,17 @@ packages:
     peerDependencies:
       react: 18.2.0
 
+  '@react-email/preview@0.0.10':
+    resolution: {integrity: sha512-bRrv8teMMBlF7ttLp1zZUejkPUzrwMQXrigdagtEBOqsB8HxvJU2MR6Yyb3XOqBYldaIDOQJ1z61zyD2wRlKAw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^18.2.0
+
   '@react-email/preview@0.0.8':
     resolution: {integrity: sha512-Jm0KUYBZQd2w0s2QRMQy0zfHdo3Ns+9bYSE1OybjknlvhANirjuZw9E5KfWgdzO7PyrRtB1OBOQD8//Obc4uIQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: 18.2.0
-
-  '@react-email/preview@0.0.9':
-    resolution: {integrity: sha512-2fyAA/zzZYfYmxfyn3p2YOIU30klyA6Dq4ytyWq4nfzQWWglt5hNDE0cMhObvRtfjM9ghMSVtoELAb0MWiF/kw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^18.2.0
 
   '@react-email/render@0.0.12':
     resolution: {integrity: sha512-S8WRv/PqECEi6x0QJBj0asnAb5GFtJaHlnByxLETLkgJjc76cxMYDH4r9wdbuJ4sjkcbpwP3LPnVzwS+aIjT7g==}
@@ -1928,8 +1928,8 @@ packages:
     peerDependencies:
       react: 18.2.0
 
-  '@react-email/row@0.0.8':
-    resolution: {integrity: sha512-JsB6pxs/ZyjYpEML3nbwJRGAerjcN/Pa/QG48XUwnT/MioDWrUuyQuefw+CwCrSUZ2P1IDrv2tUD3/E3xzcoKw==}
+  '@react-email/row@0.0.9':
+    resolution: {integrity: sha512-ZDASHVvyKrWBS00o5pSH5khfMf46UtZhrHcSAfPSiC4nj7R8A0bf+3Wmbk8YmsaV+qWXUCUSHWwIAAlMRnJoAA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.2.0
@@ -1940,8 +1940,8 @@ packages:
     peerDependencies:
       react: 18.2.0
 
-  '@react-email/section@0.0.12':
-    resolution: {integrity: sha512-UCD/N/BeOTN4h3VZBUaFdiSem6HnpuxD1Q51TdBFnqeNqS5hBomp8LWJJ9s4gzwHWk1XPdNfLA3I/fJwulJshg==}
+  '@react-email/section@0.0.13':
+    resolution: {integrity: sha512-McsCQ5NQlNWEMEAR3EtCxHgRhxGmLD+jPvj7A3FD7y2X3fXG0hbmUGX12B63rIywSWjJoQi6tojx/8RpzbyeTA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.2.0
@@ -1958,8 +1958,8 @@ packages:
     peerDependencies:
       react: 18.2.0
 
-  '@react-email/text@0.0.8':
-    resolution: {integrity: sha512-uvN2TNWMrfC9wv/LLmMLbbEN1GrMWZb9dBK14eYxHHAEHCeyvGb5ePZZ2MPyzO7Y5yTC+vFEnCEr76V+hWMxCQ==}
+  '@react-email/text@0.0.9':
+    resolution: {integrity: sha512-UNFPGerER3zywpb1ODOS2VgHP7rgOmiTxMHn75pjvQf/gi3/jN9edEQLYvRgPv/mNn4IpJFkOrlP8jcammLeew==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.2.0
@@ -3949,10 +3949,10 @@ packages:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
 
-  lucide-react@0.368.0:
-    resolution: {integrity: sha512-soryVrCjheZs8rbXKdINw9B8iPi5OajBJZMJ1HORig89ljcOcEokKKAgGbg3QWxSXel7JwHOfDFUdDHAKyUAMw==}
+  lucide-react@0.427.0:
+    resolution: {integrity: sha512-lv9s6c5BDF/ccuA0EgTdskTxIe11qpwBDmzRZHJAKtp8LTewAvDvOM+pTES9IpbBuTqkjiMhOmGpJ/CB+mKjFw==}
     peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
 
   map-obj@1.0.1:
     resolution: {integrity: sha512-7N/q3lyZ+LVCp7PzuxrJr4KMbBE2hW7BT7YNia330OFxIf4d3r5zVpicP2650l7CPN6RM9zOJRl3NGpqSiw3Eg==}
@@ -6750,7 +6750,7 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@react-email/body@0.0.8(react@18.2.0)':
+  '@react-email/body@0.0.9(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -6758,7 +6758,7 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@react-email/button@0.0.15(react@18.2.0)':
+  '@react-email/button@0.0.16(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -6771,7 +6771,7 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@react-email/column@0.0.10(react@18.2.0)':
+  '@react-email/column@0.0.11(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -6809,7 +6809,7 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@react-email/container@0.0.12(react@18.2.0)':
+  '@react-email/container@0.0.13(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -6817,11 +6817,11 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@react-email/head@0.0.7(react@18.2.0)':
+  '@react-email/head@0.0.10(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
-  '@react-email/head@0.0.9(react@18.2.0)':
+  '@react-email/head@0.0.7(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -6836,7 +6836,7 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@react-email/hr@0.0.8(react@18.2.0)':
+  '@react-email/hr@0.0.9(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -6844,7 +6844,7 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@react-email/html@0.0.8(react@18.2.0)':
+  '@react-email/html@0.0.9(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -6852,7 +6852,7 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@react-email/img@0.0.8(react@18.2.0)':
+  '@react-email/img@0.0.9(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -6860,7 +6860,7 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@react-email/link@0.0.8(react@18.2.0)':
+  '@react-email/link@0.0.9(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -6869,11 +6869,11 @@ snapshots:
       md-to-react-email: 5.0.2(react@18.2.0)
       react: 18.2.0
 
-  '@react-email/preview@0.0.8(react@18.2.0)':
+  '@react-email/preview@0.0.10(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
-  '@react-email/preview@0.0.9(react@18.2.0)':
+  '@react-email/preview@0.0.8(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -6888,7 +6888,7 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@react-email/row@0.0.8(react@18.2.0)':
+  '@react-email/row@0.0.9(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -6896,7 +6896,7 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@react-email/section@0.0.12(react@18.2.0)':
+  '@react-email/section@0.0.13(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -6908,7 +6908,7 @@ snapshots:
     dependencies:
       react: 18.2.0
 
-  '@react-email/text@0.0.8(react@18.2.0)':
+  '@react-email/text@0.0.9(react@18.2.0)':
     dependencies:
       react: 18.2.0
 
@@ -9189,7 +9189,7 @@ snapshots:
     dependencies:
       yallist: 4.0.0
 
-  lucide-react@0.368.0(react@18.2.0):
+  lucide-react@0.427.0(react@18.2.0):
     dependencies:
       react: 18.2.0
 
