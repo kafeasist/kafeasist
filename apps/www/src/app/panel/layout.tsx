@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { Spinner } from "@kafeasist/ui";
 
+import { CompanyProvider } from "~/context/CompanyContext";
 import { useSession } from "~/hooks/use-session";
 import { api } from "~/utils/api";
 import { NoCompaniesFound } from "./_components/no-companies-found";
@@ -37,28 +38,35 @@ export default function DashboardLayout({
       imageUrl: company.imageUrl,
     })) || [];
 
+  const selectedCompany = companies.find(
+    (company) => company.id === Number(localStorage.getItem("selectedCompany")),
+  );
+
   return (
-    <div className="min-h-screen w-full">
-      <TopBar companies={companies} isPending={isPending} />
-      <div className="flex h-full w-full">
-        <SideBar
-          firstName={user?.firstName}
-          lastName={user?.lastName}
-          email={user?.email}
-          emailVerified={user?.emailVerified ? true : false}
-        />
-        <div className="mt-16 h-full w-full p-8">
-          {isPending ? (
-            <div className="flex w-full justify-center">
-              <Spinner />
-            </div>
-          ) : data!.length > 0 || pathname === "/panel/sirketlerim/olustur" ? (
-            children
-          ) : (
-            <NoCompaniesFound />
-          )}
+    <CompanyProvider company={selectedCompany || companies[0]}>
+      <div className="min-h-screen w-full">
+        <TopBar companies={companies} isPending={isPending} />
+        <div className="flex h-full w-full">
+          <SideBar
+            firstName={user?.firstName}
+            lastName={user?.lastName}
+            email={user?.email}
+            emailVerified={user?.emailVerified ? true : false}
+          />
+          <div className="mt-16 h-full w-full p-8">
+            {isPending ? (
+              <div className="flex w-full justify-center">
+                <Spinner />
+              </div>
+            ) : data!.length > 0 ||
+              pathname === "/panel/sirketlerim/olustur" ? (
+              children
+            ) : (
+              <NoCompaniesFound />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </CompanyProvider>
   );
 }

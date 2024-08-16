@@ -4,7 +4,6 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
 
-import type { Plan } from "@kafeasist/api";
 import {
   Avatar,
   Badge,
@@ -24,15 +23,9 @@ import {
 } from "@kafeasist/ui";
 
 import { Logo } from "~/components/logo";
+import { Company } from "~/context/CompanyContext";
+import { useCompany } from "~/hooks/use-company";
 import { getInitials } from "~/utils/get-initials";
-
-type Company = {
-  id: number;
-  name: string;
-  address: string;
-  plan: Plan;
-  imageUrl: string | null;
-};
 
 interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {
   companies: Company[];
@@ -69,10 +62,10 @@ export function TopBar({
 }
 
 function CompanySwitcher({ companies }: { companies: Company[] }) {
+  const { company: selectedCompany, setCompany: setSelectedCompany } =
+    useCompany();
+
   const [open, setOpen] = React.useState(false);
-  const [selectedCompany, setSelectedCompany] = React.useState<
-    Company | undefined
-  >(companies[0]);
   const { push } = useRouter();
 
   return (
@@ -115,6 +108,7 @@ function CompanySwitcher({ companies }: { companies: Company[] }) {
                 key={company.id}
                 onSelect={() => {
                   setSelectedCompany(company);
+                  localStorage.setItem("selectedCompany", String(company.id));
                   setOpen(false);
                 }}
                 className="py-2 text-sm"

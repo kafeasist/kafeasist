@@ -5,6 +5,8 @@ import { cookies } from "next/headers";
 
 import { cn } from "@kafeasist/ui";
 
+import { env } from "../env";
+
 import "./globals.css";
 
 import { Providers } from "./providers";
@@ -23,8 +25,7 @@ export default function RootLayout({
 }) {
   const { get } = cookies();
 
-  // TODO: Get the cookie name from the environment.
-  const cookie = get("qid");
+  const cookie = get(env.COOKIE_NAME);
 
   return (
     <html suppressHydrationWarning>

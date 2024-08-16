@@ -5,8 +5,6 @@ import { usePathname } from "next/navigation";
 import {
   BadgeCheck,
   BarChart3,
-  Building2,
-  CreditCard,
   Croissant,
   Home,
   LayoutGrid,
@@ -84,18 +82,6 @@ const navigationItems: {
     label: "Entegrasyonlar",
     href: "/panel/entegrasyonlar",
     icon: LinkIcon,
-  },
-  {
-    id: "companies",
-    label: "Şirketlerim",
-    href: "/panel/sirketlerim",
-    icon: Building2,
-  },
-  {
-    id: "billing",
-    label: "Faturalandırma",
-    href: "/panel/faturalandirma",
-    icon: CreditCard,
   },
 ];
 
