@@ -5,7 +5,6 @@ import { Button, cn, Input, Progress, Separator, Tooltip } from "@kafeasist/ui";
 
 import { formatMoney } from "~/utils/format-money";
 import { InnerTitle } from "../_components/inner-title";
-import { Alerts } from "./_components/alerts";
 import { Chart } from "./_components/chart";
 import { Filters } from "./_components/filters";
 import { PaymentMethod } from "./_components/payment-method";
@@ -102,7 +101,6 @@ export default function Panel() {
   return (
     <>
       <div className="space-y-4">
-        <Alerts />
         <InnerTitle
           title="Kontrol paneli"
           subtitle="Buradan şirketinin genel istatistiklerini görüp şirketini yönetebilirsin."

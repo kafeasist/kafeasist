@@ -8,6 +8,7 @@ import { Spinner } from "@kafeasist/ui";
 import { CompanyProvider } from "~/context/CompanyContext";
 import { useSession } from "~/hooks/use-session";
 import { api } from "~/utils/api";
+import { Alerts } from "./_components/alerts";
 import { NoCompaniesFound } from "./_components/no-companies-found";
 import { SideBar } from "./_components/side-bar";
 import { TopBar } from "./_components/top-bar";
@@ -18,6 +19,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+
+  const ALLOWED_PATHS = ["/panel/sirketlerim/olustur", "/panel/profil"];
 
   const { session: user } = useSession();
   const { data, isPending } = api.company.get.useQuery(undefined, {
@@ -54,12 +57,12 @@ export default function DashboardLayout({
             emailVerified={user?.emailVerified ? true : false}
           />
           <div className="mt-16 h-full w-full p-8">
+            <Alerts />
             {isPending ? (
               <div className="flex w-full justify-center">
                 <Spinner />
               </div>
-            ) : data!.length > 0 ||
-              pathname === "/panel/sirketlerim/olustur" ? (
+            ) : data!.length > 0 || ALLOWED_PATHS.includes(pathname) ? (
               children
             ) : (
               <NoCompaniesFound />

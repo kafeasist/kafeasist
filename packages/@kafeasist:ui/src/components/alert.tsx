@@ -21,8 +21,9 @@ const alertVariants = cva("rounded-xl p-4 space-x-3 relative flex", {
 export interface AlertProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof alertVariants> {
-  title?: string;
-  description?: string;
+  storageKey: string;
+  title: string;
+  description: string;
   action?: React.ReactNode;
   closable?: boolean;
 }
@@ -30,6 +31,7 @@ export interface AlertProps
 export function Alert({
   className,
   variant,
+  storageKey,
   title,
   description,
   action,
@@ -39,6 +41,12 @@ export function Alert({
   const [closed, setClosed] = React.useState(false);
 
   if (closed) return null;
+
+  const handleClose = () => {
+    localStorage.setItem(storageKey, "true");
+
+    setClosed(true);
+  };
 
   return (
     <div
@@ -59,7 +67,7 @@ export function Alert({
       {closable && (
         <X
           className="absolute right-4 top-4 h-5 w-5 rounded-md p-0.5 duration-150 hover:bg-foreground/10"
-          onClick={() => setClosed(true)}
+          onClick={handleClose}
         />
       )}
     </div>

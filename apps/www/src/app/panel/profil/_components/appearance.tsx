@@ -46,7 +46,7 @@ export function Appearance() {
                     </>
                   ) : (
                     <>
-                      <Laptop className="mr-2 size-4" /> Sisteme göre
+                      <Laptop className="mr-2 size-4" /> Sistem
                     </>
                   )}
                   <ChevronDown className="ml-2 size-4" />
@@ -63,7 +63,7 @@ export function Appearance() {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme("system")}>
                   {theme === "system" && <Check className="mr-2 size-4" />}{" "}
-                  Sisteme göre
+                  Sistem
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

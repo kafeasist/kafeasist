@@ -10,16 +10,19 @@ import { useSession } from "~/hooks/use-session";
 export const Alerts = () => {
   const { session } = useSession();
 
+  if (!session) return null;
+
   const alerts: (AlertProps & { show: boolean })[] = [
     {
-      show: !session?.emailVerified,
+      show: !session.emailVerified,
+      storageKey: "emailVerified",
       variant: "error",
       title: "Hesabınızı doğrulayın!",
       description:
         "E-postanızdaki bağlantıya tıklayarak kafeasist hesabınızı doğrulayın",
       action: (
         <Link
-          href="/panel/profil"
+          href="/panel/profil#guvenlik"
           className="text-xs font-bold text-error-foreground underline"
         >
           Doğrulama bağlantısını tekrar gönder {"->"}
@@ -28,7 +31,8 @@ export const Alerts = () => {
       closable: false,
     },
     {
-      show: !session?.twoFA,
+      show: !session.twoFA,
+      storageKey: "twoFA",
       variant: "warning",
       title: "Hesabınızı koruma altına alın!",
       description:
@@ -43,28 +47,17 @@ export const Alerts = () => {
       ),
       closable: true,
     },
-    {
-      show: true, // TODO: Just for testing
-      variant: "warning",
-      title: "Ürünlerin fiyatına dikkat edin!",
-      description:
-        "Hamburger menü ve kahvaltı tabağı ürünlerinizin fiyatlarını artırın.",
-      action: (
-        <Link
-          href="/panel/urunler/duzenle?id=31"
-          className="text-xs font-bold text-warning-foreground underline"
-        >
-          Düzenle {"->"}
-        </Link>
-      ),
-      closable: true,
-    },
   ];
 
+  const wasClosed = (storageKey: string) => {
+    if (typeof window === "undefined") return true;
+    return localStorage.getItem(storageKey) === "true";
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="mb-4 space-y-4">
       {alerts
-        .filter((alert) => alert.show === true)
+        .filter((alert) => alert.show === true && !wasClosed(alert.storageKey))
         .map(({ show, ...alert }, index) => (
           <Alert key={index} {...alert} />
         ))}

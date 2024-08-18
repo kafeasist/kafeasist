@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Copy, Download } from "lucide-react";
+import { Copy, Download, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -40,7 +40,12 @@ import { api } from "~/utils/api";
 export function Security() {
   const { session } = useSession();
 
-  const { mutateAsync, isPending } = api.user.disable2FA.useMutation();
+  const { mutateAsync: mutateDisable2FA, isPending: isDisable2FAPending } =
+    api.user.disable2FA.useMutation();
+  const {
+    mutateAsync: mutateResendVerificationEmail,
+    isPending: isResendVerificationEmailPending,
+  } = api.user.resendVerificationEmail.useMutation();
 
   const [dialogStep, setDialogStep] = useState<number>(1);
   const [accept, setAccept] = useState<boolean>(false);
@@ -59,6 +64,41 @@ export function Security() {
       </div>
       <CardContent>
         <div className="space-y-4">
+          <div className="w-full items-center justify-between space-y-4 rounded-xl border border-border p-6 md:flex md:space-y-0">
+            <div>
+              <h3 className="text-sm font-bold">
+                {!!session.emailVerified && (
+                  <Badge variant="outline" className="mr-1.5">
+                    Etkin
+                  </Badge>
+                )}
+                E-posta doğrulama
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                {!!session.emailVerified
+                  ? "Harika, e-postanız doğrulanmış."
+                  : "Hesabınızdaki bazı özelliklere erişmek için e-postanızı doğrulayın."}
+              </p>
+            </div>
+            {!session.emailVerified && (
+              <Button
+                className="w-full md:w-auto"
+                onClick={async () => {
+                  const result = await mutateResendVerificationEmail();
+
+                  if (result.error) {
+                    toast.error(result.message);
+                    return;
+                  }
+
+                  toast.success(result.message);
+                }}
+                loading={isResendVerificationEmailPending}
+              >
+                <Mail className="mr-2 size-4" /> Tekrar gönder
+              </Button>
+            )}
+          </div>
           <div className="w-full items-center justify-between space-y-4 rounded-xl border border-border p-6 md:flex md:space-y-0">
             <div>
               <h3 className="text-sm font-bold">
@@ -96,15 +136,15 @@ export function Security() {
                   </div>
                   <DialogFooter>
                     <DialogClose asChild>
-                      <Button variant="outline" disabled={isPending}>
+                      <Button variant="outline" disabled={isDisable2FAPending}>
                         Vazgeç
                       </Button>
                     </DialogClose>
                     <Button
                       variant="destructive"
-                      loading={isPending}
+                      loading={isDisable2FAPending}
                       onClick={async () => {
-                        const result = await mutateAsync();
+                        const result = await mutateDisable2FA();
 
                         if (result.error) {
                           toast.error(result.message);

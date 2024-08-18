@@ -2,11 +2,12 @@ import { hash } from "argon2";
 import { v4 as uuidv4 } from "uuid";
 
 import { prisma } from "@kafeasist/db";
-import { sendEmail, VerifyEmail, VerifyThanksEmail } from "@kafeasist/email";
+import { sendEmail, VerifyThanksEmail } from "@kafeasist/email";
 import { Cache, invalidateCache } from "@kafeasist/redis";
 
 import { createToken } from "../helpers/create-token";
 import { getPayloadFromJWT } from "../helpers/get-payload-from-jwt";
+import { sendVerificationEmail } from "../helpers/send-verification-email";
 import {
   validateEmail,
   validateNameLastName,
@@ -137,17 +138,8 @@ export const register = async (
   };
 
   const jwt = createToken({ id: user.id });
-  const jwtVerify = createToken({ email: user.email });
 
-  try {
-    await sendEmail(
-      [user.email],
-      "kafeasist hesabın oluşturuldu!",
-      VerifyEmail({ token: jwtVerify }),
-    );
-  } catch (error: unknown) {
-    console.error(error);
-  }
+  await sendVerificationEmail(user.email);
 
   return {
     success: true,

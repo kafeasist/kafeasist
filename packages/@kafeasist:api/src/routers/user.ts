@@ -5,7 +5,11 @@ import { TOTP } from "otpauth";
 import QRCode from "qrcode";
 import { z } from "zod";
 
-import { validateNameLastName, verifyEmail } from "@kafeasist/auth";
+import {
+  sendVerificationEmail,
+  validateNameLastName,
+  verifyEmail,
+} from "@kafeasist/auth";
 import { validatePassword } from "@kafeasist/auth/src/helpers/validators";
 import { prisma } from "@kafeasist/db";
 import { Cache, invalidateCache } from "@kafeasist/redis";
@@ -187,6 +191,44 @@ export const userRouter = createTRPCRouter({
         message: response.message,
       };
     }),
+
+  /**
+   * Resend verification e-mail
+   * @param ctx
+   * @param input
+   * @returns Promise<KafeasistResponse>
+   */
+  resendVerificationEmail: protectedProcedure.mutation(
+    async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: ctx.session.id,
+        },
+      });
+
+      if (!user) {
+        return {
+          error: true,
+          message: "Kullanıcı bulunamadı",
+          fields: [],
+        };
+      }
+
+      if (user.emailVerified)
+        return {
+          error: true,
+          message: "E-posta zaten doğrulanmış",
+          fields: [],
+        };
+
+      await sendVerificationEmail(user.email);
+
+      return {
+        error: false,
+        message: "Doğrulama e-postası tekrar gönderildi!",
+      };
+    },
+  ),
 
   /**
    * 2FA generate secret

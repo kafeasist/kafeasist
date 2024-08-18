@@ -10,6 +10,7 @@ export {
   validateName,
   validateNameLastName,
 } from "./helpers/validators";
+export { sendVerificationEmail } from "./helpers/send-verification-email";
 
 export * from "./types/AuthResponse";
 export * from "./types/Session";
