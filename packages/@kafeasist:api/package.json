@@ -15,8 +15,12 @@
     "@kafeasist/redis": "workspace:*",
     "@kafeasist/typescript": "workspace:*",
     "@trpc/server": "11.0.0-rc.364",
+    "@types/qrcode": "^1.5.5",
     "argon2": "^0.40.1",
     "eslint": "^8.57.0",
+    "hi-base32": "^0.5.1",
+    "otpauth": "^9.3.1",
+    "qrcode": "^1.5.4",
     "superjson": "^2.2.1",
     "typescript": "^5.4.5",
     "zod": "^3.22.4"

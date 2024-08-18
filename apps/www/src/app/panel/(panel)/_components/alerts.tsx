@@ -28,7 +28,23 @@ export const Alerts = () => {
       closable: false,
     },
     {
-      show: true,
+      show: !session?.twoFA,
+      variant: "warning",
+      title: "Hesabınızı koruma altına alın!",
+      description:
+        "Hesabınızı korumak için iki faktörlü kimlik doğrulamayı etkinleştirin",
+      action: (
+        <Link
+          href="/panel/profil#guvenlik"
+          className="text-xs font-bold text-warning-foreground underline"
+        >
+          Etkinleştir {"->"}
+        </Link>
+      ),
+      closable: true,
+    },
+    {
+      show: true, // TODO: Just for testing
       variant: "warning",
       title: "Ürünlerin fiyatına dikkat edin!",
       description:

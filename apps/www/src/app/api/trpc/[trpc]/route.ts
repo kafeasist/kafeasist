@@ -36,7 +36,10 @@ const handler = async (req: Request) => {
       console.error(`>>> tRPC Error on '${path}'`);
       // if (env.NODE_ENV === "development") console.error(error);
 
-      if (error.code === "INTERNAL_SERVER_ERROR") {
+      if (
+        error.code === "INTERNAL_SERVER_ERROR" &&
+        env.NODE_ENV === "production"
+      ) {
         const { message, stack, name, cause } = error;
 
         const sentryError = new Error(message);

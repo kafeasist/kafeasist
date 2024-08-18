@@ -18,6 +18,10 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
 } from "@kafeasist/ui";
 
 import { api } from "~/utils/api";
@@ -33,6 +37,7 @@ const loginSchema = z.object<ToZod<LoginInputs>>({
   password: z
     .string({ required_error: "Lütfen parolanızı giriniz." })
     .min(8, "En az 8 karakter olmalıdır."),
+  pin: z.string().default(""),
 });
 
 function Footer() {
@@ -57,6 +62,8 @@ function Footer() {
 export default function Login() {
   const { mutateAsync, isPending } = api.auth.login.useMutation();
 
+  const [twoFA, setTwoFA] = React.useState(false);
+
   const form = useForm<LoginInputs>({
     resolver: zodResolver(loginSchema),
   });
@@ -65,6 +72,8 @@ export default function Login() {
     const response = await mutateAsync(values);
 
     if (response.success) return window.location.replace("/panel");
+
+    if (response.message === "REDIRECT_TO_2FA") return setTwoFA(true);
 
     toast.error(response.message);
 
@@ -106,6 +115,33 @@ export default function Login() {
               </FormItem>
             )}
           />
+          {twoFA && (
+            <FormField
+              control={form.control}
+              name="pin"
+              render={({ field }) => (
+                <FormItem className="space-y-1">
+                  <FormLabel>Kimlik doğrulama kodu</FormLabel>
+                  <FormControl>
+                    <InputOTP maxLength={6} {...field}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                      </InputOTPGroup>
+                      <InputOTPSeparator />
+                      <InputOTPGroup>
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
           <Button type="submit" className="w-full" loading={isPending}>
             <LogIn className="mr-2 h-4 w-4" />
             Giriş yap

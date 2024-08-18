@@ -1,4 +1,8 @@
+import crypto from "node:crypto";
 import { hash, verify } from "argon2";
+import { encode } from "hi-base32";
+import { TOTP } from "otpauth";
+import QRCode from "qrcode";
 import { z } from "zod";
 
 import { validateNameLastName, verifyEmail } from "@kafeasist/auth";
@@ -183,4 +187,233 @@ export const userRouter = createTRPCRouter({
         message: response.message,
       };
     }),
+
+  /**
+   * 2FA generate secret
+   * @param ctx
+   * @param input
+   * @returns Promise<KafeasistResponse>
+   */
+  generate2FA: protectedProcedure.mutation(
+    async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: ctx.session.id,
+        },
+      });
+
+      if (!user) {
+        return {
+          error: true,
+          message: "Kullanıcı bulunamadı",
+          fields: [],
+        };
+      }
+
+      if (user.twoFA)
+        return {
+          error: true,
+          message: "Çift faktörlü kimlik doğrulama zaten etkin",
+          fields: [],
+        };
+
+      const buffer = crypto.randomBytes(15);
+      const secret = encode(buffer).replace(/=/g, "").substring(0, 24);
+
+      const totp = new TOTP({
+        issuer: "kafeasist",
+        label: user.email,
+        algorithm: "SHA1",
+        digits: 6,
+        secret,
+      });
+
+      const otpauthURL = totp.toString();
+      const qrCodeURL = await QRCode.toDataURL(otpauthURL, {
+        color: {
+          light: "#FEFDFA",
+          dark: "#141414",
+        },
+        margin: 0,
+      });
+
+      await prisma.user.update({
+        where: {
+          id: ctx.session.id,
+        },
+        data: {
+          twoFASecret: secret,
+        },
+      });
+
+      return {
+        error: false,
+        message: qrCodeURL,
+      };
+    },
+  ),
+
+  /**
+   * 2FA verify
+   * @param ctx
+   * @param input
+   * @returns Promise<KafeasistResponse>
+   */
+  verify2FA: protectedProcedure
+    .input(
+      z.object({
+        pin: z.string(),
+      }),
+    )
+    .mutation(
+      async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
+        const user = await prisma.user.findUnique({
+          where: {
+            id: ctx.session.id,
+          },
+        });
+
+        if (!user) {
+          return {
+            error: true,
+            message: "Kullanıcı bulunamadı",
+            fields: [],
+          };
+        }
+
+        if (!user.twoFASecret)
+          return {
+            error: true,
+            message:
+              "Lütfen önce çift faktörlü kimlik doğrulama kodu oluşturun.",
+            fields: [],
+          };
+
+        const totp = new TOTP({
+          issuer: "kafeasist",
+          label: user.email,
+          algorithm: "SHA1",
+          digits: 6,
+          secret: user.twoFASecret,
+        });
+
+        const isValid = totp.validate({ token: input.pin });
+
+        if (isValid == null)
+          return {
+            error: true,
+            message: "Girdiğiniz kimlik doğrulama kodu hatalı.",
+            fields: ["pin"],
+          };
+
+        function generateRecoveryCode() {
+          const LENGTH = 9;
+
+          let result = "";
+          const characters = "abcdefghijklmnopqrstuvwxyz";
+          const charactersLength = characters.length;
+          let counter = 0;
+          while (counter < LENGTH) {
+            result += characters.charAt(
+              Math.floor(Math.random() * charactersLength),
+            );
+            counter += 1;
+          }
+
+          return result;
+        }
+
+        const mfaCodes = [
+          generateRecoveryCode(),
+          generateRecoveryCode(),
+          generateRecoveryCode(),
+          generateRecoveryCode(),
+          generateRecoveryCode(),
+          generateRecoveryCode(),
+          generateRecoveryCode(),
+          generateRecoveryCode(),
+          generateRecoveryCode(),
+        ] as const;
+
+        await prisma.mFACodes.create({
+          data: {
+            userId: user.id,
+            codeOne: await hash(mfaCodes[0]),
+            codeTwo: await hash(mfaCodes[1]),
+            codeThree: await hash(mfaCodes[2]),
+            codeFour: await hash(mfaCodes[3]),
+            codeFive: await hash(mfaCodes[4]),
+            codeSix: await hash(mfaCodes[5]),
+            codeSeven: await hash(mfaCodes[6]),
+            codeEight: await hash(mfaCodes[7]),
+            codeNine: await hash(mfaCodes[8]),
+          },
+        });
+
+        await prisma.user.update({
+          where: {
+            id: ctx.session.id,
+          },
+          data: {
+            twoFA: true,
+          },
+        });
+
+        await invalidateCache(Cache.SESSION + ctx.session.id);
+
+        return {
+          error: false,
+          message: mfaCodes.join(" "),
+        };
+      },
+    ),
+
+  /**
+   * 2FA disable
+   * @param ctx
+   * @param input
+   * @returns Promise<KafeasistResponse>
+   */
+  disable2FA: protectedProcedure.mutation(
+    async ({ ctx, input }): Promise<KafeasistResponse<typeof input>> => {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: ctx.session.id,
+        },
+      });
+
+      if (!user) {
+        return {
+          error: true,
+          message: "Kullanıcı bulunamadı",
+          fields: [],
+        };
+      }
+
+      if (!user.twoFA)
+        return {
+          error: true,
+          message: "Çift faktörlü kimlik doğrulama zaten devre dışı",
+          fields: [],
+        };
+
+      await prisma.user.update({
+        where: {
+          id: ctx.session.id,
+        },
+        data: {
+          twoFA: false,
+          twoFASecret: null,
+        },
+      });
+
+      await invalidateCache(Cache.SESSION + ctx.session.id);
+
+      return {
+        error: false,
+        message:
+          "Çift faktörlü kimlik doğrulama hesabınızdan devre dışı bırakıldı.",
+      };
+    },
+  ),
 });

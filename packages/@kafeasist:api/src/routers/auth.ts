@@ -64,6 +64,7 @@ export const authRouter = createTRPCRouter({
       z.object({
         email: z.string(),
         password: z.string(),
+        pin: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }): Promise<AuthResponse<typeof input>> => {

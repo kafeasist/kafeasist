@@ -47,7 +47,7 @@ export function Providers({
   cookie?: RequestCookie;
 }) {
   return (
-    <ThemeProvider>
+    <ThemeProvider defaultTheme="system" enableSystem disableTransitionOnChange>
       <APIClientProvider>
         <Session cookie={cookie}>
           <Toaster position="bottom-right" richColors />

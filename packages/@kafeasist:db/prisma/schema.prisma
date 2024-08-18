@@ -26,11 +26,32 @@ model User {
   imageUrl      String?
   emailVerified DateTime?
   twoFA         Boolean        @default(false)
+  twoFASecret   String?
   token         String         @unique
   password      String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model MFACodes {
+  id Int @id @default(autoincrement())
+
+  userId    Int
+  codeOne   String
+  codeTwo   String
+  codeThree String
+  codeFour  String
+  codeFive  String
+  codeSix   String
+  codeSeven String
+  codeEight String
+  codeNine  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model Company {

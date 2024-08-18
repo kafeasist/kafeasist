@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 import {
   BadgeCheck,
   BarChart3,
+  CircleHelp,
   Croissant,
   Home,
   LayoutGrid,
   Link as LinkIcon,
   LogOut,
-  Settings,
   User,
   Users,
   type LucideIcon,
@@ -184,13 +184,15 @@ function UserMenu({ firstName, lastName, email, emailVerified }: SideBarProps) {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-16 md:w-40 lg:w-72">
+        <Link href="/panel/profil">
+          <DropdownMenuItem>
+            <User className="mr-2 h-4 w-4" />
+            Profil
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuItem>
-          <User className="mr-2 h-4 w-4" />
-          Profil
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Settings className="mr-2 h-4 w-4" />
-          Ayarlar
+          <CircleHelp className="mr-2 h-4 w-4" />
+          Destek
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem

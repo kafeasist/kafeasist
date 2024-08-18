@@ -1,4 +1,5 @@
 import { verify } from "argon2";
+import { TOTP } from "otpauth";
 
 import { prisma } from "@kafeasist/db";
 import { Cache, invalidateCache } from "@kafeasist/redis";
@@ -10,6 +11,7 @@ import { Session } from "../types/Session";
 interface LoginParams {
   email: string;
   password: string;
+  pin?: string;
 }
 
 export const login = async (
@@ -19,7 +21,6 @@ export const login = async (
 
   const user = await prisma.user.findUnique({
     where: { email },
-    // include: { companies: true },
   });
 
   if (!user)
@@ -36,6 +37,32 @@ export const login = async (
       fields: ["email", "password"],
     };
 
+  if (user.twoFA && !params.pin)
+    return {
+      success: false,
+      message: "REDIRECT_TO_2FA", // Special case for 2FA
+      fields: ["pin"],
+    };
+
+  if (user.twoFA && params.pin) {
+    const totp = new TOTP({
+      issuer: "kafeasist",
+      label: user.email,
+      algorithm: "SHA1",
+      digits: 6,
+      secret: user.twoFASecret!,
+    });
+
+    const isValid = totp.validate({ token: params.pin });
+
+    if (isValid == null)
+      return {
+        success: false,
+        message: "Girdiğiniz kimlik doğrulama kodu hatalı.",
+        fields: ["pin"],
+      };
+  }
+
   const session: Session = {
     id: user.id,
     firstName: user.firstName,
@@ -45,7 +72,6 @@ export const login = async (
     imageUrl: user.imageUrl,
     emailVerified: user.emailVerified,
     twoFA: user.twoFA,
-    // companies: user.companies,
   };
 
   const jwt = createToken({ id: user.id });
