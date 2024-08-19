@@ -290,7 +290,7 @@ export const userRouter = createTRPCRouter({
 
       return {
         error: false,
-        message: qrCodeURL,
+        message: qrCodeURL + " " + secret,
       };
     },
   ),

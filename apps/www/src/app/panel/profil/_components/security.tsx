@@ -310,6 +310,7 @@ function TwoFADialog3({
     api.user.verify2FA.useMutation();
 
   const [qrCode, setQRCode] = useState<string>("");
+  const [secret, setSecret] = useState<string>("");
 
   const FormSchema = z.object({
     pin: z
@@ -349,11 +350,25 @@ function TwoFADialog3({
         return;
       }
 
-      setQRCode(response.message);
+      const qrCodeURL = response.message.split(" ")[0];
+      const secret = response.message.split(" ")[1];
+
+      if (!qrCodeURL || !secret) {
+        toast.error("QR kodu oluşturulurken bir hata oluştu.");
+        return;
+      }
+
+      setQRCode(qrCodeURL);
+      setSecret(secret);
     }
 
     getQRCode();
   }, []);
+
+  const copySecret = () => {
+    navigator.clipboard.writeText(secret);
+    toast.success("Kimlik doğrulama anahtarı kopyalandı.");
+  };
 
   return (
     <DialogContent>
@@ -371,12 +386,30 @@ function TwoFADialog3({
               {isGeneratePending ? (
                 <Spinner />
               ) : (
-                <Image
-                  src={qrCode}
-                  alt="Eşleştirmek için QR kodu"
-                  height={200}
-                  width={200}
-                />
+                <div className="flex flex-col items-center justify-center space-y-2">
+                  <Image
+                    src={qrCode}
+                    alt="Eşleştirmek için QR kodu"
+                    height={200}
+                    width={200}
+                  />
+                  <span className="text-center text-sm text-muted-foreground">
+                    <strong>VEYA</strong> bu kodu uygulamanıza girin:
+                  </span>
+                  <div className="flex items-center space-x-2">
+                    <code className="rounded-lg border border-dashed border-border bg-secondary px-3 py-1">
+                      {secret}
+                    </code>
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="ghost"
+                      onClick={copySecret}
+                    >
+                      <Copy className="size-4" />
+                    </Button>
+                  </div>
+                </div>
               )}
             </div>
             <div className="space-y-4">

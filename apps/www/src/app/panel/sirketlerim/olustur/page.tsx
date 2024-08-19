@@ -30,6 +30,7 @@ import {
   Separator,
 } from "@kafeasist/ui";
 
+import { useCompany } from "~/hooks/use-company";
 import { api } from "~/utils/api";
 import { ToZod } from "~/utils/to-zod";
 import { InnerTitle } from "../../_components/inner-title";
@@ -53,6 +54,7 @@ const registerSchema = z.object<ToZod<CreateCompanyInputs>>({
 
 export default function CreateCompany() {
   const { mutateAsync, isPending } = api.company.create.useMutation();
+  const { setCompany } = useCompany();
 
   const form = useForm<CreateCompanyInputs>({
     resolver: zodResolver(registerSchema),
@@ -70,6 +72,8 @@ export default function CreateCompany() {
     }
 
     toast.success("Şirket oluşturuldu");
+
+    if (result.company) setCompany(result.company);
     return window.location.replace("/panel");
   };
 

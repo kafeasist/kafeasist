@@ -18,6 +18,11 @@ import {
 
 import {
   Avatar,
+  Button,
+  Card,
+  CardContent,
+  CardFooter,
+  CardTitle,
   cn,
   DropdownMenu,
   DropdownMenuContent,
@@ -28,6 +33,7 @@ import {
   Tooltip,
 } from "@kafeasist/ui";
 
+import { useCompany } from "~/hooks/use-company";
 import { api } from "~/utils/api";
 import { getInitials } from "~/utils/get-initials";
 
@@ -99,6 +105,7 @@ export function SideBar({
   emailVerified,
 }: SideBarProps) {
   const pathname = usePathname();
+  const { company } = useCompany();
 
   return (
     <div className="sticky left-0 z-10 min-h-screen border-r border-border bg-secondary px-4 md:min-w-64 lg:min-w-80">
@@ -127,14 +134,37 @@ export function SideBar({
             );
           })}
         </nav>
-        <UserMenu
-          firstName={firstName}
-          lastName={lastName}
-          email={email}
-          emailVerified={emailVerified}
-        />
+        <div className="space-y-4">
+          {company?.plan === "FREE" && <Upgrade />}
+
+          <UserMenu
+            firstName={firstName}
+            lastName={lastName}
+            email={email}
+            emailVerified={emailVerified}
+          />
+        </div>
       </div>
     </div>
+  );
+}
+
+function Upgrade() {
+  return (
+    <Card className="hidden md:block md:max-w-64 lg:max-w-80">
+      <CardTitle>PRO Plan&apos;a Yükselt</CardTitle>
+      <CardContent>
+        <p className="text-sm text-muted-foreground">
+          Daha derin yapay zeka destekli analizler, daha fazla entegrasyon, daha
+          fazla kullanıcı ve özel destek.
+        </p>
+      </CardContent>
+      <CardFooter>
+        <Button size="fit" className="w-full">
+          ✨ Yükselt ✨
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
 
@@ -160,14 +190,16 @@ function UserMenu({ firstName, lastName, email, emailVerified }: SideBarProps) {
           )}
           <div className="hidden flex-col items-start justify-center md:flex">
             {name ? (
-              <span className="truncate font-bold">{name}</span>
+              <span className="truncate font-bold md:max-w-32 lg:max-w-48">
+                {name}
+              </span>
             ) : (
               <Skeleton className="h-5 w-24" />
             )}
             <div className="flex items-center space-x-2">
               {email ? (
                 <>
-                  <span className="truncate text-xs text-muted-foreground">
+                  <span className="truncate text-xs text-muted-foreground md:max-w-32 lg:max-w-48">
                     {email}
                   </span>
                   {emailVerified && (

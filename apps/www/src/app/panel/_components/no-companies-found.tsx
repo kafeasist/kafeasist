@@ -12,7 +12,10 @@ export function NoCompaniesFound({
 }: NoCompaniesFoundProps) {
   return (
     <div
-      className={cn("flex flex-col items-center justify-center", className)}
+      className={cn(
+        "flex h-[calc(100vh-14rem)] flex-col items-center justify-center space-y-5 rounded-lg",
+        className,
+      )}
       {...props}
     >
       <Image

@@ -3,6 +3,7 @@ import * as React from "react";
 import { Separator } from "@kafeasist/ui";
 
 import { InnerTitle } from "../_components/inner-title";
+import { ProductsTable } from "./_components/products-table";
 
 export default function Urunler() {
   return (
@@ -12,6 +13,9 @@ export default function Urunler() {
         subtitle="Buradan şirketinin ürünlerini düzenleyebilir ve kontrol edebilirsin."
       />
       <Separator className="my-6 w-full" />
+      <React.Suspense>
+        <ProductsTable></ProductsTable>
+      </React.Suspense>
     </>
   );
 }
