@@ -27,7 +27,7 @@
     "cmdk": "^0.2.1",
     "eslint": "^8.57.0",
     "input-otp": "^1.2.4",
-    "lucide-react": "^0.368.0",
+    "lucide-react": "^0.436.0",
     "prettier": "^3.2.5",
     "react-hook-form": "^7.51.3",
     "recharts": "^2.12.7",
