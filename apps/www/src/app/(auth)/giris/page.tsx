@@ -45,6 +45,8 @@ const loginSchema = z.object<ToZod<LoginInputs>>({
     .string({ required_error: "Lütfen parolanızı giriniz." })
     .min(8, "En az 8 karakter olmalıdır."),
   pin: z.string().default(""),
+  recovery1: z.string().default(""),
+  recovery2: z.string().default(""),
 });
 
 function Footer() {
@@ -70,6 +72,12 @@ export default function Login() {
   const { mutateAsync, isPending } = api.auth.login.useMutation();
 
   const [twoFADialog, setTwoFADialog] = React.useState(false);
+  const [recoveryDialog, setRecoveryDialog] = React.useState(false);
+
+  const toggleRecoveryDialog = () => {
+    setRecoveryDialog((prev) => !prev);
+    setTwoFADialog((prev) => !prev);
+  };
 
   const form = useForm<LoginInputs>({
     resolver: zodResolver(loginSchema),
@@ -161,10 +169,85 @@ export default function Login() {
                   )}
                 />
               </div>
+              <span
+                className="text-sm text-muted-foreground underline underline-offset-4 hover:cursor-pointer"
+                onClick={toggleRecoveryDialog}
+              >
+                Kimlik doğrulamaya erişimim yok
+              </span>
               <DialogFooter>
                 <DialogClose asChild>
                   <Button variant="destructive" disabled={isPending}>
                     Vazgeç
+                  </Button>
+                </DialogClose>
+                <Button
+                  type="submit"
+                  onClick={() => form.handleSubmit(onSubmit)()}
+                  disabled={isPending}
+                >
+                  Doğrula
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          <Dialog open={recoveryDialog} onOpenChange={setRecoveryDialog}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Kurtarma koduyla giriş yap</DialogTitle>
+                <DialogDescription>
+                  Hesabınıza giriş yapmak için kurtarma kodlarınızdan 2 tanesini
+                  giriniz.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex items-center justify-center space-x-2">
+                <FormField
+                  control={form.control}
+                  name="recovery1"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          placeholder="abcdefghi"
+                          maxLength={9}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="recovery2"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          placeholder="abcdefghi"
+                          maxLength={9}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <a
+                className="text-sm text-muted-foreground underline underline-offset-4 hover:cursor-pointer"
+                href="mailto:destek@kafeasist.com"
+              >
+                Kurtarma kodlarına erişimim yok
+              </a>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button
+                    variant="destructive"
+                    disabled={isPending}
+                    onClick={toggleRecoveryDialog}
+                  >
+                    Geri dön
                   </Button>
                 </DialogClose>
                 <Button
