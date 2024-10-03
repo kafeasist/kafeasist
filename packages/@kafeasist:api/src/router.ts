@@ -1,6 +1,7 @@
 import { authRouter } from "./routers/auth";
 import { categoryRouter } from "./routers/category";
 import { companyRouter } from "./routers/company";
+import { creditCardRouter } from "./routers/credit-card";
 import { notificationRouter } from "./routers/notification";
 import { placeRouter } from "./routers/place";
 import { productRouter } from "./routers/product";
@@ -10,13 +11,14 @@ import { createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
-  company: companyRouter,
-  user: userRouter,
   category: categoryRouter,
+  company: companyRouter,
+  creditCard: creditCardRouter,
+  notification: notificationRouter,
+  place: placeRouter,
   product: productRouter,
   table: tableRouter,
-  place: placeRouter,
-  notification: notificationRouter,
+  user: userRouter,
 });
 
 export type AppRouter = typeof appRouter;

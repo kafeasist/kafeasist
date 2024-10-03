@@ -13,7 +13,7 @@ export function NoCompaniesFound({
   return (
     <div
       className={cn(
-        "flex h-[calc(100vh-14rem)] flex-col items-center justify-center space-y-5 rounded-lg",
+        "mt-12 flex flex-col items-center justify-center space-y-5 rounded-lg",
         className,
       )}
       {...props}
