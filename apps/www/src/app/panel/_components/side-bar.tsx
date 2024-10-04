@@ -3,39 +3,35 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  BadgeCheck,
   BarChart3,
-  CircleHelp,
   Croissant,
   Home,
   LayoutGrid,
   Link as LinkIcon,
-  LogOut,
-  User,
+  Menu,
   Users,
   type LucideIcon,
 } from "lucide-react";
 
 import {
-  Avatar,
   Button,
   Card,
   CardContent,
   CardFooter,
   CardTitle,
   cn,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  Skeleton,
-  Tooltip,
+  Separator,
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
 } from "@kafeasist/ui";
 
+import { Logo } from "~/components/logo";
 import { useCompany } from "~/hooks/use-company";
-import { api } from "~/utils/api";
-import { getInitials } from "~/utils/get-initials";
+import { UserMenu } from "./user-menu";
 
 type Navigation =
   | "dashboard"
@@ -91,7 +87,7 @@ const navigationItems: {
   },
 ];
 
-interface SideBarProps {
+export interface SideBarProps {
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -151,7 +147,7 @@ export function SideBar({
 
 function Upgrade() {
   return (
-    <Card className="hidden md:block md:max-w-64 lg:max-w-80">
+    <Card className="w-auto md:max-w-64 lg:max-w-80">
       <CardTitle>PRO Plan&apos;a Yükselt</CardTitle>
       <CardContent>
         <p className="text-sm text-muted-foreground">
@@ -168,75 +164,72 @@ function Upgrade() {
   );
 }
 
-function UserMenu({ firstName, lastName, email, emailVerified }: SideBarProps) {
-  const name = firstName && lastName ? `${firstName} ${lastName}` : undefined;
-
-  const { mutateAsync, isPending } = api.auth.logout.useMutation();
-
-  const handleLogout = async () => {
-    await mutateAsync();
-
-    window.location.href = "/";
-  };
+export function MobileSideBar({
+  firstName,
+  lastName,
+  email,
+  emailVerified,
+}: SideBarProps) {
+  const pathname = usePathname();
+  const { company } = useCompany();
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div className="flex w-full cursor-pointer items-center space-x-2.5 rounded-lg p-2 duration-150 ease-in-out hover:bg-muted/50">
-          {name ? (
-            <Avatar alt={name} placeholder={getInitials(name)} />
-          ) : (
-            <Skeleton rounded className="h-10 w-10" />
-          )}
-          <div className="hidden flex-col items-start justify-center md:flex">
-            {name ? (
-              <span className="truncate font-bold md:max-w-32 lg:max-w-48">
-                {name}
-              </span>
-            ) : (
-              <Skeleton className="h-5 w-24" />
-            )}
-            <div className="flex items-center space-x-2">
-              {email ? (
-                <>
-                  <span className="truncate text-xs text-muted-foreground md:max-w-32 lg:max-w-48">
-                    {email}
-                  </span>
-                  {emailVerified && (
-                    <Tooltip text="Doğrulanmış hesap">
-                      <BadgeCheck className="h-3 w-3 opacity-50" />
-                    </Tooltip>
-                  )}
-                </>
-              ) : (
-                <Skeleton className="h-3 w-48" />
-              )}
+    <Sheet>
+      <SheetTrigger asChild className="md:hidden">
+        <Button variant="ghost" size="icon" className="border-none">
+          <Menu className="size-6" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent
+        side="left"
+        className="flex h-full flex-col justify-between"
+      >
+        <SheetHeader>
+          <SheetTitle>
+            <div className="mb-2 flex items-center space-x-2">
+              <Logo height={40} width={40} />
+              <span className="text-2xl">kafeasist</span>
             </div>
+          </SheetTitle>
+          <Separator />
+          <nav className="flex w-full flex-col items-center justify-start space-y-1 pt-2">
+            {navigationItems.map((item) => {
+              const path = item.href.split("/")[2] ?? "panel";
+              let isActive = pathname.startsWith("/panel/" + path);
+
+              if (path === "panel" && pathname === "/panel") isActive = true;
+
+              return (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  className={cn(
+                    "flex w-full items-center space-x-2 rounded-lg px-4 py-2 text-left text-sm transition-colors duration-150 ease-in-out hover:bg-muted",
+                    isActive && "bg-muted",
+                  )}
+                >
+                  <item.icon size={20} />
+                  <span className="truncate text-sm font-bold">
+                    {item.label}
+                  </span>
+                </Link>
+              );
+            })}
+          </nav>
+        </SheetHeader>
+        <SheetFooter>
+          <div className="space-y-4">
+            {company?.plan === "FREE" && <Upgrade />}
+
+            <UserMenu
+              firstName={firstName}
+              lastName={lastName}
+              email={email}
+              emailVerified={emailVerified}
+            />
           </div>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-16 md:w-40 lg:w-72">
-        <Link href="/panel/profil">
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            Profil
-          </DropdownMenuItem>
-        </Link>
-        <DropdownMenuItem>
-          <CircleHelp className="mr-2 h-4 w-4" />
-          Destek
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          className="font-bold text-destructive"
-          onClick={handleLogout}
-          loading={isPending}
-          noselect
-        >
-          <LogOut className="mr-2 h-4 w-4" />
-          Çıkış yap
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 }

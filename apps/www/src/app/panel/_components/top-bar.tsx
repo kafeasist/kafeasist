@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { AlignJustify, Check, ChevronsUpDown, PlusCircle } from "lucide-react";
+import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
 
 import {
   Avatar,
@@ -26,6 +26,7 @@ import { Logo } from "~/components/logo";
 import { Company } from "~/context/CompanyContext";
 import { useCompany } from "~/hooks/use-company";
 import { getInitials } from "~/utils/get-initials";
+import { MobileSideBar, SideBarProps } from "./side-bar";
 
 interface TopBarProps extends React.HTMLAttributes<HTMLDivElement> {
   companies: Company[];
@@ -36,8 +37,12 @@ export function TopBar({
   className,
   companies,
   isPending,
+  firstName,
+  lastName,
+  email,
+  emailVerified,
   ...props
-}: TopBarProps) {
+}: TopBarProps & SideBarProps) {
   return (
     <section
       className={cn(
@@ -48,9 +53,12 @@ export function TopBar({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <Button variant="ghost" size="icon" className="border-none md:hidden">
-            <AlignJustify className="size-5" />
-          </Button>
+          <MobileSideBar
+            firstName={firstName}
+            lastName={lastName}
+            email={email}
+            emailVerified={emailVerified}
+          />
           <div className="hidden md:block">
             <Logo height={40} width={40} />
           </div>

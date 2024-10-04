@@ -48,7 +48,14 @@ export default function DashboardLayout({
   return (
     <CompanyProvider company={selectedCompany || companies[0]}>
       <div className="min-h-screen w-full">
-        <TopBar companies={companies} isPending={isPending} />
+        <TopBar
+          companies={companies}
+          isPending={isPending}
+          firstName={user?.firstName}
+          lastName={user?.lastName}
+          email={user?.email}
+          emailVerified={user?.emailVerified ? true : false}
+        />
         <div className="flex h-full w-full">
           <SideBar
             firstName={user?.firstName}
