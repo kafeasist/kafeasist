@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.19",
-    "@headlessui/tailwindcss": "^0.2.0",
+    "@headlessui/tailwindcss": "^0.2.1",
     "@hookform/resolvers": "^3.3.4",
     "@kafeasist/api": "workspace:*",
     "@kafeasist/auth": "workspace:*",
