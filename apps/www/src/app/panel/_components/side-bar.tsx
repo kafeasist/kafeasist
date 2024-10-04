@@ -108,7 +108,7 @@ export function SideBar({
   const { company } = useCompany();
 
   return (
-    <div className="sticky left-0 z-10 min-h-screen border-r border-border bg-secondary px-4 md:min-w-64 lg:min-w-80">
+    <div className="sticky left-0 z-10 hidden min-h-screen border-r border-border bg-secondary px-4 md:block md:min-w-56 lg:min-w-72">
       <div className="sticky left-0 top-0 flex h-screen flex-col justify-between py-4">
         <nav className="flex w-full flex-col items-center justify-start space-y-1 pt-20">
           {navigationItems.map((item) => {

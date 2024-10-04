@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
+import { AlignJustify, Check, ChevronsUpDown, PlusCircle } from "lucide-react";
 
 import {
   Avatar,
@@ -48,11 +48,16 @@ export function TopBar({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <Logo height={40} width={40} />
-          <span className="invisible text-2xl md:visible">kafeasist</span>
+          <Button variant="ghost" size="icon" className="border-none md:hidden">
+            <AlignJustify className="size-5" />
+          </Button>
+          <div className="hidden md:block">
+            <Logo height={40} width={40} />
+          </div>
+          <span className="hidden text-2xl md:block">kafeasist</span>
         </div>
         {isPending ? (
-          <Skeleton className="h-9 w-[18rem]" />
+          <Skeleton className="h-9 w-48 md:w-[18rem]" />
         ) : (
           <CompanySwitcher companies={companies} />
         )}
@@ -76,7 +81,7 @@ function CompanySwitcher({ companies }: { companies: Company[] }) {
           role="combobox"
           aria-expanded={open}
           aria-label="Bir şirket seçin"
-          className="w-[18rem] justify-between truncate"
+          className="w-48 justify-between truncate md:w-[18rem]"
         >
           {!selectedCompany ? (
             "Şirket bulunamadı"
@@ -90,7 +95,9 @@ function CompanySwitcher({ companies }: { companies: Company[] }) {
                 size={24}
               />
               <span className="truncate">{selectedCompany.name}</span>
-              <Badge variant="outline">{selectedCompany.plan}</Badge>
+              <Badge variant="outline" className="hidden md:block">
+                {selectedCompany.plan}
+              </Badge>
             </div>
           )}
           <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
