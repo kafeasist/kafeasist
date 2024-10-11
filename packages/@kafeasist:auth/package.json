@@ -17,7 +17,7 @@
     "@types/jsonwebtoken": "latest",
     "@types/node": "^20.12.7",
     "argon2": "^0.40.1",
-    "cookie": "^0.6.0",
+    "cookie": "^0.7.0",
     "jsonwebtoken": "latest",
     "otpauth": "^9.3.1",
     "superjson": "^2.2.1",
