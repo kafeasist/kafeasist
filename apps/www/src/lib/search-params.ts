@@ -6,10 +6,9 @@ import {
 } from "nuqs/server";
 
 export const searchParams = {
-  page: parseAsInteger.withDefault(1),
+  sayfa: parseAsInteger.withDefault(1),
   limit: parseAsInteger.withDefault(10),
   q: parseAsString,
-  gender: parseAsString,
   categories: parseAsString,
 };
 

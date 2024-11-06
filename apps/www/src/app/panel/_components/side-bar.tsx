@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   BarChart3,
   Croissant,
+  Grid,
   Home,
   LayoutGrid,
   Link as LinkIcon,
@@ -38,6 +39,7 @@ type Navigation =
   | "tables"
   | "products"
   | "users"
+  | "categories"
   | "analytics"
   | "integrations"
   | "companies"
@@ -66,6 +68,12 @@ const navigationItems: {
     label: "Ürünler",
     href: "/panel/urunler",
     icon: Croissant,
+  },
+  {
+    id: "categories",
+    label: "Kategoriler",
+    href: "/panel/kategoriler",
+    icon: Grid,
   },
   {
     id: "users",

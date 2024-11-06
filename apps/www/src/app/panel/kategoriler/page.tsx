@@ -1,19 +1,19 @@
 import * as React from "react";
 import { SearchParams } from "nuqs/parsers";
 
-// import { Product } from "@kafeasist/db";
+// import { Category } from "@kafeasist/db";
 import { DataTableSkeleton, Separator } from "@kafeasist/ui";
 
 import { searchParamsCache, serialize } from "~/lib/search-params";
 import { InnerTitle } from "../_components/inner-title";
-import ProductListing from "./_components/product-listing";
-import { ProductTableAction } from "./_components/product-table-action";
+import CategoryListing from "./_components/category-listing";
+import { CategoryTableAction } from "./_components/category-table-action";
 
-interface ProductProps {
+interface CategoryProps {
   searchParams: SearchParams;
 }
 
-export default async function Urunler({ searchParams }: ProductProps) {
+export default async function Urunler({ searchParams }: CategoryProps) {
   searchParamsCache.parse(searchParams);
 
   const key = serialize({ ...searchParams });
@@ -21,17 +21,17 @@ export default async function Urunler({ searchParams }: ProductProps) {
   return (
     <>
       <InnerTitle
-        title="Ürünler"
-        subtitle="Buradan şirketinin ürünlerini düzenleyebilir ve kontrol edebilirsin."
+        title="Kategoriler"
+        subtitle="Buradan şirketinin kategorilerini düzenleyebilir ve kontrol edebilirsin."
       />
       <Separator className="my-6 w-full" />
-      <ProductTableAction />
+      <CategoryTableAction />
       <br />
       <React.Suspense
         key={key}
         fallback={<DataTableSkeleton columnCount={5} rowCount={10} />}
       >
-        <ProductListing />
+        <CategoryListing />
       </React.Suspense>
     </>
   );

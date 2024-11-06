@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 
-import { Product } from "@kafeasist/db";
+import { Category } from "@kafeasist/db";
 import {
   AlertModal,
   Button,
@@ -16,7 +16,7 @@ import {
 } from "@kafeasist/ui";
 
 interface CellActionProps {
-  data: Product;
+  data: Category;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -34,7 +34,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         onClose={() => setOpen(false)}
         onConfirm={onConfirm}
         loading={loading}
-        message={`"${data.name}" isimli ürünü silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`}
+        message={`"${data.name}" isimli kategoriyi silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`}
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
@@ -46,7 +46,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>İşlemler</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => router.push(`/panel/urunler/duzenle/${data.id}`)}
+            onClick={() => router.push(`/panel/kategoriler/duzenle/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Düzenle
           </DropdownMenuItem>

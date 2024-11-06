@@ -5,6 +5,7 @@ import { useQueryState } from "nuqs";
 
 import { searchParams } from "~/lib/search-params";
 
+// TODO: Get this from the API
 export const CATEGORY_OPTIONS = [
   { value: "Electronics", label: "Electronics" },
   { value: "Furniture", label: "Furniture" },
@@ -30,8 +31,8 @@ export function useProductTableFilters() {
   );
 
   const [page, setPage] = useQueryState(
-    "page",
-    searchParams.page.withDefault(1),
+    "sayfa",
+    searchParams.sayfa.withDefault(1),
   );
 
   const resetFilters = useCallback(() => {

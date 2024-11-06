@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ColumnDef,
   flexRender,
@@ -7,10 +9,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronsLeftIcon,
+  ChevronsRightIcon,
 } from "lucide-react";
 import { parseAsInteger, useQueryState } from "nuqs";
 
@@ -46,7 +48,7 @@ export function DataTable<TData, TValue>({
   pageSizeOptions = [10, 20, 30, 40, 50],
 }: DataTableProps<TData, TValue>) {
   const [currentPage, setCurrentPage] = useQueryState(
-    "page",
+    "sayfa",
     parseAsInteger.withOptions({ shallow: false }).withDefault(1),
   );
   const [pageSize, setPageSize] = useQueryState(
@@ -57,7 +59,7 @@ export function DataTable<TData, TValue>({
   );
 
   const paginationState = {
-    pageIndex: currentPage - 1,
+    pageIndex: currentPage - 1, // zero-based index for React Table
     pageSize: pageSize,
   };
 
@@ -73,7 +75,7 @@ export function DataTable<TData, TValue>({
         ? updaterOrValue(paginationState)
         : updaterOrValue;
 
-    setCurrentPage(pagination.pageIndex + 1);
+    setCurrentPage(pagination.pageIndex + 1); // converting zero-based index to one-based
     setPageSize(pagination.pageSize);
   };
 
@@ -93,7 +95,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border md:h-[calc(80dvh-200px)]">
+      <ScrollArea className="h-[calc(80vh-220px)] rounded-md border border-border md:h-[calc(90dvh-240px)]">
         <Table className="relative">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -116,7 +118,7 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "seçili"}
+                  data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -134,7 +136,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Sonuç bulunamadı
+                  Sonuç bulunamadı.
                 </TableCell>
               </TableRow>
             )}
@@ -147,23 +149,15 @@ export function DataTable<TData, TValue>({
         <div className="flex w-full items-center justify-between">
           <div className="flex-1 text-sm text-muted-foreground">
             {totalItems > 0 ? (
-              <>
-                Gösterilen{" "}
-                {paginationState.pageIndex * paginationState.pageSize + 1} ile{" "}
-                {Math.min(
-                  (paginationState.pageIndex + 1) * paginationState.pageSize,
-                  totalItems,
-                )}{" "}
-                arasındaki {totalItems} kayıt
-              </>
+              <>{totalItems} adet gösteriliyor</>
             ) : (
               "Hiçbir sonuç bulunamadı"
             )}
           </div>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
             <div className="flex items-center space-x-2">
-              <p className="whitespace-nowrap text-sm font-medium">
-                Sayfa başına göster:
+              <p className="whitespace-nowrap text-sm text-muted-foreground">
+                Sayfa başına adet
               </p>
               <Select
                 value={`${paginationState.pageSize}`}
@@ -186,51 +180,55 @@ export function DataTable<TData, TValue>({
           </div>
         </div>
         <div className="flex w-full items-center justify-between gap-2 sm:justify-end">
-          <div className="flex w-[150px] items-center justify-center text-sm font-medium">
+          <div className="flex w-[150px] items-center justify-center text-sm font-medium text-muted-foreground">
             {totalItems > 0 ? (
               <>
                 Sayfa {paginationState.pageIndex + 1} / {table.getPageCount()}
               </>
             ) : (
-              "Sayfa bulunamadı"
+              "Sayfa yok"
             )}
           </div>
           <div className="flex items-center space-x-2">
             <Button
               aria-label="İlk sayfaya git"
               variant="outline"
+              size="icon"
               className="hidden h-8 w-8 p-0 lg:flex"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <ChevronsLeft className="h-4 w-4" aria-hidden="true" />
+              <ChevronsLeftIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
             <Button
               aria-label="Önceki sayfaya git"
               variant="outline"
+              size="icon"
               className="h-8 w-8 p-0"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+              <ChevronLeftIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
             <Button
               aria-label="Sonraki sayfaya git"
               variant="outline"
+              size="icon"
               className="h-8 w-8 p-0"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              <ChevronRight className="h-4 w-4" aria-hidden="true" />
+              <ChevronRightIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
             <Button
               aria-label="Son sayfaya git"
               variant="outline"
+              size="icon"
               className="hidden h-8 w-8 p-0 lg:flex"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              <ChevronsRight className="h-4 w-4" aria-hidden="true" />
+              <ChevronsRightIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
           </div>
         </div>

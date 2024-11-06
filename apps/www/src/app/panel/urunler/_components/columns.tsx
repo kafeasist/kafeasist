@@ -3,19 +3,20 @@
 import Image from "next/image";
 import { ColumnDef } from "@tanstack/react-table";
 
-import type { Product } from "@kafeasist/db";
+import { Product } from "@kafeasist/db";
 
+import { formatMoney } from "~/utils/format-money";
 import { CellAction } from "./cell-action";
 
 export const columns: ColumnDef<Product>[] = [
   {
-    accessorKey: "photo_url",
-    header: "IMAGE",
+    accessorKey: "imageUrl",
+    header: "Fotoğraf",
     cell: ({ row }) => {
       return (
-        <div className="relative aspect-square">
+        <div className="relative">
           <Image
-            src={row.getValue("photo_url")}
+            src={row.getValue("imageUrl")}
             alt={row.getValue("name")}
             fill
             className="rounded-lg"
@@ -26,19 +27,18 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: "name",
-    header: "NAME",
+    header: "İsim",
   },
   {
     accessorKey: "category",
-    header: "CATEGORY",
+    header: "Kategori",
   },
   {
     accessorKey: "price",
-    header: "PRICE",
-  },
-  {
-    accessorKey: "description",
-    header: "DESCRIPTION",
+    header: "Fiyat",
+    cell: ({ row }) => {
+      return <span>{formatMoney(row.getValue("price"))} ₺</span>;
+    },
   },
 
   {

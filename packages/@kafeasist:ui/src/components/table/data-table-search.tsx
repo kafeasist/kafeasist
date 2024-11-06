@@ -27,12 +27,12 @@ export function DataTableSearch({
 
   const handleSearch = (value: string) => {
     setSearchQuery(value, { startTransition });
-    setPage(1);
+    setPage(1); // Reset page to 1 when search changes
   };
 
   return (
     <Input
-      placeholder="Ürün ara..."
+      placeholder="Ara..."
       value={searchQuery ?? ""}
       onChange={(e) => handleSearch(e.target.value)}
       className={cn("w-full md:max-w-sm", isLoading && "animate-pulse")}
