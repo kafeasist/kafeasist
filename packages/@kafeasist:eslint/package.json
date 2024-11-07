@@ -26,7 +26,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "catalog:",
     "typescript": "catalog:",
-    "typescript-eslint": "^7.14.1"
+    "typescript-eslint": "^7.18.0"
   },
   "prettier": "@kafeasist/prettier"
 }
