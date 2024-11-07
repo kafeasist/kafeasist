@@ -14,7 +14,7 @@
     "@upstash/ratelimit": "^1.0.3",
     "@upstash/redis": "^1.29.0",
     "dotenv-cli": "^7.4.1",
-    "typescript": "^5.4.5"
+    "typescript": "catalog:"
   },
   "private": true,
   "prettier": "@kafeasist/prettier"

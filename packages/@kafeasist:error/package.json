@@ -11,8 +11,8 @@
     "@kafeasist/prettier": "workspace:*",
     "@kafeasist/typescript": "workspace:*",
     "@sentry/node": "^7.110.1",
-    "eslint": "^8.57.0",
-    "typescript": "^5.4.5"
+    "eslint": "catalog:",
+    "typescript": "catalog:"
   },
   "private": true,
   "prettier": "@kafeasist/prettier"

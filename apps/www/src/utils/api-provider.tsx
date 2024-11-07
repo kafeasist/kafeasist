@@ -2,22 +2,12 @@
 
 import * as React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import SuperJSON from "superjson";
 
 import { env } from "~/env";
 import { api } from "./api";
-
-const createQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: {
-        // Avoid refetching data when the window regains focus
-        staleTime: 30 * 1000,
-      },
-    },
-  });
+import { createQueryClient } from "./query-client";
 
 let queryClient: QueryClient | undefined = undefined;
 
@@ -56,7 +46,6 @@ export function APIClientProvider({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <api.Provider client={apiClient} queryClient={queryClient}>
         {children}
-        <ReactQueryDevtools />
       </api.Provider>
     </QueryClientProvider>
   );

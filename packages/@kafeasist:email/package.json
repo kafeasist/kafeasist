@@ -28,7 +28,7 @@
     "react-dom": "^18.2.0",
     "react-email": "2.1.1",
     "resend": "^3.2.0",
-    "typescript": "^5.4.5"
+    "typescript": "catalog:"
   },
   "private": true,
   "prettier": "@kafeasist/prettier"

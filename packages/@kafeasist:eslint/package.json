@@ -17,15 +17,15 @@
     "@kafeasist/prettier": "workspace:*",
     "@kafeasist/typescript": "workspace:*",
     "@next/eslint-plugin-next": "^14.2.1",
-    "eslint": "^8.57.0",
+    "eslint": "catalog:",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-turbo": "^1.12.4",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "prettier": "^3.2.5",
-    "typescript": "^5.4.5",
+    "prettier": "catalog:",
+    "typescript": "catalog:",
     "typescript-eslint": "^7.14.1"
   },
   "prettier": "@kafeasist/prettier"

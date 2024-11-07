@@ -21,7 +21,7 @@
     "jsonwebtoken": "latest",
     "otpauth": "^9.3.1",
     "superjson": "^2.2.1",
-    "typescript": "^5.4.5"
+    "typescript": "catalog:"
   },
   "private": true,
   "prettier": "@kafeasist/prettier"
