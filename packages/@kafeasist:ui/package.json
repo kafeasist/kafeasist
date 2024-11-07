@@ -26,7 +26,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@tanstack/react-table": "^8.20.5",
     "class-variance-authority": "^0.7.0",
-    "cmdk": "^0.2.1",
+    "cmdk": "^1.0.4",
     "eslint": "catalog:",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.368.0",
