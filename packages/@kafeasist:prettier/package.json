@@ -7,7 +7,7 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@kafeasist/typescript": "workspace:*",
     "prettier": "catalog:",
-    "prettier-plugin-tailwindcss": "^0.5.13",
+    "prettier-plugin-tailwindcss": "^0.6.9",
     "typescript": "catalog:"
   }
 }
