@@ -41,6 +41,6 @@
     "turbo": "^2.0.5",
     "typescript": "catalog:"
   },
-  "packageManager": "pnpm@9.0.6",
+  "packageManager": "pnpm@9.15.0",
   "prettier": "@kafeasist/prettier"
 }
