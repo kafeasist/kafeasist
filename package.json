@@ -23,7 +23,7 @@
     "clean:all": "turbo clean && pnpm clean"
   },
   "engines": {
-    "node": ">=21.7.3"
+    "node": ">=22.12.0"
   },
   "dependencies": {
     "@changesets/cli": "^2.27.1",
