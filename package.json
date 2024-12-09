@@ -29,7 +29,7 @@
     "@changesets/cli": "^2.27.1",
     "@kafeasist/prettier": "workspace:*",
     "@manypkg/cli": "^0.21.4",
-    "@types/eslint": "^8.56.9",
+    "@types/eslint": "^8.56.12",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
     "eslint": "catalog:",
