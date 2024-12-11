@@ -15,7 +15,7 @@
     "@kafeasist/typescript": "workspace:*",
     "@types/cookie": "^0.6.0",
     "@types/jsonwebtoken": "latest",
-    "@types/node": "^20.12.7",
+    "@types/node": "^22.10.2",
     "argon2": "^0.40.1",
     "cookie": "^0.6.0",
     "jsonwebtoken": "latest",
